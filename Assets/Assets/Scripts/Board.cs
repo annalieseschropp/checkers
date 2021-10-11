@@ -15,7 +15,7 @@ public class Board : MonoBehaviour
     /// Enum
     /// Holds the state of each tile.
     /// </summary>
-    public enum State {
+    private enum State {
         Empty = 0,
         White = 1,
         Black = 2,
@@ -41,6 +41,9 @@ public class Board : MonoBehaviour
     {
         bool isBlack = true;
         GameObject tile;
+
+        // Populates vertically (i.e. 0,0 is the bottom left corner 0,1 is the tile above that etc.),
+        // flip the x and y values if horizontally is easier. REMOVE THIS COMMENT AFTER VERDICT
         for (int x = 0; x < 8; x++) // X Axis
         {
             for (int y = 0; y < 8; y++) // Y Axis
