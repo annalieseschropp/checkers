@@ -26,8 +26,6 @@ public class Piece : MonoBehaviour
         this.type = 0;
         this.sprite = null;
         this.frames = 0;
-        this.InitializePiece(4, new Vector2(1,1));
-        this.MovePiece(new Vector2(3,3));
     }
 
     // Update is called once per frame
@@ -74,7 +72,8 @@ public class Piece : MonoBehaviour
         this.sprite = Instantiate(sprites[newType], position, Quaternion.identity) as GameObject;
         this.type = newType;
         this.sprite.transform.parent = this.transform;
-        this.sprite.name = $"sprite";
+        this.sprite.name = "sprite";
+        this.sprite.GetComponent<SpriteRenderer>().sortingOrder = 1;
 
         return;
     }
@@ -100,6 +99,7 @@ public class Piece : MonoBehaviour
     {
         this.ResetSprite();
         this.SetPieceType(type);
+        
         if(this.sprite != null) this.sprite.transform.position = position;
         return;
     }
@@ -116,11 +116,12 @@ public class Piece : MonoBehaviour
         float elapsedTime = 0f;
         Vector2 startPosition = this.sprite.transform.position;
         Vector2 endPosition = newPosition;
-        
-
-        while (Vector2.Distance(this.sprite.transform.position, endPosition) > 0) {
+        GameObject sprite = this.sprite;
+    
+        while (Vector2.Distance(sprite.transform.position, endPosition) > 0)
+        {
             elapsedTime += Time.deltaTime;
-            this.sprite.transform.position = Vector2.Lerp(startPosition, endPosition, elapsedTime/totalTime);
+            sprite.transform.position = Vector2.Lerp(startPosition, endPosition, elapsedTime/totalTime);
             yield return null;
         }
     }
