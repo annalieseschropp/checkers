@@ -26,14 +26,14 @@ public class Piece : MonoBehaviour
         this.type = 0;
         this.sprite = null;
         this.frames = 0;
-        Debug.Log("Starting: " + this.frames);
+        this.InitializePiece(4, new Vector2(1,1));
+        this.MovePiece(new Vector2(3,3));
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("Updating: " + this.frames);
-        Test();
+        //Test();
     }
 
     void Test()
@@ -85,9 +85,55 @@ public class Piece : MonoBehaviour
     /// <params>None</params>
     /// <returns>int</returns>
     /// </summary>
-    public int GetType()
+    public int GetPieceType()
     {
         return this.type;
+    }
+
+    /// <summary>
+    /// Method
+    /// Initializes a piece at a location.
+    /// <params>int type, Vector2 position</params>
+    /// <returns>int</returns>
+    /// </summary>
+    public void InitializePiece(int type, Vector2 position)
+    {
+        this.ResetSprite();
+        this.SetPieceType(type);
+        if(this.sprite != null) this.sprite.transform.position = position;
+        return;
+    }
+
+    /// <summary>
+    /// Method
+    /// Smoothly moves the piece to a new location
+    /// <params>Vector2 newPosition</params>
+    /// <returns>int</returns>
+    /// </summary>
+    private IEnumerator MovePieceCoroutine(Vector2 newPosition)
+    {
+        float totalTime = 0.75f;
+        float elapsedTime = 0f;
+        Vector2 startPosition = this.sprite.transform.position;
+        Vector2 endPosition = newPosition;
+        
+
+        while (Vector2.Distance(this.sprite.transform.position, endPosition) > 0) {
+            elapsedTime += Time.deltaTime;
+            this.sprite.transform.position = Vector2.Lerp(startPosition, endPosition, elapsedTime/totalTime);
+            yield return null;
+        }
+    }
+
+    /// <summary>
+    /// Method
+    /// Public interface for moving the piece.
+    /// <params>Vector2 newPosition</params>
+    /// <returns>int</returns>
+    /// </summary>
+    public void MovePiece(Vector2 newPosition)
+    {
+        StartCoroutine(this.MovePieceCoroutine(newPosition));
     }
 
     /// <summary>
