@@ -14,8 +14,9 @@ public class Piece : MonoBehaviour
     public GameObject whiteKingPrefab;
     public GameObject blackKingPrefab;
 
-    private int type;
+    private CheckersState.State type;
     private GameObject sprite;
+    private Dictionary<CheckersState.State, GameObject> PieceMap;
     private int frames;
   
     /// <summary>
@@ -27,26 +28,13 @@ public class Piece : MonoBehaviour
         this.type = 0;
         this.sprite = null;
         this.frames = 0;
+        this.InitPieceMap();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Test();
-    }
-
-    void Test()
-    {
-        if (this.frames < 60) 
-        {
-            this.frames++;
-            return;
-        }
-        else
-        {
-            this.frames = 0;
-            this.SetPieceType((this.type + 1) % 5);
-        }
+        //
     }
 
     /// <summary>
@@ -56,13 +44,13 @@ public class Piece : MonoBehaviour
     /// <returns>Void</returns>
     /// </summary>
     // FIXME the function parameters should reference a globally accessible enum
-    public void SetPieceType(int newType)
+    public void SetPieceType(CheckersState.State newType)
     {
         if(newType == type) return;
 
-        GameObject[] sprites = new GameObject[] {null, whitePiecePrefab, blackPiecePrefab, whiteKingPrefab, blackKingPrefab};
+        this.InitPieceMap();
 
-        if (newType < 0 || newType >= sprites.Length || sprites[newType] == null)
+        if (this.PieceMap[newType] == null)
         {
             this.ResetSprite();
             return;
@@ -70,7 +58,7 @@ public class Piece : MonoBehaviour
 
         Vector2 position = new Vector2(0, 0);
         this.ResetSprite();
-        this.sprite = Instantiate(sprites[newType], position, Quaternion.identity) as GameObject;
+        this.sprite = Instantiate(this.PieceMap[newType], position, Quaternion.identity) as GameObject;
         this.type = newType;
         this.sprite.transform.parent = this.transform;
         this.sprite.name = "sprite";
@@ -85,7 +73,7 @@ public class Piece : MonoBehaviour
     /// <params>None</params>
     /// <returns>int</returns>
     /// </summary>
-    public int GetPieceType()
+    public CheckersState.State GetPieceType()
     {
         return this.type;
     }
@@ -96,13 +84,23 @@ public class Piece : MonoBehaviour
     /// <params>int type, Vector2 position</params>
     /// <returns>int</returns>
     /// </summary>
-    public void InitializePiece(int type, Vector2 position)
+    public void InitializePiece(CheckersState.State type, Vector2 position, GameObject whitePiecePrefab, GameObject blackPiecePrefab, GameObject whiteKingPrefab, GameObject blackKingPrefab)
     {
+        this.SetPrefabs(whitePiecePrefab, blackPiecePrefab, whiteKingPrefab, blackKingPrefab);
+        this.InitPieceMap();
         this.ResetSprite();
         this.SetPieceType(type);
-        
         if(this.sprite != null) this.sprite.transform.position = position;
         return;
+    }
+
+    public void SetPrefabs(GameObject whitePiecePrefab, GameObject blackPiecePrefab, GameObject whiteKingPrefab, GameObject blackKingPrefab)
+    {
+        this.whitePiecePrefab = whitePiecePrefab;
+        this.blackPiecePrefab = blackPiecePrefab;
+        this.whiteKingPrefab = whiteKingPrefab;
+        this.blackKingPrefab = blackKingPrefab;
+        this.InitPieceMap();
     }
 
     /// <summary>
@@ -125,6 +123,16 @@ public class Piece : MonoBehaviour
             sprite.transform.position = Vector2.Lerp(startPosition, endPosition, elapsedTime/totalTime);
             yield return null;
         }
+    }
+
+    private void InitPieceMap()
+    {
+        this.PieceMap = new Dictionary<CheckersState.State, GameObject>();
+        this.PieceMap[CheckersState.State.Empty] = null;
+        this.PieceMap[CheckersState.State.White] = whitePiecePrefab;
+        this.PieceMap[CheckersState.State.Black] = blackPiecePrefab;
+        this.PieceMap[CheckersState.State.WhiteKing] = whiteKingPrefab;
+        this.PieceMap[CheckersState.State.BlackKing] = blackKingPrefab;
     }
 
     /// <summary>

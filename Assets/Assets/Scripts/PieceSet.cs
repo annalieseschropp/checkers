@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using CheckersState;
 
 public class PieceSet : MonoBehaviour
 {
@@ -15,15 +16,20 @@ public class PieceSet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        int[,] baseState = new int[8,8] {
-            {1,0,1,0,0,0,2,0},
-            {0,1,0,0,0,2,0,2},
-            {1,0,1,0,0,0,2,0},
-            {0,1,0,0,0,2,0,2},
-            {1,0,1,0,0,0,2,0},
-            {0,1,0,0,0,2,0,2},
-            {1,0,1,0,0,0,2,0},
-            {0,1,0,0,0,2,0,2}
+        CheckersState.State W = CheckersState.State.White;
+        CheckersState.State B = CheckersState.State.Black;
+        CheckersState.State WK = CheckersState.State.WhiteKing;
+        CheckersState.State BK = CheckersState.State.BlackKing;
+        CheckersState.State E = CheckersState.State.Empty;
+        CheckersState.State[,] baseState = new CheckersState.State[8,8] {
+            {W,E,WK,E,E,E,B,E},
+            {E,W,E,E,E,B,E,B},
+            {W,E,WK,E,E,E,BK,E},
+            {E,W,E,E,E,BK,E,B},
+            {W,E,W,E,E,E,B,E},
+            {E,W,E,E,E,B,E,B},
+            {W,E,W,E,E,E,B,E},
+            {E,W,E,E,E,B,E,B}
         };
         pieces = new Piece[8,8];
         pieceSetObject = Instantiate(new GameObject(), new Vector2(0,0), Quaternion.identity) as GameObject;
@@ -37,7 +43,7 @@ public class PieceSet : MonoBehaviour
 
     }
 
-    public void MakeMove(int[,] boardState, Vector2 start, Vector2 end)
+    public void MakeMove(CheckersState.State[,] boardState, Vector2 start, Vector2 end)
     {
         int endX = Mathf.RoundToInt(end.x);
         int endY = Mathf.RoundToInt(end.y);
@@ -53,12 +59,12 @@ public class PieceSet : MonoBehaviour
         toMove.MovePiece(end);
     }
 
-    public void SetInitialBoardState(int[,] boardState)
+    public void SetInitialBoardState(CheckersState.State[,] boardState)
     {
         this.PiecesFromState(boardState);
     }
 
-    private void PiecesFromState(int[,] boardState)
+    private void PiecesFromState(CheckersState.State[,] boardState)
     {
         for (int i = 0; i < boardState.GetLength(1); i++)
         {
@@ -81,18 +87,14 @@ public class PieceSet : MonoBehaviour
         }
     }
 
-    private void CreatePiece(int row, int column, int type)
+    private void CreatePiece(int row, int column, CheckersState.State type)
     {
         Piece pieceComponent = pieceSetObject.AddComponent<Piece>();
-        pieceComponent.whitePiecePrefab = this.whitePiecePrefab;
-        pieceComponent.blackPiecePrefab = this.blackPiecePrefab;
-        pieceComponent.whiteKingPrefab = this.whiteKingPrefab;
-        pieceComponent.blackKingPrefab = this.blackKingPrefab;
-        pieceComponent.InitializePiece(type, new Vector2(row,column));
+        pieceComponent.InitializePiece(type, new Vector2(row,column), whitePiecePrefab, blackPiecePrefab, whiteKingPrefab, blackKingPrefab);
         pieces[row,column] = pieceComponent;
     }
 
-    private void UpdatePiece(int row, int column, int type)
+    private void UpdatePiece(int row, int column, CheckersState.State type)
     {
         Piece toUpdate = pieces[row,column];
         toUpdate.SetPieceType(type);
