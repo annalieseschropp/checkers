@@ -23,7 +23,7 @@ public class Piece : MonoBehaviour
     /// Constructor for the piece class.
     /// Initializes all values to represent an empty piece.
     /// </summary>
-    void Start()
+    void Awake()
     {
         this.type = 0;
         this.sprite = null;

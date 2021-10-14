@@ -13,34 +13,20 @@ public class PieceSet : MonoBehaviour
     private Piece[,] pieces;
     private GameObject pieceSetObject;
 
+    void Awake()
+    {
+        pieces = new Piece[8,8];
+        pieceSetObject = Instantiate(new GameObject(), new Vector2(0,0), Quaternion.identity) as GameObject;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        CheckersState.State W = CheckersState.State.White;
-        CheckersState.State B = CheckersState.State.Black;
-        CheckersState.State WK = CheckersState.State.WhiteKing;
-        CheckersState.State BK = CheckersState.State.BlackKing;
-        CheckersState.State E = CheckersState.State.Empty;
-        CheckersState.State[,] baseState = new CheckersState.State[8,8] {
-            {W,E,WK,E,E,E,B,E},
-            {E,W,E,E,E,B,E,B},
-            {W,E,WK,E,E,E,BK,E},
-            {E,W,E,E,E,BK,E,B},
-            {W,E,W,E,E,E,B,E},
-            {E,W,E,E,E,B,E,B},
-            {W,E,W,E,E,E,B,E},
-            {E,W,E,E,E,B,E,B}
-        };
-        pieces = new Piece[8,8];
-        pieceSetObject = Instantiate(new GameObject(), new Vector2(0,0), Quaternion.identity) as GameObject;
-        this.PiecesFromState(baseState);
-        this.MakeMove(baseState, new Vector2(0,0), new Vector2(0,1));
     }
 
     // Update is called once per frame
     void Update()
     {
-
     }
 
     public void MakeMove(CheckersState.State[,] boardState, Vector2 start, Vector2 end)
@@ -56,6 +42,7 @@ public class PieceSet : MonoBehaviour
         this.pieces[startX, startY] = null;
         this.pieces[endX, endY] = toMove;
         // call the move function
+        this.PiecesFromState(boardState);
         toMove.MovePiece(end);
     }
 

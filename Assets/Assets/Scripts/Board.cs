@@ -13,15 +13,26 @@ public class Board : MonoBehaviour
     public GameObject whiteTilePrefab;
     public CheckersState.State[,] curState;
 
+    private PieceSet pieceSet;
+
     /// <summary>
-    /// Constructor of board class.
+    /// Board initialization performed before anything can access it.
     /// </summary>
-    void Start()
+    void Awake()
     {
         curState = new CheckersState.State[8, 8];
         Create();
         setInitBoardState();
-        Debug.Log(getBoardState()[0,0]);
+    }
+
+    /// <summary>
+    /// Board actions performed on the first frame update, after Awake.
+    /// </summary>
+    void Start()
+    {
+        addStandardStartingPieces();
+        initPieceSet();
+        initPieceDisplay();
     }
 
     /// <summary>
@@ -73,6 +84,49 @@ public class Board : MonoBehaviour
                 curState[x, y] = CheckersState.State.Empty;
             }
         }
+    }
+
+    /// <summary>
+    /// Method
+    /// Sets the reference to the piece set that this board manipulates.
+    /// </summary>
+    /// <params>None</params>
+    /// <returns>Void</returns>
+    private void initPieceSet()
+    {
+        pieceSet = gameObject.GetComponent(typeof(PieceSet)) as PieceSet;
+    }
+
+    /// <summary>
+    /// Method
+    /// Setter to populate current state array with the standard starting position of pieces.
+    /// </summary>
+    /// <params>None</params>
+    /// <returns>Void</returns>
+    private void addStandardStartingPieces()
+    {
+        for (int x = 0; x < 8; x++)
+        {
+            for(int y = 0; y < 3; y++)
+            {
+                if((x+y)%2 == 0)
+                {
+                    curState[x, y] = CheckersState.State.White;
+                    curState[7-x, 7-y] = CheckersState.State.Black;
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Method
+    /// Initializes the visible display of pieces based on the board state.
+    /// </summary>
+    /// <params>None</params>
+    /// <returns>Void</returns>
+    private void initPieceDisplay()
+    {
+        pieceSet.SetInitialBoardState(curState);
     }
 
     /// <summary>
