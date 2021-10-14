@@ -22,7 +22,7 @@ public class Board : MonoBehaviour
     {
         curState = new CheckersState.State[8, 8];
         Create();
-        setInitBoardState();
+        SetInitBoardState();
     }
 
     /// <summary>
@@ -30,9 +30,9 @@ public class Board : MonoBehaviour
     /// </summary>
     void Start()
     {
-        addStandardStartingPieces();
-        initPieceSet();
-        initPieceDisplay();
+        AddStandardStartingPieces();
+        InitPieceSet();
+        InitPieceDisplay();
     }
 
     /// <summary>
@@ -75,7 +75,7 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <params>None</params>
     /// <returns>Void</returns>
-    private void setInitBoardState()
+    private void SetInitBoardState()
     {
         for (int x = 0; x < 8; x++)
         {
@@ -92,9 +92,9 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <params>None</params>
     /// <returns>Void</returns>
-    private void initPieceSet()
+    private void InitPieceSet()
     {
-        pieceSet = gameObject.GetComponent(typeof(PieceSet)) as PieceSet;
+        pieceSet = GameObject.Find("PieceSet").GetComponent(typeof(PieceSet)) as PieceSet;
     }
 
     /// <summary>
@@ -103,7 +103,7 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <params>None</params>
     /// <returns>Void</returns>
-    private void addStandardStartingPieces()
+    private void AddStandardStartingPieces()
     {
         for (int x = 0; x < 8; x++)
         {
@@ -124,7 +124,7 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <params>None</params>
     /// <returns>Void</returns>
-    private void initPieceDisplay()
+    private void InitPieceDisplay()
     {
         pieceSet.SetInitialBoardState(curState);
     }

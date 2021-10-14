@@ -15,7 +15,6 @@ public class PieceSet : MonoBehaviour
     public GameObject blackKingPrefab;
 
     private Piece[,] pieces;
-    private GameObject pieceSetObject;
 
     /// <summary>
     /// Method
@@ -24,7 +23,6 @@ public class PieceSet : MonoBehaviour
     void Awake()
     {
         pieces = new Piece[8,8];
-        pieceSetObject = Instantiate(new GameObject(), new Vector2(0,0), Quaternion.identity) as GameObject;
     }
 
     /// <summary>
@@ -90,7 +88,7 @@ public class PieceSet : MonoBehaviour
     /// </summary>
     private void CreatePiece(int row, int column, CheckersState.State type)
     {
-        Piece pieceComponent = pieceSetObject.AddComponent<Piece>();
+        Piece pieceComponent = this.gameObject.AddComponent<Piece>();
         pieceComponent.InitializePiece(type, new Vector2(row,column), whitePiecePrefab, blackPiecePrefab, whiteKingPrefab, blackKingPrefab);
         pieces[row,column] = pieceComponent;
     }
@@ -114,5 +112,14 @@ public class PieceSet : MonoBehaviour
         if (pieces[row,column] == null) return;
         else Destroy(pieces[row,column]);
         pieces[row, column] = null;
+    }
+
+    /// <summary>
+    /// Method
+    /// Getter for the current arrangement of pieces.
+    /// </summary>
+    public Piece[,] GetPieces()
+    {
+        return pieces;
     }
 }
