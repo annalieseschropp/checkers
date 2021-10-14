@@ -31,19 +31,10 @@ public class Piece : MonoBehaviour
         this.InitPieceMap();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        //
-    }
-
     /// <summary>
     /// Method
     /// Changes the piece's type to the given paramter.
-    /// <params>newType</params>
-    /// <returns>Void</returns>
     /// </summary>
-    // FIXME the function parameters should reference a globally accessible enum
     public void SetPieceType(CheckersState.State newType)
     {
         if(newType == type) return;
@@ -70,8 +61,6 @@ public class Piece : MonoBehaviour
     /// <summary>
     /// Method
     /// Getter for the piece's current type.
-    /// <params>None</params>
-    /// <returns>int</returns>
     /// </summary>
     public CheckersState.State GetPieceType()
     {
@@ -81,8 +70,6 @@ public class Piece : MonoBehaviour
     /// <summary>
     /// Method
     /// Initializes a piece at a location.
-    /// <params>int type, Vector2 position</params>
-    /// <returns>int</returns>
     /// </summary>
     public void InitializePiece(CheckersState.State type, Vector2 position, GameObject whitePiecePrefab, GameObject blackPiecePrefab, GameObject whiteKingPrefab, GameObject blackKingPrefab)
     {
@@ -94,6 +81,10 @@ public class Piece : MonoBehaviour
         return;
     }
 
+    /// <summary>
+    /// Method
+    /// Setter for this script's prefabs: prefered over setting the public class member.
+    /// </summary>
     public void SetPrefabs(GameObject whitePiecePrefab, GameObject blackPiecePrefab, GameObject whiteKingPrefab, GameObject blackKingPrefab)
     {
         this.whitePiecePrefab = whitePiecePrefab;
@@ -106,9 +97,8 @@ public class Piece : MonoBehaviour
     /// <summary>
     /// Method
     /// Smoothly moves the piece to a new location
-    /// <params>Vector2 newPosition</params>
-    /// <returns>int</returns>
     /// </summary>
+    /// <param name=newPosition>new position to move to</param>
     private IEnumerator MovePieceCoroutine(Vector2 newPosition)
     {
         float totalTime = 0.75f;
@@ -125,6 +115,10 @@ public class Piece : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method
+    /// Initializes the mapping of prefabs to CheckerState.State values.
+    /// </summary>
     private void InitPieceMap()
     {
         this.PieceMap = new Dictionary<CheckersState.State, GameObject>();
@@ -138,9 +132,8 @@ public class Piece : MonoBehaviour
     /// <summary>
     /// Method
     /// Public interface for moving the piece.
-    /// <params>Vector2 newPosition</params>
-    /// <returns>int</returns>
     /// </summary>
+    /// <params name=newPosition>the new position to move to</params>
     public void MovePiece(Vector2 newPosition)
     {
         StartCoroutine(this.MovePieceCoroutine(newPosition));
@@ -149,8 +142,6 @@ public class Piece : MonoBehaviour
     /// <summary>
     /// Method
     /// Clears the current sprite.
-    /// <params>None</params>
-    /// <returns>Void</returns>
     /// </summary>
     private void ResetSprite()
     {

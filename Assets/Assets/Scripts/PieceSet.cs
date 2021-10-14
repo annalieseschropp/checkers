@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using CheckersState;
 
+/// <summary>
+/// Class
+/// Visual representation of a set of related 2D checker pieces.
+/// </summary>
 public class PieceSet : MonoBehaviour
 {
     public GameObject whitePiecePrefab;
@@ -13,22 +17,20 @@ public class PieceSet : MonoBehaviour
     private Piece[,] pieces;
     private GameObject pieceSetObject;
 
+    /// <summary>
+    /// Method
+    /// Initializer performed before any script attempts to access the PieceSet.
+    /// </summary>
     void Awake()
     {
         pieces = new Piece[8,8];
         pieceSetObject = Instantiate(new GameObject(), new Vector2(0,0), Quaternion.identity) as GameObject;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-    }
-
+    /// <summary>
+    /// Method
+    /// Visually updates the locations and types of the pieces based on the board state and move provided.
+    /// </summary>
     public void MakeMove(CheckersState.State[,] boardState, Vector2 start, Vector2 end)
     {
         int endX = Mathf.RoundToInt(end.x);
@@ -46,11 +48,19 @@ public class PieceSet : MonoBehaviour
         toMove.MovePiece(end);
     }
 
+    /// <summary>
+    /// Method
+    /// Public interface for setting the initial positions of the pieces.
+    /// </summary>
     public void SetInitialBoardState(CheckersState.State[,] boardState)
     {
         this.PiecesFromState(boardState);
     }
 
+    /// <summary>
+    /// Method
+    /// Translates a board state into a visual set of pieces.
+    /// </summary>
     private void PiecesFromState(CheckersState.State[,] boardState)
     {
         for (int i = 0; i < boardState.GetLength(1); i++)
@@ -74,6 +84,10 @@ public class PieceSet : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method
+    /// Helper method to create a piece.
+    /// </summary>
     private void CreatePiece(int row, int column, CheckersState.State type)
     {
         Piece pieceComponent = pieceSetObject.AddComponent<Piece>();
@@ -81,12 +95,20 @@ public class PieceSet : MonoBehaviour
         pieces[row,column] = pieceComponent;
     }
 
+    /// <summary>
+    /// Method
+    /// Helper method to update a piece.
+    /// </summary>
     private void UpdatePiece(int row, int column, CheckersState.State type)
     {
         Piece toUpdate = pieces[row,column];
         toUpdate.SetPieceType(type);
     }
 
+    /// <summary>
+    /// Method
+    /// Helper method to destroy a piece.
+    /// </summary>
     private void DestroyPiece(int row, int column)
     {
         if (pieces[row,column] == null) return;
