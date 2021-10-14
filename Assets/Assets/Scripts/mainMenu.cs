@@ -23,7 +23,7 @@ public class mainMenu : MonoBehaviour
     public void PlayGame()
     {
         Debug.Log("Loading Game!");
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("GameBoard");
         // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
