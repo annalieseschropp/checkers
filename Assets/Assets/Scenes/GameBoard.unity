@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1368847222}
   - component: {fileID: 1368847221}
+  - component: {fileID: 1368847223}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -167,6 +168,69 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1368847223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1368847220}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51926dabafa82ea4198797e52dcd39ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whitePiecePrefab: {fileID: 1648780055348081990, guid: 2e30f233f35a7144290997dc1ba68f52, type: 3}
+  blackPiecePrefab: {fileID: 658330410776612402, guid: 029a81c49af5de9488d9e9bde5915728, type: 3}
+  whiteKingPrefab: {fileID: 7423022126076837316, guid: 31b9f805618dda744875c3abfd9c4dcd, type: 3}
+  blackKingPrefab: {fileID: 8022484542175067052, guid: ff544803e1add2e4da1be72ae614661c, type: 3}
+--- !u!1 &1516528228
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1516528230}
+  - component: {fileID: 1516528229}
+  m_Layer: 0
+  m_Name: PieceSet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1516528229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516528228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51926dabafa82ea4198797e52dcd39ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  whitePiecePrefab: {fileID: 1648780055348081990, guid: 2e30f233f35a7144290997dc1ba68f52, type: 3}
+  blackPiecePrefab: {fileID: 658330410776612402, guid: 029a81c49af5de9488d9e9bde5915728, type: 3}
+  whiteKingPrefab: {fileID: 7423022126076837316, guid: 31b9f805618dda744875c3abfd9c4dcd, type: 3}
+  blackKingPrefab: {fileID: 8022484542175067052, guid: ff544803e1add2e4da1be72ae614661c, type: 3}
+--- !u!4 &1516528230
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1516528228}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1706266490
 GameObject:

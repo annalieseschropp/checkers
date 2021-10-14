@@ -26,7 +26,7 @@ public class BoardTests
     {
         var tile = GameObject.Find("Board/( 0, 0 )");
         yield return null;
-        Assert.AreEqual(new Vector3(0,0,0), tile.transform.position);
+        Assert.AreEqual(new Vector3(0,0,-1), tile.transform.position);
     }
 
     [UnityTest]
@@ -34,7 +34,7 @@ public class BoardTests
     {
         var tile = GameObject.Find("Board/( 3, 3 )");
         yield return null;
-        Assert.AreEqual(new Vector3(3, 3, 0), tile.transform.position);
+        Assert.AreEqual(new Vector3(3, 3, -1), tile.transform.position);
     }
 
     [UnityTest]
@@ -42,6 +42,6 @@ public class BoardTests
     {
         var tile = GameObject.Find("Board/( 7, 7 )");
         yield return null;
-        Assert.AreEqual(new Vector3(7, 7, 0), tile.transform.position);
+        Assert.AreEqual(new Vector3(7, 7, -1), tile.transform.position);
     }
 }
