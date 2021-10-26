@@ -17,4 +17,15 @@ namespace CheckersMove
         Square src;
         Square dest;
     }
+
+    /// <summary>
+    /// Enum
+    /// Represents the colour of the current turn.
+    /// </summary>
+    public enum Turn
+    {
+        GameOver = 0,
+        White = 1,
+        Black = 2,
+    };
 }
