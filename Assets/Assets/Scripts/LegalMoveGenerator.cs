@@ -10,5 +10,8 @@ using CheckersMove;
 /// </summary>
 public static class LegalMoveGenerator
 {
-    
+    public static CheckersMove.Move[] GetLegalMoves(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn)
+    {
+        return new CheckersMove.Move[0];
+    }
 }
