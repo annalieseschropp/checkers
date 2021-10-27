@@ -33,6 +33,18 @@ public static class LegalMoveGenerator
         return true;
     }
 
+    private static bool IsSquareOccupied(CheckersMove.Square square, CheckersState.State[,] boardState)
+    {
+        return !(GetLegalPiece(square, boardState, CheckersMove.Turn.White) == CheckersState.State.Empty);
+    }
+
+    private static bool IsSquareEnemy(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn)
+    {
+        if(currentTurn == CheckersMove.Turn.White) return !(GetMovablePiece(square, boardState, CheckersMove.Turn.Black) == CheckersState.State.Empty);
+        else if(currentTurn == CheckersMove.Turn.Black) return !(GetMovablePiece(square, boardState, CheckersMove.Turn.White) == CheckersState.State.Empty);
+        else return false;
+    }
+
     private static CheckersState.State GetMovablePiece(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn)
     {
         return GetLegalPiece(square, boardState, currentTurn, true);
