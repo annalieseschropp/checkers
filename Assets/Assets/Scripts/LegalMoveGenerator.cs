@@ -23,8 +23,34 @@ public static class LegalMoveGenerator
     public static List<CheckersMove.Move> MakeLegalMove(CheckersMove.Move move, CheckersState.State[,] boardstate, CheckersMove.Turn currentTurn)
     {
         // Make legal move
-        // Return list of captures from new board state + location
-        return new List<CheckersMove.Move>();
+        if(IsMoveACapture(move))
+        {
+            CheckersMove.Square capturedSquare = GetCaptureSquare(move);
+            boardstate[capturedSquare.x, capturedSquare.y] = CheckersState.State.Empty;
+        }
+
+        boardstate[move.dest.x, move.dest.y] = GetDestinationPiece(move, boardstate, currentTurn);
+        boardstate[move.src.x, move.src.y] = CheckersState.State.Empty;
+
+        return GenerateLegalCaptures(move.src, boardstate, currentTurn);
+    }
+
+    private static CheckersState.State GetDestinationPiece(CheckersMove.Move move, CheckersState.State[,] boardstate, CheckersMove.Turn currentTurn)
+    {
+        CheckersState.State piece = GetMovablePiece(move.dest, boardstate, currentTurn);
+        if(piece == CheckersState.State.White && move.dest.y == boardstate.GetLength(1) - 1) return CheckersState.State.WhiteKing;
+        else if(piece == CheckersState.State.Black && move.dest.y == boardstate.GetLength(1) - 1) return CheckersState.State.WhiteKing;
+        return piece;
+    }
+
+    private static bool IsMoveACapture(CheckersMove.Move move)
+    {
+        return System.Math.Abs((move.src - move.dest).x) == 2;
+    }
+
+    private static CheckersMove.Square GetCaptureSquare(CheckersMove.Move move)
+    {
+        return (move.src + move.dest)/2;
     }
 
     private static List<CheckersMove.Move> GenerateLegalMoves(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn, bool capturesOnly)
@@ -46,6 +72,7 @@ public static class LegalMoveGenerator
         {
             for(int i = 0; i < numMoves; i++)
             {
+                if(!IsSquareInbounds(square + direction * vectors[i], boardState)) continue;
                 if(IsSquareOccupied(square + direction * vectors[i], boardState)) continue;
                 CheckersMove.Move newMove = new CheckersMove.Move(square, direction * vectors[i]);
                 moveList.Add(newMove);
@@ -54,6 +81,7 @@ public static class LegalMoveGenerator
 
         for(int i = 0; i < numMoves; i++)
         {
+            if(!IsSquareInbounds(square + direction * vectors[i], boardState)) continue;
             if(!IsSquareEnemy(square + direction * vectors[i], boardState, currentTurn)) continue;
             if(IsSquareOccupied(square + 2 * direction * vectors[i], boardState)) continue;
 

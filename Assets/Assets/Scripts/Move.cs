@@ -20,6 +20,9 @@ namespace CheckersMove
         public static Square operator *(int n, Square a)
         => new Square(n * a.x, n * a.y);
 
+        public static Square operator /(Square a, int b)
+        => new Square(a.x / b, a.y / b);
+
         public static Square operator +(Square a, Square b)
         => new Square(a.x + b.x, a.y + b.y);
 
@@ -41,8 +44,8 @@ namespace CheckersMove
             dest = destSquare;
         }
 
-        Square src;
-        Square dest;
+        public Square src;
+        public Square dest;
     }
 
     /// <summary>
