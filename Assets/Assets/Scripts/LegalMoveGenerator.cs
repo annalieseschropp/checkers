@@ -10,37 +10,68 @@ using CheckersMove;
 /// </summary>
 public static class LegalMoveGenerator
 {
-    public static CheckersMove.Move[] GetLegalMoves(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn)
+    public static List<CheckersMove.Move> GetLegalMoves(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn)
     {
-        if (!IsSquareInbounds(square, boardState)) return new CheckersMove.Move[0];
+        if (!IsSquareInbounds(square, boardState)) return new List<CheckersMove.Move>();
 
         CheckersState.State piece = GetMovablePiece(square, boardState, currentTurn);
-        if(piece == CheckersState.State.Empty) return new CheckersMove.Move[0];
-        
-        return new CheckersMove.Move[0];
+        if(piece == CheckersState.State.Empty) return new List<CheckersMove.Move>();
+
+        return GenerateLegalMoves(square, boardState, currentTurn);
     }
 
-    public static CheckersMove.Move[] MakeLegalMove(CheckersMove.Move move, CheckersState.State[,] boardstate, CheckersMove.Turn currentTurn)
+    public static List<CheckersMove.Move> MakeLegalMove(CheckersMove.Move move, CheckersState.State[,] boardstate, CheckersMove.Turn currentTurn)
     {
-        return new CheckersMove.Move[0];
+        // Make legal move
+        // Return list of captures from new board state + location
+        return new List<CheckersMove.Move>();
     }
 
-    private static CheckersMove.Move[] GetNonKingLegalMoves(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn)
+    private static List<CheckersMove.Move> GenerateLegalMoves(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn, bool capturesOnly)
     {
-        int direction = currentTurn == CheckersMove.Turn.White ? 1 : -1;
-        // forward left, forward right
-        // capture forward left, capture forward right
-        return new CheckersMove.Move[0];
+        CheckersState.State piece = GetMovablePiece(square, boardState, currentTurn);
+        int direction = (currentTurn == CheckersMove.Turn.White) ? 1 : -1;
+        int numMoves = piece == CheckersState.State.White || piece == CheckersState.State.Black ? 2 : 4;
+        CheckersMove.Square[] vectors = new CheckersMove.Square[]
+            {
+                new Square(-1,1),
+                new Square(1,1),
+                new Square(-1,-1),
+                new Square(1,-1),
+            };
+
+        List<CheckersMove.Move> moveList = new List<CheckersMove.Move>();
+
+        if(!capturesOnly)
+        {
+            for(int i = 0; i < numMoves; i++)
+            {
+                if(IsSquareOccupied(square + direction * vectors[i], boardState)) continue;
+                CheckersMove.Move newMove = new CheckersMove.Move(square, direction * vectors[i]);
+                moveList.Add(newMove);
+            }
+        }
+
+        for(int i = 0; i < numMoves; i++)
+        {
+            if(!IsSquareEnemy(square + direction * vectors[i], boardState, currentTurn)) continue;
+            if(IsSquareOccupied(square + 2 * direction * vectors[i], boardState)) continue;
+
+            CheckersMove.Move newMove = new CheckersMove.Move(square, 2 * direction * vectors[i]);
+            moveList.Add(newMove);
+        }
+
+        return moveList;
     }
 
-    private static CheckersMove.Move[] GetKingLegalMoves()
+    private static List<CheckersMove.Move> GenerateLegalMoves(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn)
     {
-        return new CheckersMove.Move[0];
+        return GenerateLegalMoves(square, boardState, currentTurn, false);
     }
 
-    private static bool GetLegalCapture(CheckersMove.Square square, CheckersState.State[,] boardState, bool forward, bool right)
+    private static List<CheckersMove.Move> GenerateLegalCaptures(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn)
     {
-        // get legal capture? I guess, if it's legal, tell me what it is.
+        return GenerateLegalMoves(square, boardState, currentTurn, true);
     }
 
     private static bool IsSquareInbounds(CheckersMove.Square square, CheckersState.State[,] boardState)
