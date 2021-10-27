@@ -25,6 +25,24 @@ public static class LegalMoveGenerator
         return new CheckersMove.Move[0];
     }
 
+    private static CheckersMove.Move[] GetNonKingLegalMoves(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn)
+    {
+        int direction = currentTurn == CheckersMove.Turn.White ? 1 : -1;
+        // forward left, forward right
+        // capture forward left, capture forward right
+        return new CheckersMove.Move[0];
+    }
+
+    private static CheckersMove.Move[] GetKingLegalMoves()
+    {
+        return new CheckersMove.Move[0];
+    }
+
+    private static bool GetLegalCapture(CheckersMove.Square square, CheckersState.State[,] boardState, bool forward, bool right)
+    {
+        // get legal capture? I guess, if it's legal, tell me what it is.
+    }
+
     private static bool IsSquareInbounds(CheckersMove.Square square, CheckersState.State[,] boardState)
     {
         // is the board treated as [0] = x or [1] = x?
