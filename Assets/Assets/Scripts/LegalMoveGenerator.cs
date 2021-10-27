@@ -12,6 +12,11 @@ public static class LegalMoveGenerator
 {
     public static CheckersMove.Move[] GetLegalMoves(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn)
     {
+        if (!IsSquareInbounds(square, boardState)) return new CheckersMove.Move[0];
+
+        CheckersState.State piece = GetMovablePiece(square, boardState, currentTurn);
+        if(piece == CheckersState.State.Empty) return new CheckersMove.Move[0];
+        
         return new CheckersMove.Move[0];
     }
 
@@ -28,9 +33,19 @@ public static class LegalMoveGenerator
         return true;
     }
 
+    private static CheckersState.State GetMovablePiece(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn)
+    {
+        return GetLegalPiece(square, boardState, currentTurn, true);
+    }
+
     private static CheckersState.State GetLegalPiece(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn)
     {
-        if(!IsSquareInbounds(square, boardState)) return CheckersState.State.Empty;
+        return GetLegalPiece(square, boardState, currentTurn, false);
+    }
+
+    private static CheckersState.State GetLegalPiece(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn, bool movableOnly)
+    {
+        if(!IsSquareInbounds(square, boardState)) throw new System.ArgumentException("Square is out of bounds");
         
         CheckersState.State piece = boardState[square.x, square.y];
         switch (currentTurn)
@@ -39,11 +54,11 @@ public static class LegalMoveGenerator
                 return CheckersState.State.Empty;
 
             case CheckersMove.Turn.White:
-                if(!(piece == CheckersState.State.White || piece == CheckersState.State.WhiteKing)) return CheckersState.State.Empty;
+                if(movableOnly && !(piece == CheckersState.State.White || piece == CheckersState.State.WhiteKing)) return CheckersState.State.Empty;
                 break;
 
             case CheckersMove.Turn.Black:
-                if(!(piece == CheckersState.State.Black || piece == CheckersState.State.BlackKing)) return CheckersState.State.Empty;
+                if(movableOnly && !(piece == CheckersState.State.Black || piece == CheckersState.State.BlackKing)) return CheckersState.State.Empty;
                 break;
 
             default:
