@@ -10,12 +10,22 @@ using CheckersMove;
 /// </summary>
 public static class LegalMoveGenerator
 {
-    public static List<CheckersMove.Move> GetLegalMoves(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn)
+    public static List<CheckersMove.Move> GetLegalMoves(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn, bool forceCapture = false)
     {
         if (!IsSquareInbounds(square, boardState)) return new List<CheckersMove.Move>();
 
         CheckersState.State piece = GetMovablePiece(square, boardState, currentTurn);
         if(piece == CheckersState.State.Empty) return new List<CheckersMove.Move>();
+
+        if(forceCapture)
+        {
+            List<CheckersMove.Move> allLegalMoves = GetAllLegalMoves(boardState, currentTurn, true);
+            if(allLegalMoves.Count > 0)
+            {
+                Debug.Log("Gnerating legal captures");
+                return GenerateLegalCaptures(square, boardState, currentTurn);
+            }
+        }
 
         return GenerateLegalMoves(square, boardState, currentTurn);
     }
@@ -38,6 +48,42 @@ public static class LegalMoveGenerator
         return multicaptures;
     }
 
+    public static CheckersMove.GameStatus GetGameStatus(CheckersState.State[,] boardstate, CheckersMove.Turn currentTurn)
+    {
+        List<CheckersMove.Move> currentSideMoves = GetAllLegalMoves(boardstate, currentTurn);
+        if(currentSideMoves.Count > 0)
+        {
+            return CheckersMove.GameStatus.InProgress;
+        }
+        else
+        {
+            CheckersMove.Turn otherTurn = currentTurn == CheckersMove.Turn.White ? CheckersMove.Turn.Black : CheckersMove.Turn.White;
+            List<CheckersMove.Move> otherSideMoves = GetAllLegalMoves(boardstate, otherTurn);
+            if(otherSideMoves.Count > 0)
+            {
+                return otherTurn == CheckersMove.Turn.White ? CheckersMove.GameStatus.WhiteWin : CheckersMove.GameStatus.BlackWin;
+            }
+            else
+            {
+                return CheckersMove.GameStatus.Draw;
+            }
+        }
+    }
+
+    public static List<CheckersMove.Move> GetAllLegalMoves(CheckersState.State[,] boardstate, CheckersMove.Turn currentTurn, bool capturesOnly = false)
+    {
+        List<CheckersMove.Move> allMoves = new List<CheckersMove.Move>();
+        for(int x = 0; x < boardstate.GetLength(0); x++)
+        {
+            for(int y = 0; y < boardstate.GetLength(1); y++)
+            {
+                allMoves.AddRange(GenerateLegalMoves(new CheckersMove.Square (x,y), boardstate, currentTurn, capturesOnly));
+            }
+        }
+
+        return allMoves;
+    }
+
     private static CheckersState.State GetDestinationPiece(CheckersMove.Move move, CheckersState.State[,] boardstate, CheckersMove.Turn currentTurn)
     {
         CheckersState.State piece = GetMovablePiece(move.src, boardstate, currentTurn);
@@ -56,9 +102,12 @@ public static class LegalMoveGenerator
         return (move.src + move.dest)/2;
     }
 
-    private static List<CheckersMove.Move> GenerateLegalMoves(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn, bool capturesOnly)
+    private static List<CheckersMove.Move> GenerateLegalMoves(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn, bool capturesOnly = false)
     {
         CheckersState.State piece = GetMovablePiece(square, boardState, currentTurn);
+
+        if (piece == CheckersState.State.Empty) return new List<CheckersMove.Move>();
+
         int direction = (currentTurn == CheckersMove.Turn.White) ? 1 : -1;
         int numMoves = piece == CheckersState.State.White || piece == CheckersState.State.Black ? 2 : 4;
         CheckersMove.Square[] vectors = new CheckersMove.Square[]
@@ -94,11 +143,6 @@ public static class LegalMoveGenerator
         }
 
         return moveList;
-    }
-
-    private static List<CheckersMove.Move> GenerateLegalMoves(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn)
-    {
-        return GenerateLegalMoves(square, boardState, currentTurn, false);
     }
 
     private static List<CheckersMove.Move> GenerateLegalCaptures(CheckersMove.Square square, CheckersState.State[,] boardState, CheckersMove.Turn currentTurn)
@@ -143,9 +187,6 @@ public static class LegalMoveGenerator
         CheckersState.State piece = boardState[square.x, square.y];
         switch (currentTurn)
         {
-            case CheckersMove.Turn.GameOver:
-                return CheckersState.State.Empty;
-
             case CheckersMove.Turn.White:
                 if(movableOnly && !(piece == CheckersState.State.White || piece == CheckersState.State.WhiteKing)) return CheckersState.State.Empty;
                 break;

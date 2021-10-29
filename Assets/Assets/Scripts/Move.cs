@@ -121,8 +121,19 @@ namespace CheckersMove
     /// </summary>
     public enum Turn
     {
-        GameOver = 0,
-        White = 1,
-        Black = 2,
+        White = 0,
+        Black = 1,
+    };
+
+    /// <summary>
+    /// Enum
+    /// Represents the colour of the current turn.
+    /// </summary>
+    public enum GameStatus
+    {
+        InProgress = 0,
+        WhiteWin = 1,
+        BlackWin = 2,
+        Draw = 3,
     };
 }

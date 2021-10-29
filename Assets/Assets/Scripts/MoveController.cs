@@ -15,31 +15,32 @@ public class MoveController
     CheckersMove.Turn currentTurn;
     List<CheckersMove.Move> legalMoves;
     bool isMulticaptureInProgress;
+    bool forceCaptures;
 
-    public MoveController()
+    private void InitMembers(bool forceCapturesRule = false)
     {
         selectedSquare = null;
-        currentTurn = CheckersMove.Turn.White;
+        currentTurn = CheckersMove.Turn.Black;
         legalMoves = new List<CheckersMove.Move>();
         isMulticaptureInProgress = false;
+        forceCaptures = forceCapturesRule;
     }
 
-    public MoveController(ref CheckersState.State[,] boardStateRef)
+    public MoveController(bool forceCapturesRule = false)
     {
-        boardState = boardStateRef;
-        selectedSquare = null;
-        currentTurn = CheckersMove.Turn.White;
-        legalMoves = new List<CheckersMove.Move>();
-        isMulticaptureInProgress = false;
+        InitMembers(forceCapturesRule);
     }
 
-    public void RestartGame(ref CheckersState.State[,] boardStateRef)
+    public MoveController(ref CheckersState.State[,] boardStateRef, bool forceCapturesRule = false)
     {
         boardState = boardStateRef;
-        selectedSquare = null;
-        currentTurn = CheckersMove.Turn.White;
-        legalMoves = new List<CheckersMove.Move>();
-        isMulticaptureInProgress = false;
+        InitMembers(forceCapturesRule);
+    }
+
+    public void RestartGame(ref CheckersState.State[,] boardStateRef, bool forceCapturesRule = false)
+    {
+        boardState = boardStateRef;
+        InitMembers(forceCapturesRule);
     }
 
     public List<CheckersMove.Move> SelectPiece(CheckersMove.Square square)
@@ -50,7 +51,7 @@ public class MoveController
 
         if(selectedSquare is CheckersMove.Square validSquare)
         {
-            legalMoves = LegalMoveGenerator.GetLegalMoves(validSquare, boardState, currentTurn);
+            legalMoves = LegalMoveGenerator.GetLegalMoves(validSquare, boardState, currentTurn, forceCaptures);
         }
         else
         {
@@ -98,7 +99,7 @@ public class MoveController
 
     public void DeclineMulticapture()
     {
-        if(isMulticaptureInProgress)
+        if(!forceCaptures && isMulticaptureInProgress)
         {
             isMulticaptureInProgress = false;
             SwapTurns();
@@ -131,5 +132,10 @@ public class MoveController
     public bool IsMulticaptureInProgress()
     {
         return isMulticaptureInProgress;
+    }
+
+    public CheckersMove.GameStatus GetGameStatus()
+    {
+        return LegalMoveGenerator.GetGameStatus(boardState, currentTurn);
     }
 }

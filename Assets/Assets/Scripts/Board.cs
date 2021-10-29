@@ -36,7 +36,7 @@ public class Board : MonoBehaviour
         AddStandardStartingPieces();
         InitPieceSet();
         InitPieceDisplay();
-        moveController.RestartGame(ref curState);
+        moveController.RestartGame(ref curState, true);
     }
 
     /// <summary>
@@ -151,7 +151,11 @@ public class Board : MonoBehaviour
 
     private void SampleMoveControl()
     {
-        if(Input.anyKeyDown)
+        if(moveController.GetGameStatus() != CheckersMove.GameStatus.InProgress)
+        {
+            Debug.Log("Game Status: " + moveController.GetGameStatus());
+        }
+        else if(Input.anyKeyDown)
         {
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             CheckersMove.Square clickedSquare = new CheckersMove.Square((int)System.Math.Round(worldPosition.x), (int)System.Math.Round(worldPosition.y));
