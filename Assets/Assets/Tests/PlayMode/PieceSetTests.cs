@@ -97,6 +97,7 @@ public class PieceSetTests
         {
             for(int y = 0; y < 8; y++)
             {
+                Debug.Log("Piece at " + x + ", " + y + ": " + pieces[x,y]);
                 if((x+y)%2 == 1 && pieces[x,y] != null)
                 {
                     whiteSquareCount++;
