@@ -6,7 +6,8 @@ using CheckersState;
 
 /// <summary>
 /// Class
-/// Helps control the process of making moves
+/// Helps control the process of making moves. Keeps track of the "game state",
+/// while acting as an interface for the LegalMoveGenerator static class.
 /// </summary>
 public class MoveController
 {
@@ -17,6 +18,10 @@ public class MoveController
     bool isMulticaptureInProgress;
     bool forceCaptures;
 
+    /// <summary>
+    /// Method
+    /// Initialization method. Can be reused in constructors.
+    /// </summary>
     private void InitMembers(bool forceCapturesRule = false)
     {
         selectedSquare = null;
@@ -26,23 +31,32 @@ public class MoveController
         forceCaptures = forceCapturesRule;
     }
 
-    public MoveController(bool forceCapturesRule = false)
-    {
-        InitMembers(forceCapturesRule);
-    }
-
+    /// <summary>
+    /// Method
+    /// Basic constructor.
+    /// </summary>
     public MoveController(ref CheckersState.State[,] boardStateRef, bool forceCapturesRule = false)
     {
         boardState = boardStateRef;
         InitMembers(forceCapturesRule);
     }
 
+    /// <summary>
+    /// Method
+    /// Resets the selected piece, turn, legal moves, and prepares for a new game.
+    /// </summary>
     public void RestartGame(ref CheckersState.State[,] boardStateRef, bool forceCapturesRule = false)
     {
         boardState = boardStateRef;
         InitMembers(forceCapturesRule);
     }
 
+    /// <summary>
+    /// Method
+    /// Selects a piece and returns its legal moves.
+    /// If a multicapture is in progress, this method makes no updates,
+    /// and continues selecting the multicapturing piece.
+    /// </summary>
     public List<CheckersMove.Move> SelectPiece(CheckersMove.Square square)
     {
         if (isMulticaptureInProgress) return legalMoves;
@@ -62,12 +76,24 @@ public class MoveController
         return legalMoves;
     }
 
+    /// <summary>
+    /// Method
+    /// Deselects a piece and resets the legal moves list.
+    /// If a multicapture is in progress, this method makes no updates,
+    /// and continues selecting the multicapturing piece.
+    /// </summary>
     public void DeselectPiece()
     {
         if(isMulticaptureInProgress) return;
         selectedSquare = null;
     }
 
+    /// <summary>
+    /// Method
+    /// Attempts to move the currently selected piece to the square passed in.
+    /// Will return true and perform the move if and only if the move is legal.
+    /// Alsp detects if a multicapture is available.
+    /// </summary>
     public bool MakeMove(CheckersMove.Square destSquare)
     {
         if(selectedSquare is CheckersMove.Square srcSquare)
@@ -97,6 +123,12 @@ public class MoveController
         return false;
     }
 
+    /// <summary>
+    /// Method
+    /// Declines the option to multicapture and updates state accordingly.
+    /// Multicaptures cannot be delclined if capturing is forced; in that case,
+    /// the method does nothing.
+    /// </summary>
     public void DeclineMulticapture()
     {
         if(!forceCaptures && isMulticaptureInProgress)
@@ -106,6 +138,10 @@ public class MoveController
         }
     }
 
+    /// <summary>
+    /// Method
+    /// Helper method for handling state change upon switching turns.
+    /// </summary>
     private void SwapTurns()
     {
         currentTurn = currentTurn == CheckersMove.Turn.White ? CheckersMove.Turn.Black : CheckersMove.Turn.White;
@@ -113,27 +149,48 @@ public class MoveController
         DeselectPiece();
     }
 
-    /// Getters
+    /// <summary>
+    /// Method
+    /// Getter for the currently selected square, which may be null.
+    /// </summary>
     public CheckersMove.Square? GetSelectedSquare()
     {
         return selectedSquare;
     }
 
-    public CheckersMove.Turn? GetCurrentTurn()
+    /// <summary>
+    /// Method
+    /// Getter for the current turn.
+    /// </summary>
+    public CheckersMove.Turn GetCurrentTurn()
     {
         return currentTurn;
     }
 
+    /// <summary>
+    /// Method
+    /// Returns the list of legal moves associated with the selected piece.
+    /// </summary>
     public List<CheckersMove.Move> GetLegalMoves()
     {
         return legalMoves;
     }
 
+    /// <summary>
+    /// Method
+    /// Returns whether or not we are in the middle of a multicapture.
+    /// </summary>
     public bool IsMulticaptureInProgress()
     {
         return isMulticaptureInProgress;
     }
 
+    /// <summary>
+    /// Method
+    /// Returns a status represeting who won the game: {the game is still in progress, white won, black won, it's a draw}.
+    /// This status is calculated by the LegalMoveGenerator, so no manual calcualtion is required. However, be sure to
+    /// Check this status at the start of each turn, or else a player may be left with no legal moves.
+    /// </summary>
     public CheckersMove.GameStatus GetGameStatus()
     {
         return LegalMoveGenerator.GetGameStatus(boardState, currentTurn);

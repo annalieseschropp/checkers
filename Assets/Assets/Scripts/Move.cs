@@ -45,6 +45,10 @@ namespace CheckersMove
             return "{x: " + x + ", y: " + y + "}"; 
         }
 
+        /// <summary>
+        /// Method
+        /// Checks if one square equals another.
+        /// </summary>
         override public bool Equals(object obj)
         {
             //Check for null and compare run-time types.
@@ -59,6 +63,11 @@ namespace CheckersMove
             }
         }
 
+        /// <summary>
+        /// Method
+        /// Makes a hash code for the square. This code simply corresponds to
+        /// the square's number, from 0 to 63.
+        /// </summary>
         override public int GetHashCode()
         {
             return x*8 + y;
@@ -90,6 +99,10 @@ namespace CheckersMove
             return "{src: " + src.ToString() + ", dest: " + dest.ToString() + "}"; 
         }
         
+        /// <summary>
+        /// Method
+        /// Checks if one move equals another.
+        /// </summary>
         override public bool Equals(object obj)
         {
             //Check for null and compare run-time types.
@@ -104,12 +117,17 @@ namespace CheckersMove
             }
         }
 
+        /// <summary>
+        /// Method
+        /// Makes a hash code for the move. This code simply corresponds to
+        /// the lexicographic ordering of all possible combinations of squares.
+        /// It is equivalent to a 2-digit base 64 number, where the first digit
+        /// is the number of the src square, and the last, the dest.
+        /// </summary>
         override public int GetHashCode()
         {
             return src.GetHashCode() * 64 + dest.GetHashCode();
         }
-
-
 
         public Square src;
         public Square dest;
@@ -127,7 +145,7 @@ namespace CheckersMove
 
     /// <summary>
     /// Enum
-    /// Represents the colour of the current turn.
+    /// Represents the status of the game (ie. who won / is it a draw / is it still going).
     /// </summary>
     public enum GameStatus
     {

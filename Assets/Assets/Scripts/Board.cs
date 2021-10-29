@@ -25,7 +25,7 @@ public class Board : MonoBehaviour
         curState = new CheckersState.State[8, 8];
         Create();
         SetInitBoardState();
-        moveController = new MoveController();
+        moveController = new MoveController(ref curState);
     }
 
     /// <summary>
@@ -36,7 +36,7 @@ public class Board : MonoBehaviour
         AddStandardStartingPieces();
         InitPieceSet();
         InitPieceDisplay();
-        moveController.RestartGame(ref curState, true);
+        moveController.RestartGame(ref curState, false); // Set last parameter to true to force captures
     }
 
     /// <summary>
@@ -144,33 +144,47 @@ public class Board : MonoBehaviour
         return curState;
     }
 
-    /// *** Sample code 
+    /// 
+    /// *** Sample code for displaying the usage of the moveController class
+    /// *** all of the code below should be removed when proper UI is added
+    ///
     void Update () {
         SampleMoveControl();
     }
 
+    /// <summary>
+    /// Sample Method
+    /// Displays basic logic for how to use the moveController class
+    /// This method should be deleted 
+    /// </summary>
     private void SampleMoveControl()
     {
+        // Check if the game is over
         if(moveController.GetGameStatus() != CheckersMove.GameStatus.InProgress)
         {
             Debug.Log("Game Status: " + moveController.GetGameStatus());
         }
+        // If not, try to make move
         else if(Input.anyKeyDown)
         {
+            // Brute force click position because we have no UI yet
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             CheckersMove.Square clickedSquare = new CheckersMove.Square((int)System.Math.Round(worldPosition.x), (int)System.Math.Round(worldPosition.y));
 
+            // Emulate UI, where we have a square selected
             if(moveController.GetSelectedSquare() is CheckersMove.Square selectedSquare)
             {
+                // MakeMove will return false if our move is not legal. We use this here to emulate UI for deselecting a piece
                 if (moveController.MakeMove(clickedSquare))
                 {
                     pieceSet.MakeMove(curState, new CheckersMove.Move(selectedSquare, clickedSquare));
                 }
                 else
                 {
+                    // Pretend we "deselected" with the UI
                     if(moveController.IsMulticaptureInProgress())
                     {
-                        moveController.DeclineMulticapture();
+                        moveController.DeclineMulticapture(); // This does nothing if captures are forced
                     }
                     else
                     {
@@ -178,6 +192,7 @@ public class Board : MonoBehaviour
                     }
                 }
             }
+            // Emulate UI for selecting a piece
             else
             {
                 moveController.SelectPiece(clickedSquare);
