@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using CheckersState;
 
 /// <summary>
 /// Class
 /// Models the 2D game board for checkers
 /// </summary>
-public class Board : MonoBehaviour
+public class Board : MonoBehaviour 
 {
     public GameObject blackTilePrefab;
     public GameObject whiteTilePrefab;
     public CheckersState.State[,] curState;
 
     private PieceSet pieceSet;
+    private MoveController moveController;
 
     /// <summary>
     /// Board initialization performed before anything can access it.
@@ -23,6 +25,7 @@ public class Board : MonoBehaviour
         curState = new CheckersState.State[8, 8];
         Create();
         SetInitBoardState();
+        moveController = new MoveController();
     }
 
     /// <summary>
@@ -33,6 +36,7 @@ public class Board : MonoBehaviour
         AddStandardStartingPieces();
         InitPieceSet();
         InitPieceDisplay();
+        moveController.RestartGame(ref curState);
     }
 
     /// <summary>
@@ -138,5 +142,42 @@ public class Board : MonoBehaviour
     public CheckersState.State[,] getBoardState()
     {
         return curState;
+    }
+
+    /// *** Sample code 
+    void Update () {
+        SampleMoveControl();
+    }
+
+    private void SampleMoveControl()
+    {
+        if(Input.anyKeyDown)
+        {
+            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            CheckersMove.Square clickedSquare = new CheckersMove.Square((int)System.Math.Round(worldPosition.x), (int)System.Math.Round(worldPosition.y));
+
+            if(moveController.GetSelectedSquare() is CheckersMove.Square selectedSquare)
+            {
+                if (moveController.MakeMove(clickedSquare))
+                {
+                    pieceSet.MakeMove(curState, new CheckersMove.Move(selectedSquare, clickedSquare));
+                }
+                else
+                {
+                    if(moveController.IsMulticaptureInProgress())
+                    {
+                        moveController.DeclineMulticapture();
+                    }
+                    else
+                    {
+                        moveController.DeselectPiece();
+                    }
+                }
+            }
+            else
+            {
+                moveController.SelectPiece(clickedSquare);
+            }
+        }
     }
 }

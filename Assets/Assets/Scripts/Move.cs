@@ -1,3 +1,8 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using CheckersState;
+
 namespace CheckersMove
 {
     /// <summary>
@@ -17,6 +22,12 @@ namespace CheckersMove
         public static Square operator -(Square a)
         => new Square(-a.x,-a.y);
 
+        public static bool operator ==(Square a, Square b)
+        => (a.x == b.x) && (a.y == b.y);
+
+        public static bool operator !=(Square a, Square b)
+        => !(a==b);
+
         public static Square operator *(int n, Square a)
         => new Square(n * a.x, n * a.y);
 
@@ -28,6 +39,30 @@ namespace CheckersMove
 
         public static Square operator -(Square a, Square b)
         => a + (-b);
+
+        override public string ToString()
+        {
+            return "{x: " + x + ", y: " + y + "}"; 
+        }
+
+        override public bool Equals(object obj)
+        {
+            //Check for null and compare run-time types.
+            if ((obj == null) || ! this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Square s = (Square) obj;
+                return this == s;
+            }
+        }
+
+        override public int GetHashCode()
+        {
+            return x*8 + y;
+        }
 
         public int x;
         public int y;
@@ -43,6 +78,38 @@ namespace CheckersMove
             src = srcSquare;
             dest = destSquare;
         }
+
+        public static bool operator ==(Move a, Move b)
+        =>(a.src == b.src) && (a.dest == b.dest);
+
+        public static bool operator !=(Move a, Move b)
+        => !(a==b);
+
+        override public string ToString()
+        {
+            return "{src: " + src.ToString() + ", dest: " + dest.ToString() + "}"; 
+        }
+        
+        override public bool Equals(object obj)
+        {
+            //Check for null and compare run-time types.
+            if ((obj == null) || ! this.GetType().Equals(obj.GetType()))
+            {
+                return false;
+            }
+            else
+            {
+                Move m = (Move) obj;
+                return this == m;
+            }
+        }
+
+        override public int GetHashCode()
+        {
+            return src.GetHashCode() * 64 + dest.GetHashCode();
+        }
+
+
 
         public Square src;
         public Square dest;
