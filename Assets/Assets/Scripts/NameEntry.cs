@@ -42,7 +42,7 @@ public class NameEntry : MonoBehaviour
     }
 
     // Function to check inputs and pass the data onto the game scene
-    void PlayGameButtonOnClick()
+    public void PlayGameButtonOnClick()
     {
         Debug.Log("Clicked + " + forcedCapture.isOn);
         topText.text = "";
@@ -74,7 +74,7 @@ public class NameEntry : MonoBehaviour
     }
 
     // Return back to main menu after clicking on this
-    void CancelGameButtonOnClick()
+    public void CancelGameButtonOnClick()
     {
         SceneManager.LoadScene("Menu");
     }
