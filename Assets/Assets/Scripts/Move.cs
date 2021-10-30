@@ -88,6 +88,12 @@ namespace CheckersMove
             dest = destSquare;
         }
 
+        public Move(int srcX, int srcY, int destX, int destY)
+        {
+            src = new Square(srcX, srcY);
+            dest = new Square(destX, destY);
+        }
+
         public static bool operator ==(Move a, Move b)
         =>(a.src == b.src) && (a.dest == b.dest);
 
