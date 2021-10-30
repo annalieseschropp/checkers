@@ -31,14 +31,16 @@ public class MoveControllerTests
     public IEnumerator TestNormalGame()
     {
         CheckersState.State[,] boardState = GetEmptyBoardState();
-        MoveController moveController = new MoveController(ref boardState);
-        int illegalCount = 0;
         boardState[1,1] = CheckersState.State.White;
         boardState[2,2] = CheckersState.State.Black;
         boardState[4,4] = CheckersState.State.Black;
         boardState[4,6] = CheckersState.State.Black;
         boardState[2,6] = CheckersState.State.Black;
         boardState[1,5] = CheckersState.State.Black;
+
+        MoveController moveController = new MoveController(ref boardState);
+        int illegalCount = 0;
+
         CheckersMove.Move[] moveList = new CheckersMove.Move[]{
             new CheckersMove.Move(1,5,0,4),
             new CheckersMove.Move(1,1,3,3),
@@ -73,14 +75,16 @@ public class MoveControllerTests
     public IEnumerator TestForceCaptureGame()
     {
         CheckersState.State[,] boardState = GetEmptyBoardState();
-        MoveController moveController = new MoveController(ref boardState, true);
-        int illegalCount = 0;
         boardState[1,1] = CheckersState.State.White;
         boardState[3,3] = CheckersState.State.Black;
         boardState[4,4] = CheckersState.State.Black;
         boardState[4,6] = CheckersState.State.Black;
         boardState[2,6] = CheckersState.State.Black;
         boardState[0,4] = CheckersState.State.Black;
+
+        MoveController moveController = new MoveController(ref boardState, true);
+        int illegalCount = 0;
+
         CheckersMove.Move[] moveList = new CheckersMove.Move[]{
             new CheckersMove.Move(3,3,2,2),
             new CheckersMove.Move(1,1,0,2), // Illegal
@@ -107,6 +111,36 @@ public class MoveControllerTests
         Assert.AreEqual(3, illegalCount);
         Assert.AreEqual(CheckersState.State.WhiteKing, boardState[2,4]);
         Assert.AreEqual(CheckersMove.GameStatus.InProgress, moveController.GetGameStatus());
+
+        yield return null;
+    }
+
+    [UnityTest]
+    public IEnumerator TestPieceCount()
+    {
+        CheckersState.State[,] boardState = GetEmptyBoardState();
+        boardState[1,7] = CheckersState.State.BlackKing;
+        boardState[7,7] = CheckersState.State.Black;
+        boardState[6,6] = CheckersState.State.White;
+        boardState[4,4] = CheckersState.State.WhiteKing;
+
+        MoveController moveController = new MoveController(ref boardState, false);
+
+        Assert.AreEqual(2, moveController.CountWhitePiecesRemaining());
+        Assert.AreEqual(2, moveController.CountBlackPiecesRemaining());
+
+        moveController.SelectPiece(new CheckersMove.Square(7,7));
+        moveController.MakeMove(new CheckersMove.Square(5,5));
+        moveController.DeclineMulticapture();
+
+        Assert.AreEqual(1, moveController.CountWhitePiecesRemaining());
+        Assert.AreEqual(2, moveController.CountBlackPiecesRemaining());
+
+        moveController.SelectPiece(new CheckersMove.Square(4,4));
+        moveController.MakeMove(new CheckersMove.Square(6,6));
+
+        Assert.AreEqual(1, moveController.CountWhitePiecesRemaining());
+        Assert.AreEqual(1, moveController.CountBlackPiecesRemaining());
 
         yield return null;
     }
