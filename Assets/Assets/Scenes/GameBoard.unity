@@ -155,6 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blackTilePrefab: {fileID: 216411145772590840, guid: 49f78b01d2eaf2d4b869cf1da95e2d03, type: 3}
   whiteTilePrefab: {fileID: 8899530810316608573, guid: 50995284a3baf1e4094dee972a53a398, type: 3}
+  selectedPiecePrefab: {fileID: 452519571827767018, guid: 2d7ca07e4b00284458904032cb3f92f3, type: 3}
 --- !u!4 &1368847222
 Transform:
   m_ObjectHideFlags: 0

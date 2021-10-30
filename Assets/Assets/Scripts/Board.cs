@@ -12,10 +12,12 @@ public class Board : MonoBehaviour
 {
     public GameObject blackTilePrefab;
     public GameObject whiteTilePrefab;
+    public GameObject selectedPiecePrefab;
     public CheckersState.State[,] curState;
 
     private PieceSet pieceSet;
     private MoveController moveController;
+    private MoveUI moveUI;
 
     /// <summary>
     /// Board initialization performed before anything can access it.
@@ -26,6 +28,7 @@ public class Board : MonoBehaviour
         Create();
         SetInitBoardState();
         moveController = new MoveController(ref curState);
+        moveUI = new MoveUI();
     }
 
     /// <summary>
@@ -149,16 +152,16 @@ public class Board : MonoBehaviour
     /// *** all of the code below should be removed when proper UI is added
     ///
     void Update () {
-        SampleMoveControl();
+        MoveControl();
     }
 
     /// <summary>
-    /// Sample Method
+    /// Method
     /// Displays basic logic for how to use the moveController class
-    /// This method should be deleted 
     /// </summary>
-    private void SampleMoveControl()
+    private void MoveControl()
     {
+        GameObject selected;
         // Check if the game is over
         if(moveController.GetGameStatus() != CheckersMove.GameStatus.InProgress)
         {
@@ -170,10 +173,13 @@ public class Board : MonoBehaviour
             // Brute force click position because we have no UI yet
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
             CheckersMove.Square clickedSquare = new CheckersMove.Square((int)System.Math.Round(worldPosition.x), (int)System.Math.Round(worldPosition.y));
+            Vector3 tempPosition = new Vector3((int)System.Math.Round(worldPosition.x), (int)System.Math.Round(worldPosition.y), 1);
+
 
             // Emulate UI, where we have a square selected
-            if(moveController.GetSelectedSquare() is CheckersMove.Square selectedSquare)
+            if (moveController.GetSelectedSquare() is CheckersMove.Square selectedSquare)
             {
+                
                 // MakeMove will return false if our move is not legal. We use this here to emulate UI for deselecting a piece
                 if (moveController.MakeMove(clickedSquare))
                 {
@@ -196,6 +202,7 @@ public class Board : MonoBehaviour
             else
             {
                 moveController.SelectPiece(clickedSquare);
+                selected = Instantiate(selectedPiecePrefab, tempPosition, Quaternion.identity) as GameObject;
             }
         }
     }
