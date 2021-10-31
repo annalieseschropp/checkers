@@ -39,6 +39,8 @@ public class NameEntry : MonoBehaviour
         cancelGame.onClick.AddListener(CancelGameButtonOnClick);
         playerOneName.onValueChanged.AddListener(delegate {PlayerOneNameOnUpdate();});
         dropdownPlayerOne.onValueChanged.AddListener(delegate {PlayerOneDropdownOnUpdate();});
+        playerTwoName.onValueChanged.AddListener(delegate {PlayerTwoNameOnUpdate();});
+        dropdownPlayerTwo.onValueChanged.AddListener(delegate {PlayerTwoDropdownOnUpdate();});
     }
 
     // Function to check inputs and pass the data onto the game scene
