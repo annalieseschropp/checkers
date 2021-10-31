@@ -29,21 +29,21 @@ public class PieceSet : MonoBehaviour
     /// Method
     /// Visually updates the locations and types of the pieces based on the board state and move provided.
     /// </summary>
-    public void MakeMove(CheckersState.State[,] boardState, Vector2 start, Vector2 end)
+    public void MakeMove(CheckersState.State[,] boardState, CheckersMove.Move move)
     {
-        int endX = Mathf.RoundToInt(end.x);
-        int endY = Mathf.RoundToInt(end.y);
-        int startX = Mathf.RoundToInt(start.x);
-        int startY = Mathf.RoundToInt(start.y);
         // Delete the new piece
-        DestroyPiece(endX, endY);
+        DestroyPiece(move.dest.x, move.dest.y);
+
         // make the current null and the next the new piece
-        Piece toMove = this.pieces[startX, startY];
-        this.pieces[startX, startY] = null;
-        this.pieces[endX, endY] = toMove;
-        // call the move function
+        Piece toMove = this.pieces[move.src.x, move.src.y];
+
+        this.pieces[move.src.x, move.src.y] = null;
+        this.pieces[move.dest.x, move.dest.y] = toMove;
+
         this.PiecesFromState(boardState);
-        toMove.MovePiece(end);
+
+        if(toMove == null) return;
+        toMove.MovePiece(new Vector2(move.dest.x, move.dest.y));
     }
 
     /// <summary>
@@ -65,14 +65,16 @@ public class PieceSet : MonoBehaviour
         {
             for (int j = 0; j < boardState.GetLength(0); j++)
             {
-                if(boardState[i,j] == 0)
+                if(boardState[i,j] == CheckersState.State.Empty)
                 {
-                    this.DestroyPiece(i,j);
-                    continue;
+                    if(pieces[i,j] != null)
+                    {
+                        this.DestroyPiece(i,j);
+                    }  
                 }
                 else if (pieces[i,j] == null)
                 {
-                    this.CreatePiece(i,j, boardState[i,j]);
+                    this.CreatePiece(i, j, boardState[i,j]);
                 }
                 else
                 {
@@ -110,7 +112,8 @@ public class PieceSet : MonoBehaviour
     private void DestroyPiece(int row, int column)
     {
         if (pieces[row,column] == null) return;
-        else Destroy(pieces[row,column]);
+        
+        Destroy(pieces[row,column]);
         pieces[row, column] = null;
     }
 
