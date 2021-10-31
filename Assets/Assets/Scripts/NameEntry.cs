@@ -110,7 +110,7 @@ public class NameEntry : MonoBehaviour
 
     void PlayerTwoDropdownOnUpdate()
     {
-        int value = dropdownPlayerOne.value;
+        int value = dropdownPlayerTwo.value;
         playerTwoName.text = "";
         dropdownPlayerTwo.value = value;
     }
