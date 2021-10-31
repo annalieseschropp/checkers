@@ -90,6 +90,7 @@ public class MoveController
     {
         if(isMulticaptureInProgress) return;
         selectedSquare = null;
+        legalMoves.Clear();
     }
 
     /// <summary>
