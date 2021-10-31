@@ -65,9 +65,12 @@ public class PieceSet : MonoBehaviour
         {
             for (int j = 0; j < boardState.GetLength(0); j++)
             {
-                if(boardState[i,j] == CheckersState.State.Empty && pieces[i,j] != null)
+                if(boardState[i,j] == CheckersState.State.Empty)
                 {
-                    this.DestroyPiece(i,j);
+                    if(pieces[i,j] != null)
+                    {
+                        this.DestroyPiece(i,j);
+                    }  
                 }
                 else if (pieces[i,j] == null)
                 {

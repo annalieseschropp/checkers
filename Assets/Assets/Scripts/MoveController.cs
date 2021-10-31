@@ -15,6 +15,8 @@ public class MoveController
     CheckersMove.Square? selectedSquare;
     CheckersMove.Turn currentTurn;
     List<CheckersMove.Move> legalMoves;
+    int startingWhitePieceCount;
+    int startingBlackPieceCount;
     bool isMulticaptureInProgress;
     bool forceCaptures;
 
@@ -29,6 +31,8 @@ public class MoveController
         legalMoves = new List<CheckersMove.Move>();
         isMulticaptureInProgress = false;
         forceCaptures = forceCapturesRule;
+        startingWhitePieceCount = CountWhitePiecesRemaining();
+        startingBlackPieceCount = CountBlackPiecesRemaining();
     }
 
     /// <summary>
@@ -194,5 +198,63 @@ public class MoveController
     public CheckersMove.GameStatus GetGameStatus()
     {
         return LegalMoveGenerator.GetGameStatus(boardState, currentTurn);
+    }
+
+    /// <summary>
+    /// Method
+    /// Counts the number of white pieces still on the board.
+    /// </summary>
+    public int CountWhitePiecesRemaining()
+    {
+        int count = 0;
+        for(int i = 0; i < boardState.GetLength(0); i++ )
+        {
+            for(int j = 0; j < boardState.GetLength(1); j++ )
+            {  
+                if(boardState[i,j] == CheckersState.State.White || boardState[i,j] == CheckersState.State.WhiteKing)
+                {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    /// <summary>
+    /// Method
+    /// Counts the number of black pieces still on the board.
+    /// </summary>
+    public int CountBlackPiecesRemaining()
+    {
+        int count = 0;
+        for(int i = 0; i < boardState.GetLength(0); i++ )
+        {
+            for(int j = 0; j < boardState.GetLength(1); j++ )
+            {  
+                if(boardState[i,j] == CheckersState.State.Black || boardState[i,j] == CheckersState.State.BlackKing)
+                {
+                    count++;
+                }
+            }
+        }
+        return count;
+    }
+
+    /// <summary>
+    /// Method
+    /// Counts the number of white pieces that have been captured.
+    /// </summary>
+    public int countWhitePiecesLost()
+    {
+        return startingWhitePieceCount - CountWhitePiecesRemaining();
+    }
+
+    /// <summary>
+    /// Method
+    /// Counts the number of black pieces that have been captured.
+    /// </summary>
+    public int countBlackPiecesLost()
+    {
+        return startingBlackPieceCount - CountBlackPiecesRemaining();
     }
 }
