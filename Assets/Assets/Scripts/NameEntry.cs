@@ -91,7 +91,7 @@ public class NameEntry : MonoBehaviour
         playerOneName.caretPosition = position;
     }
 
-    void playerTwoNameOnUpdate()
+    void PlayerTwoNameOnUpdate()
     {
         string value = playerTwoName.text;
         int position = playerTwoName.caretPosition;
