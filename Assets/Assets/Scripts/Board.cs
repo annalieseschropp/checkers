@@ -21,7 +21,6 @@ public class Board : MonoBehaviour
     private MoveController moveController;
     private GameObject selected;
     private List<GameObject> possibleMoves;
-    private MoveUI moveUI;
 
     /// <summary>
     /// Board initialization performed before anything can access it.
@@ -32,7 +31,6 @@ public class Board : MonoBehaviour
         Create();
         SetInitBoardState();
         moveController = new MoveController(ref curState);
-        moveUI = new MoveUI();
         selected = null;
         possibleMoves = new List<GameObject>();
     }
