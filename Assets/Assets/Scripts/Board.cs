@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using CheckersState;
+using CheckersMove;
 
 /// <summary>
 /// Class
@@ -13,10 +14,13 @@ public class Board : MonoBehaviour
     public GameObject blackTilePrefab;
     public GameObject whiteTilePrefab;
     public GameObject selectedPiecePrefab;
+    public GameObject highlightedTilePrefab;
     public CheckersState.State[,] curState;
 
     private PieceSet pieceSet;
     private MoveController moveController;
+    private GameObject selected;
+    private List<GameObject> possibleMoves;
     private MoveUI moveUI;
 
     /// <summary>
@@ -29,6 +33,8 @@ public class Board : MonoBehaviour
         SetInitBoardState();
         moveController = new MoveController(ref curState);
         moveUI = new MoveUI();
+        selected = null;
+        possibleMoves = new List<GameObject>();
     }
 
     /// <summary>
@@ -161,7 +167,7 @@ public class Board : MonoBehaviour
     /// </summary>
     private void MoveControl()
     {
-        GameObject selected;
+
         // Check if the game is over
         if(moveController.GetGameStatus() != CheckersMove.GameStatus.InProgress)
         {
@@ -172,14 +178,16 @@ public class Board : MonoBehaviour
         {
             // Brute force click position because we have no UI yet
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            CheckersMove.Square clickedSquare = new CheckersMove.Square((int)System.Math.Round(worldPosition.x), (int)System.Math.Round(worldPosition.y));
-            Vector3 tempPosition = new Vector3((int)System.Math.Round(worldPosition.x), (int)System.Math.Round(worldPosition.y), 1);
+
+            int x = (int)System.Math.Round(worldPosition.x);
+            int y = (int)System.Math.Round(worldPosition.y);
+            CheckersMove.Square clickedSquare = new CheckersMove.Square(x, y);
+            Vector3 tempPosition = new Vector3(x, y, 3);
 
 
             // Emulate UI, where we have a square selected
             if (moveController.GetSelectedSquare() is CheckersMove.Square selectedSquare)
             {
-                
                 // MakeMove will return false if our move is not legal. We use this here to emulate UI for deselecting a piece
                 if (moveController.MakeMove(clickedSquare))
                 {
@@ -188,7 +196,7 @@ public class Board : MonoBehaviour
                 else
                 {
                     // Pretend we "deselected" with the UI
-                    if(moveController.IsMulticaptureInProgress())
+                    if (moveController.IsMulticaptureInProgress())
                     {
                         moveController.DeclineMulticapture(); // This does nothing if captures are forced
                     }
@@ -197,12 +205,37 @@ public class Board : MonoBehaviour
                         moveController.DeselectPiece();
                     }
                 }
+                Destroy(selected);
+                foreach(var move in possibleMoves)
+                {
+                    Destroy(move);
+                }
+               
             }
-            // Emulate UI for selecting a piece
+            // UI for selecting a piece
             else
             {
-                moveController.SelectPiece(clickedSquare);
-                selected = Instantiate(selectedPiecePrefab, tempPosition, Quaternion.identity) as GameObject;
+                CheckersMove.Turn curTurn = moveController.GetCurrentTurn();
+
+                // Check if clickedSquare contains a piece and if it does, show selection prefab and select piece
+                if (curState[x, y] != CheckersState.State.Empty)
+                {
+                    // Ensure that piece is of the correct players colour based on current turn
+                    if ((curTurn == CheckersMove.Turn.White && (curState[x, y] == CheckersState.State.White | curState[x, y] == CheckersState.State.WhiteKing)) 
+                        | (curTurn == CheckersMove.Turn.Black && (curState[x, y] == CheckersState.State.Black | curState[x, y] == CheckersState.State.BlackKing)))
+                    {
+                        selected = Instantiate(selectedPiecePrefab, tempPosition, Quaternion.identity) as GameObject;
+                        moveController.SelectPiece(clickedSquare);
+                        List<CheckersMove.Move> legalMoves = moveController.GetLegalMoves();
+                        for (int i = 0; i < legalMoves.Count; i++)
+                        {
+                            tempPosition = new Vector3(legalMoves[i].dest.x, legalMoves[i].dest.y, 3);
+                            var possibleMove = Instantiate(highlightedTilePrefab, tempPosition, Quaternion.identity) as GameObject;
+                            possibleMoves.Add(possibleMove);
+                        }
+                    }
+                }
+                
             }
         }
     }
