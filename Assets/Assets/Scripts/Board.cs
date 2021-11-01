@@ -230,6 +230,12 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method
+    /// Helper to display the selections available based on a clicked piece
+    /// </summary>
+    /// <param name="position">current vector position user clicked on</param>
+    /// <param name="clickedSquare">the square player selected </param>
     private void DisplaySelection(Vector3 position, CheckersMove.Square clickedSquare)
     {
         // Display piece that has been selected
@@ -245,6 +251,10 @@ public class Board : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method
+    /// Helper to remove currently selected piece and legal moves
+    /// </summary>
     private void CleanSelection()
     {
         // Deselect the piece and remove the possible moves
