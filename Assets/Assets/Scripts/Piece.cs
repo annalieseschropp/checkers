@@ -17,7 +17,6 @@ public class Piece : MonoBehaviour
     private CheckersState.State type;
     private GameObject sprite;
     private Dictionary<CheckersState.State, GameObject> PieceMap;
-    private int frames;
   
     /// <summary>
     /// Constructor for the piece class.
@@ -27,7 +26,6 @@ public class Piece : MonoBehaviour
     {
         this.type = 0;
         this.sprite = null;
-        this.frames = 0;
         this.InitPieceMap();
     }
 
@@ -47,7 +45,7 @@ public class Piece : MonoBehaviour
             return;
         }
 
-        Vector2 position = new Vector2(0, 0);
+        Vector2 position = this.sprite == null ? new Vector3(0, 0, 0) : this.sprite.transform.position;
         this.ResetSprite();
         this.sprite = Instantiate(this.PieceMap[newType], position, Quaternion.identity) as GameObject;
         this.type = newType;
@@ -137,6 +135,15 @@ public class Piece : MonoBehaviour
     public void MovePiece(Vector2 newPosition)
     {
         StartCoroutine(this.MovePieceCoroutine(newPosition));
+    }
+
+    /// <summary>
+    /// Method
+    /// Ensure sprite gets destroyed with the piece.
+    /// </summary>
+    private void OnDestroy()
+    {
+        this.ResetSprite();
     }
 
     /// <summary>

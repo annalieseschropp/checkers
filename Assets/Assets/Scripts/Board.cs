@@ -1,19 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using CheckersState;
 
 /// <summary>
 /// Class
 /// Models the 2D game board for checkers
 /// </summary>
-public class Board : MonoBehaviour
+public class Board : MonoBehaviour 
 {
     public GameObject blackTilePrefab;
     public GameObject whiteTilePrefab;
     public CheckersState.State[,] curState;
 
     private PieceSet pieceSet;
+    private MoveController moveController;
 
     /// <summary>
     /// Board initialization performed before anything can access it.
@@ -23,6 +25,7 @@ public class Board : MonoBehaviour
         curState = new CheckersState.State[8, 8];
         Create();
         SetInitBoardState();
+        moveController = new MoveController(ref curState);
     }
 
     /// <summary>
@@ -33,6 +36,7 @@ public class Board : MonoBehaviour
         AddStandardStartingPieces();
         InitPieceSet();
         InitPieceDisplay();
+        moveController.RestartGame(ref curState, false); // Set last parameter to true to force captures
     }
 
     /// <summary>
@@ -46,8 +50,7 @@ public class Board : MonoBehaviour
         bool isBlack = true;
         GameObject tile;
 
-        // Populates vertically (i.e. 0,0 is the bottom left corner 0,1 is the tile above that etc.),
-        // flip the x and y values if horizontally is easier. REMOVE THIS COMMENT AFTER VERDICT
+        // Populates vertically (i.e. 0,0 is the bottom left corner 0,1 is the tile above that etc.)
         for (int x = 0; x < 8; x++) // X Axis
         {
             for (int y = 0; y < 8; y++) // Y Axis
@@ -138,5 +141,61 @@ public class Board : MonoBehaviour
     public CheckersState.State[,] getBoardState()
     {
         return curState;
+    }
+
+    /// 
+    /// *** Sample code for displaying the usage of the moveController class
+    /// *** all of the code below should be removed when proper UI is added
+    ///
+    void Update () {
+        SampleMoveControl();
+    }
+
+    /// <summary>
+    /// Sample Method
+    /// Displays basic logic for how to use the moveController class
+    /// This method should be deleted 
+    /// </summary>
+    private void SampleMoveControl()
+    {
+        // Check if the game is over
+        if(moveController.GetGameStatus() != CheckersMove.GameStatus.InProgress)
+        {
+            Debug.Log("Game Status: " + moveController.GetGameStatus());
+        }
+        // If not, try to make move
+        else if(Input.anyKeyDown)
+        {
+            // Brute force click position because we have no UI yet
+            Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            CheckersMove.Square clickedSquare = new CheckersMove.Square((int)System.Math.Round(worldPosition.x), (int)System.Math.Round(worldPosition.y));
+
+            // Emulate UI, where we have a square selected
+            if(moveController.GetSelectedSquare() is CheckersMove.Square selectedSquare)
+            {
+                // MakeMove will return false if our move is not legal. We use this here to emulate UI for deselecting a piece
+                if (moveController.MakeMove(clickedSquare))
+                {
+                    pieceSet.MakeMove(curState, new CheckersMove.Move(selectedSquare, clickedSquare));
+                }
+                else
+                {
+                    // Pretend we "deselected" with the UI
+                    if(moveController.IsMulticaptureInProgress())
+                    {
+                        moveController.DeclineMulticapture(); // This does nothing if captures are forced
+                    }
+                    else
+                    {
+                        moveController.DeselectPiece();
+                    }
+                }
+            }
+            // Emulate UI for selecting a piece
+            else
+            {
+                moveController.SelectPiece(clickedSquare);
+            }
+        }
     }
 }
