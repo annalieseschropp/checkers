@@ -152,10 +152,9 @@ public class Board : MonoBehaviour
         return curState;
     }
 
-    /// 
-    /// *** Sample code for displaying the usage of the moveController class
-    /// *** all of the code below should be removed when proper UI is added
-    ///
+    /// <summary>
+    /// Checks for updates on input from user
+    /// </summary>
     void Update () {
         MoveControl();
     }
