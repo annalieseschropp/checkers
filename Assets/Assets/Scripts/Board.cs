@@ -33,7 +33,7 @@ public class Board : MonoBehaviour
         curState = new CheckersState.State[8, 8];
         Create();
         SetInitBoardState();
-        moveController = new MoveController(ref curState);
+        moveController = new MoveController(ref curState, NameStaticClass.forcedMove);
         selected = null;
         possibleMoves = new List<GameObject>();
         animationInProgress = false;
@@ -47,7 +47,7 @@ public class Board : MonoBehaviour
         AddStandardStartingPieces();
         InitPieceSet();
         InitPieceDisplay();
-        moveController.RestartGame(ref curState, false); // Set last parameter to true to force captures
+        moveController.RestartGame(ref curState, NameStaticClass.forcedMove); // Set last parameter to true to force captures
     }
 
     /// <summary>
