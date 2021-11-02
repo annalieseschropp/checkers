@@ -132,9 +132,9 @@ public class Piece : MonoBehaviour
     /// Public interface for moving the piece.
     /// </summary>
     /// <params name=newPosition>the new position to move to</params>
-    public void MovePiece(Vector2 newPosition)
+    public IEnumerator MovePiece(Vector2 newPosition)
     {
-        StartCoroutine(this.MovePieceCoroutine(newPosition));
+        yield return StartCoroutine(this.MovePieceCoroutine(newPosition));
     }
 
     /// <summary>

@@ -23,6 +23,7 @@ public class Board : MonoBehaviour
     private MoveController moveController;
     private GameObject selected;
     private List<GameObject> possibleMoves;
+    private bool animationInProgress;
 
     /// <summary>
     /// Board initialization performed before anything can access it.
@@ -35,6 +36,7 @@ public class Board : MonoBehaviour
         moveController = new MoveController(ref curState);
         selected = null;
         possibleMoves = new List<GameObject>();
+        animationInProgress = false;
     }
 
     /// <summary>
@@ -165,6 +167,8 @@ public class Board : MonoBehaviour
     /// </summary>
     private void MoveControl()
     {
+        if(animationInProgress) return;
+
         // Check if the game is over
         if(moveController.GetGameStatus() != CheckersMove.GameStatus.InProgress)
         {
@@ -187,13 +191,18 @@ public class Board : MonoBehaviour
                 // MakeMove will return false if our move is not legal. We use this here to deselect a piece
                 if (moveController.MakeMove(clickedSquare))
                 {
-                    pieceSet.MakeMove(curState, new CheckersMove.Move(selectedSquare, clickedSquare));
+                    animationInProgress = true;
                     CleanSelection();
-                    if (moveController.IsMulticaptureInProgress())
-                    {
-                        tempPosition = new Vector3(clickedSquare.x, clickedSquare.y, 1);
-                        DisplaySelection(tempPosition, clickedSquare);
-                    }
+                    StartCoroutine(pieceSet.MakeMove(curState, new CheckersMove.Move(selectedSquare, clickedSquare), ()=>
+                        {
+                            if (moveController.IsMulticaptureInProgress())
+                            {
+                                tempPosition = new Vector3(clickedSquare.x, clickedSquare.y, 1);
+                                DisplaySelection(tempPosition, clickedSquare);
+                            }
+                            animationInProgress = false;
+                        }
+                    ));
                 }
                 else
                 {

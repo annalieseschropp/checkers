@@ -29,7 +29,7 @@ public class PieceSet : MonoBehaviour
     /// Method
     /// Visually updates the locations and types of the pieces based on the board state and move provided.
     /// </summary>
-    public void MakeMove(CheckersState.State[,] boardState, CheckersMove.Move move)
+    public IEnumerator MakeMove(CheckersState.State[,] boardState, CheckersMove.Move move, System.Action callback)
     {
         // Delete the new piece
         DestroyPiece(move.dest.x, move.dest.y);
@@ -42,8 +42,15 @@ public class PieceSet : MonoBehaviour
 
         this.PiecesFromState(boardState);
 
-        if(toMove == null) return;
-        toMove.MovePiece(new Vector2(move.dest.x, move.dest.y));
+        if(toMove == null)
+        {
+            yield return null;
+        }
+        else
+        {
+            yield return StartCoroutine(toMove.MovePiece(new Vector2(move.dest.x, move.dest.y)));
+        }
+        callback();
     }
 
     /// <summary>
