@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using CheckersState;
+using CheckersMove;
 
 /// <summary>
 /// Class
@@ -12,10 +15,15 @@ public class Board : MonoBehaviour
 {
     public GameObject blackTilePrefab;
     public GameObject whiteTilePrefab;
+    public GameObject selectedPiecePrefab;
+    public GameObject highlightedTilePrefab;
     public CheckersState.State[,] curState;
 
     private PieceSet pieceSet;
     private MoveController moveController;
+    private GameObject selected;
+    private List<GameObject> possibleMoves;
+    private bool animationInProgress;
 
     /// <summary>
     /// Board initialization performed before anything can access it.
@@ -26,6 +34,9 @@ public class Board : MonoBehaviour
         Create();
         SetInitBoardState();
         moveController = new MoveController(ref curState);
+        selected = null;
+        possibleMoves = new List<GameObject>();
+        animationInProgress = false;
     }
 
     /// <summary>
@@ -143,21 +154,21 @@ public class Board : MonoBehaviour
         return curState;
     }
 
-    /// 
-    /// *** Sample code for displaying the usage of the moveController class
-    /// *** all of the code below should be removed when proper UI is added
-    ///
+    /// <summary>
+    /// Checks for updates on input from user
+    /// </summary>
     void Update () {
-        SampleMoveControl();
+        MoveControl();
     }
 
     /// <summary>
-    /// Sample Method
+    /// Method
     /// Displays basic logic for how to use the moveController class
-    /// This method should be deleted 
     /// </summary>
-    private void SampleMoveControl()
+    private void MoveControl()
     {
+        if(animationInProgress) return;
+
         // Check if the game is over
         if(moveController.GetGameStatus() != CheckersMove.GameStatus.InProgress)
         {
@@ -168,20 +179,35 @@ public class Board : MonoBehaviour
         {
             // Brute force click position because we have no UI yet
             Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            CheckersMove.Square clickedSquare = new CheckersMove.Square((int)System.Math.Round(worldPosition.x), (int)System.Math.Round(worldPosition.y));
 
-            // Emulate UI, where we have a square selected
-            if(moveController.GetSelectedSquare() is CheckersMove.Square selectedSquare)
+            int x = (int)System.Math.Round(worldPosition.x);
+            int y = (int)System.Math.Round(worldPosition.y);
+            CheckersMove.Square clickedSquare = new CheckersMove.Square(x, y);
+            Vector3 tempPosition = new Vector3(x, y, 1);
+
+            // We have a selected square
+            if (selected != null && moveController.GetSelectedSquare() is CheckersMove.Square selectedSquare)
             {
-                // MakeMove will return false if our move is not legal. We use this here to emulate UI for deselecting a piece
+                // MakeMove will return false if our move is not legal. We use this here to deselect a piece
                 if (moveController.MakeMove(clickedSquare))
                 {
-                    pieceSet.MakeMove(curState, new CheckersMove.Move(selectedSquare, clickedSquare));
+                    animationInProgress = true;
+                    CleanSelection();
+                    StartCoroutine(pieceSet.MakeMove(curState, new CheckersMove.Move(selectedSquare, clickedSquare), ()=>
+                        {
+                            if (moveController.IsMulticaptureInProgress())
+                            {
+                                tempPosition = new Vector3(clickedSquare.x, clickedSquare.y, 1);
+                                DisplaySelection(tempPosition, clickedSquare);
+                            }
+                            animationInProgress = false;
+                        }
+                    ));
                 }
                 else
                 {
-                    // Pretend we "deselected" with the UI
-                    if(moveController.IsMulticaptureInProgress())
+                    CleanSelection();
+                    if (moveController.IsMulticaptureInProgress())
                     {
                         moveController.DeclineMulticapture(); // This does nothing if captures are forced
                     }
@@ -190,12 +216,60 @@ public class Board : MonoBehaviour
                         moveController.DeselectPiece();
                     }
                 }
+
             }
-            // Emulate UI for selecting a piece
+            // UI for selecting a piece
             else
             {
-                moveController.SelectPiece(clickedSquare);
+                CheckersMove.Turn curTurn = moveController.GetCurrentTurn();
+
+                // Check if clickedSquare contains a piece and if it does, show selection prefab and select piece
+                if (curState[x, y] != CheckersState.State.Empty)
+                {
+                    // Ensure that piece is of the correct players colour based on current turn
+                    if ((curTurn == CheckersMove.Turn.White && (curState[x, y] == CheckersState.State.White | curState[x, y] == CheckersState.State.WhiteKing)) 
+                        | (curTurn == CheckersMove.Turn.Black && (curState[x, y] == CheckersState.State.Black | curState[x, y] == CheckersState.State.BlackKing)))
+                    {
+                        DisplaySelection(tempPosition, clickedSquare);
+                    }
+                }
+                
             }
+        }
+    }
+
+    /// <summary>
+    /// Method
+    /// Helper to display the selections available based on a clicked piece
+    /// </summary>
+    /// <param name="position">current vector position user clicked on</param>
+    /// <param name="clickedSquare">the square player selected </param>
+    private void DisplaySelection(Vector3 position, CheckersMove.Square clickedSquare)
+    {
+        // Display piece that has been selected
+        selected = Instantiate(selectedPiecePrefab, position, Quaternion.identity) as GameObject;
+        moveController.SelectPiece(clickedSquare);
+
+        // Get legal moves the selected piece can do and display those options
+        List<CheckersMove.Move> legalMoves = moveController.GetLegalMoves();
+        for (int i = 0; i < legalMoves.Count; i++)
+        {
+            var possibleMove = Instantiate(highlightedTilePrefab, new Vector3(legalMoves[i].dest.x, legalMoves[i].dest.y, 3), Quaternion.identity) as GameObject;
+            possibleMoves.Add(possibleMove);
+        }
+    }
+
+    /// <summary>
+    /// Method
+    /// Helper to remove currently selected piece and legal moves
+    /// </summary>
+    private void CleanSelection()
+    {
+        // Deselect the piece and remove the possible moves
+        Destroy(selected);
+        foreach (var move in possibleMoves)
+        {
+            Destroy(move);
         }
     }
 }
