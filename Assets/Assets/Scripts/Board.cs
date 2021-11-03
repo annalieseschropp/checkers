@@ -246,16 +246,21 @@ public class Board : MonoBehaviour
     /// <param name="clickedSquare">the square player selected </param>
     private void DisplaySelection(Vector3 position, CheckersMove.Square clickedSquare)
     {
+        moveController.SelectPiece(clickedSquare);
+
         // Display piece that has been selected
         selected = Instantiate(selectedPiecePrefab, position, Quaternion.identity) as GameObject;
-        moveController.SelectPiece(clickedSquare);
 
         // Get legal moves the selected piece can do and display those options
         List<CheckersMove.Move> legalMoves = moveController.GetLegalMoves();
-        for (int i = 0; i < legalMoves.Count; i++)
+
+        if(moveController.GetSelectedSquare() == clickedSquare)
         {
-            var possibleMove = Instantiate(highlightedTilePrefab, new Vector3(legalMoves[i].dest.x, legalMoves[i].dest.y, 3), Quaternion.identity) as GameObject;
-            possibleMoves.Add(possibleMove);
+            for (int i = 0; i < legalMoves.Count; i++)
+            {
+                var possibleMove = Instantiate(highlightedTilePrefab, new Vector3(legalMoves[i].dest.x, legalMoves[i].dest.y, 3), Quaternion.identity) as GameObject;
+                possibleMoves.Add(possibleMove);
+            }
         }
     }
 
