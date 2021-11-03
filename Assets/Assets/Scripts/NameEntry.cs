@@ -29,11 +29,19 @@ public class NameEntry : MonoBehaviour
         playerTwoName = playerTwoName.GetComponent<InputField>();
         topText = topText.GetComponent<Text>();
         
-        // List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
-        // Dropdown.OptionData item1 = new Dropdown.OptionData();
-        // item1.text = "Hello1";
-        // list.Add(item1);
-        // dropdownPlayerOne.AddOptions(list);
+        // Load the previous players in the game
+        RecordKeeper.LoadData();
+        List<Dropdown.OptionData> list = new List<Dropdown.OptionData>();
+        
+        for (int i = 0; i < RecordKeeper.listOfRecords.Count; i++)
+        {
+            Dropdown.OptionData item = new Dropdown.OptionData();
+            item.text = RecordKeeper.listOfRecords[i].name;
+            list.Add(item);
+        }
+
+        dropdownPlayerOne.AddOptions(list);
+        dropdownPlayerTwo.AddOptions(list);
 
         playGame.onClick.AddListener(PlayGameButtonOnClick);
         cancelGame.onClick.AddListener(CancelGameButtonOnClick);
@@ -58,21 +66,36 @@ public class NameEntry : MonoBehaviour
             topText.text = "Player Two Must Select or Enter a Name";
             return;
         }
+        if (dropdownPlayerOne.value != 0 && dropdownPlayerTwo.value != 0 & dropdownPlayerOne.value == dropdownPlayerTwo.value)
+        {
+            topText.text = "Players cannot have the same name";
+            return;
+        }
+        if (playerOneName.text != "" && playerTwoName.text != "" && playerOneName.text == playerTwoName.text)
+        {
+            topText.text = "Players cannot have the same name";
+            return;
+        }
 
         // Load the first players name into memory
         if (dropdownPlayerOne.value != 0)
-            NameStaticClass.playerOneName = dropdownPlayerOne.itemText.text;
+            NameStaticClass.playerOneName = RecordKeeper.listOfRecords[dropdownPlayerOne.value].name;
         else
             NameStaticClass.playerOneName = playerOneName.text;
-
+        
         // Load the second players name into memory
         if (dropdownPlayerTwo.value != 0)
-            NameStaticClass.playerTwoName = dropdownPlayerTwo.itemText.text;
+            NameStaticClass.playerTwoName = RecordKeeper.listOfRecords[dropdownPlayerTwo.value].name;
         else
             NameStaticClass.playerTwoName = playerTwoName.text;
 
         // Load the forced move option into memory
         NameStaticClass.forcedMove = forcedCapture.isOn;
+
+        RecordKeeper.AddRecord(NameStaticClass.playerOneName);
+        RecordKeeper.AddRecord(NameStaticClass.playerTwoName);
+        RecordKeeper.SaveData();
+        SceneManager.LoadScene("GameBoard");
     }
 
     // Return back to main menu after clicking on this

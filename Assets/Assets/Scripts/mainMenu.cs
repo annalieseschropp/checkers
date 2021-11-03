@@ -7,15 +7,18 @@ using UnityEngine.SceneManagement;
 public class mainMenu : MonoBehaviour
 {
     public Button twoPlayerButton;
+    public Button leaderboardButton;
     public Button optionsButton;
     public Button quitButton;
 
     void Start() {
         Button twoButton = twoPlayerButton.GetComponent<Button>();
+        Button leaderboard = leaderboardButton.GetComponent<Button>();
         Button options = optionsButton.GetComponent<Button>();
         Button quit = quitButton.GetComponent<Button>();
 
         twoButton.onClick.AddListener(PlayGame);
+        leaderboard.onClick.AddListener(ShowLeaderboards);
         options.onClick.AddListener(LoadOptions);
         quit.onClick.AddListener(QuitGame);
     }
@@ -23,8 +26,13 @@ public class mainMenu : MonoBehaviour
     public void PlayGame()
     {
         Debug.Log("Loading Game!");
-        SceneManager.LoadScene("GameBoard");
+        SceneManager.LoadScene("NameEntry");
         // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void ShowLeaderboards()
+    {
+        SceneManager.LoadScene("LeaderBoard");
     }
 
     public void LoadOptions()
