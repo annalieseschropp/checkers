@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using CheckersState;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// Class
@@ -19,6 +21,14 @@ public class MoveController
     int startingBlackPieceCount;
     bool isMulticaptureInProgress;
     bool forceCaptures;
+
+    [SerializedField] Button _button1;
+    [SerializedField] Button _button2;
+    [SerializedField] Text _ScoreText;
+
+
+    //Everything for the endgame popup
+
 
     /// <summary>
     /// Method
@@ -198,6 +208,8 @@ public class MoveController
     /// </summary>
     public CheckersMove.GameStatus GetGameStatus()
     {
+
+
         return LegalMoveGenerator.GetGameStatus(boardState, currentTurn);
     }
 
