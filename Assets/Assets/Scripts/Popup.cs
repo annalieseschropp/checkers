@@ -17,13 +17,13 @@ public class Popup : MonoBehaviour
     void Start()
     {
         Button quitBtn = quitButtonInPopupWindow.GetComponent<Button>();
-        quitBtn.onClick.AddListener(quitClicked);
+        quitBtn.onClick.AddListener(QuitClicked);
 
         Button goBackBtn = goBackButton.GetComponent<Button>();
-        goBackBtn.onClick.AddListener(closePopup);
+        goBackBtn.onClick.AddListener(ClosePopup);
 
         Button quitGame = quitButtonOnCheckBoard.GetComponent<Button>();
-        quitGame.onClick.AddListener(openPopup);
+        quitGame.onClick.AddListener(OpenPopup);
 
     }
 
