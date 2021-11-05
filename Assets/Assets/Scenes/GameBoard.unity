@@ -760,7 +760,9 @@ GameObject:
   - component: {fileID: 356558806}
   - component: {fileID: 356558805}
   - component: {fileID: 356558804}
+  - component: {fileID: 356558809}
   - component: {fileID: 356558803}
+  - component: {fileID: 356558808}
   m_Layer: 5
   m_Name: endGameElement
   m_TagString: Untagged
@@ -775,7 +777,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 356558802}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: da0bf7590612198449e039ad1417d7d7, type: 3}
   m_Name: 
@@ -865,6 +867,35 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &356558808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356558802}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 73386ca40edb64d459cb082f90982ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  popup: {fileID: 0}
+--- !u!114 &356558809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 356558802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 292df41afbc5c3f43bdfc4e9dc06ef74, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quitButtonInPopupWindow: {fileID: 158525653}
+  restartGameButton: {fileID: 1122651271}
+  popupPanel: {fileID: 447282016}
+  whoWonText: {fileID: 0}
 --- !u!1 &391962790
 GameObject:
   m_ObjectHideFlags: 0
@@ -1508,7 +1539,7 @@ GameObject:
   - component: {fileID: 1122651269}
   - component: {fileID: 1122651271}
   m_Layer: 5
-  m_Name: back Button
+  m_Name: playAgainButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -23,34 +23,7 @@ public class MoveController : MonoBehaviour
     bool isMulticaptureInProgress;
     bool forceCaptures;
 
-    //For the endgame popup
-    public Button quitButtonInPopupWindow;
-    public Button restartGameButton;
-    public GameObject popupPanel;
-    public Text whoWonText;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        Button quitBtn = quitButtonInPopupWindow.GetComponent<Button>();
-        quitBtn.onClick.AddListener(quitIsClicked);
-
-        Button restartGameBtn = restartGameButton.GetComponent<Button>();
-        restartGameBtn.onClick.AddListener(restartGameFunc);
-        
-        //Set the text that's appearing on screen here
-    }
-
-    void quitIsClicked()
-    {
-        //Debug.Log("Quit Game");
-        //SceneManager.LoadScene("Menu");
-    }
-
-    void restartGameFunc()
-    {
-
-    }
+    public GameObject popup;
 
 
     /// <summary>
@@ -231,27 +204,23 @@ public class MoveController : MonoBehaviour
     /// Check this status at the start of each turn, or else a player may be left with no legal moves.
     /// </summary>
     public CheckersMove.GameStatus GetGameStatus()
-    {
+    { 
+
+        popup = GameObject.Find("endGameElement");
+        GameObject popupChild = popup.transform.GetChild(0).gameObject;    
+
+        //popup.SetActive(true);
+
+
         if (LegalMoveGenerator.GetGameStatus(boardState, currentTurn).ToString() == "WhiteWin")
         {
-            Debug.Log("White won");
-            //popupPanel.SetActive(true);
+            popupChild.SetActive(true);
 
         }
         else if (LegalMoveGenerator.GetGameStatus(boardState, currentTurn).ToString() == "BlackWin")
         {
-            Debug.Log("Black Won");
-            //popupPanel.SetActive(true);
-        }
-        else
-        {
-            Debug.Log("HERE");
+            popupChild.SetActive(true);
         };
-
-        if (LegalMoveGenerator.GetGameStatus(boardState, currentTurn).ToString() == "InProgress")
-        {
-            Debug.Log("SUCCESS");
-        }
 
         return LegalMoveGenerator.GetGameStatus(boardState, currentTurn);
     }

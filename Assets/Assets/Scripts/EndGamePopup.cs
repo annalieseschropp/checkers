@@ -13,23 +13,37 @@ public class EndGamePopup : MonoBehaviour
     public GameObject popupPanel;
     public Text whoWonText;
 
+    //MoveController move = new MoveController();
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        Button quitBtn = quitButtonInPopupWindow.GetComponent<Button>();
+        quitBtn.onClick.AddListener(quitIsClicked);
+
+        Button restartButton = restartGameButton.GetComponent<Button>();
+        restartButton.onClick.AddListener(restartGameFunc);
+
+    }
 
     public void EndGame(string whoOne)
     {
-        //popupPanel.SetActive(true);
+        popupPanel.SetActive(true);
         //Text.text = whoOne + " won the game";
     }
 
     // Update is called once per frame
     void quitIsClicked()
     {
-        //Debug.Log("Quit Game");
-        //SceneManager.LoadScene("Menu");
+        Debug.Log("Quit Game");
+        SceneManager.LoadScene("Menu");
     }
 
     void restartGameFunc()
     {
+        Debug.Log("RESTART");
         //MoveController.RestartGame();
+        MoveController.RestartGame([,], true);
     }
     
 }
