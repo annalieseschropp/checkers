@@ -208,17 +208,23 @@ public class MoveController : MonoBehaviour
 
         popup = GameObject.Find("endGameElement");
         GameObject popupChild = popup.transform.GetChild(0).gameObject;    
-
-        //popup.SetActive(true);
-
+        //GameObject textObj = popupChild.transform.GetChild(2).gameObject;   
+        Text newText = popupChild.GetComponentInChildren<Text>();
 
         if (LegalMoveGenerator.GetGameStatus(boardState, currentTurn).ToString() == "WhiteWin")
         {
+            newText.text = "White won " + CountWhitePiecesRemaining().ToString() + " to " + CountBlackPiecesRemaining().ToString() +"!";
             popupChild.SetActive(true);
 
         }
         else if (LegalMoveGenerator.GetGameStatus(boardState, currentTurn).ToString() == "BlackWin")
         {
+            newText.text = "Black won " + CountBlackPiecesRemaining().ToString() + " to " + CountWhitePiecesRemaining().ToString() +"!";
+            popupChild.SetActive(true);
+        }
+        else if (LegalMoveGenerator.GetGameStatus(boardState, currentTurn).ToString() == "Draw")
+        {
+            newText.text = "It was a draw!";
             popupChild.SetActive(true);
         };
 

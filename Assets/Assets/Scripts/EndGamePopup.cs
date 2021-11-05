@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
 //using MoveController;
+using CheckersState;
+
 
 public class EndGamePopup : MonoBehaviour
 {
@@ -12,6 +14,7 @@ public class EndGamePopup : MonoBehaviour
     public Button restartGameButton;
     public GameObject popupPanel;
     public Text whoWonText;
+
 
     //MoveController move = new MoveController();
 
@@ -23,7 +26,7 @@ public class EndGamePopup : MonoBehaviour
 
         Button restartButton = restartGameButton.GetComponent<Button>();
         restartButton.onClick.AddListener(restartGameFunc);
-
+        
     }
 
     public void EndGame(string whoOne)
@@ -35,15 +38,15 @@ public class EndGamePopup : MonoBehaviour
     // Update is called once per frame
     void quitIsClicked()
     {
-        Debug.Log("Quit Game");
         SceneManager.LoadScene("Menu");
     }
 
     void restartGameFunc()
     {
-        Debug.Log("RESTART");
-        //MoveController.RestartGame();
-        MoveController.RestartGame([,], true);
+        Debug.Log("RESTART Clicked");
+        SceneManager.LoadScene("GameBoard");
+
+        
     }
     
 }

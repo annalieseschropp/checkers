@@ -438,8 +438,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 185.23914, y: -34.33461}
-  m_SizeDelta: {x: 370.47827, y: 68.66922}
+  m_AnchoredPosition: {x: 169.25, y: -34.538956}
+  m_SizeDelta: {x: 338.5, y: 69.07791}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &158525651
 MonoBehaviour:
@@ -641,7 +641,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 289.23, y: 232.8}
+  m_AnchoredPosition: {x: 258.34, y: 230.3}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &284266115
@@ -896,6 +896,7 @@ MonoBehaviour:
   restartGameButton: {fileID: 1122651271}
   popupPanel: {fileID: 447282016}
   whoWonText: {fileID: 0}
+  newBoard: {fileID: 0}
 --- !u!1 &391962790
 GameObject:
   m_ObjectHideFlags: 0
@@ -1562,8 +1563,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 555.7174, y: -34.33461}
-  m_SizeDelta: {x: 370.47827, y: 68.66922}
+  m_AnchoredPosition: {x: 507.75, y: -34.538956}
+  m_SizeDelta: {x: 338.5, y: 69.07791}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1122651269
 MonoBehaviour:
