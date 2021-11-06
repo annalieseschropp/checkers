@@ -29,19 +29,14 @@ public class EndGamePopup : MonoBehaviour
         
     }
 
-    public void EndGame(string whoOne)
-    {
-        popupPanel.SetActive(true);
-        //Text.text = whoOne + " won the game";
-    }
 
     // Update is called once per frame
-    void quitIsClicked()
+    public void quitIsClicked()
     {
         SceneManager.LoadScene("Menu");
     }
 
-    void restartGameFunc()
+    public void restartGameFunc()
     {
         Debug.Log("RESTART Clicked");
         SceneManager.LoadScene("GameBoard");

@@ -28,7 +28,7 @@ public class Popup : MonoBehaviour
     }
 
     // Update is called once per frame
-    void quitClicked()
+    public void quitClicked()
     {
         //Close popup before leaving
         popupPanel.SetActive(false);
@@ -38,15 +38,20 @@ public class Popup : MonoBehaviour
         SceneManager.LoadScene("Menu");
     }
 
-    void closePopup()
+    public void closePopup()
     {
         Debug.Log("Pressed");
         popupPanel.SetActive(false);
     }
 
-    void openPopup()
+    public void openPopup()
     {
         Debug.Log("Pressed2");
         popupPanel.SetActive(true);
+    }
+
+    public bool getPopupState()
+    {
+        return popupPanel.activeSelf;
     }
 }
