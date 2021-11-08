@@ -32,7 +32,7 @@ public class Board : MonoBehaviour
 
     /// <summary>
     /// Board initialization performed before anything can access it.
-    /// </  >
+    /// </summary>
     public void Awake()
     {
         curState = new CheckersState.State[8, 8];
