@@ -33,7 +33,7 @@ public class Board : MonoBehaviour
     /// <summary>
     /// Board initialization performed before anything can access it.
     /// </summary>
-    public void Awake()
+    void Awake()
     {
         curState = new CheckersState.State[8, 8];
         Create();
@@ -208,7 +208,7 @@ public class Board : MonoBehaviour
         // Check if the game is over
         if(moveController.GetGameStatus() != CheckersMove.GameStatus.InProgress)
         {
-            //Debug.Log("Game Status: " + moveController.GetGameStatus());
+            Debug.Log("Game Status: " + moveController.GetGameStatus());
         }
         // If not, try to make move
         else if(Input.anyKeyDown)
