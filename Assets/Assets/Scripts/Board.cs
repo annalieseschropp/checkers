@@ -18,12 +18,17 @@ public class Board : MonoBehaviour
     public GameObject selectedPiecePrefab;
     public GameObject highlightedTilePrefab;
     public CheckersState.State[,] curState;
+    CheckersState.State[,] boardState;
+    CheckersMove.Turn currentTurn;
 
     private PieceSet pieceSet;
     private MoveController moveController;
     private GameObject selected;
     private List<GameObject> possibleMoves;
     private bool animationInProgress;
+
+    //For the final screen popup
+    public GameObject popup;
 
     /// <summary>
     /// Board initialization performed before anything can access it.
@@ -159,6 +164,37 @@ public class Board : MonoBehaviour
     /// </summary>
     void Update () {
         MoveControl();
+        CheckForEndGame();
+    }
+
+    void CheckForEndGame()
+    {
+        popup = GameObject.Find("endGameElement");
+        GameObject popupChild = popup.transform.GetChild(0).gameObject;    
+        //GameObject textObj = popupChild.transform.GetChild(2).gameObject;   
+        Text newText = popupChild.GetComponentInChildren<Text>();
+
+        
+        CheckersMove.GameStatus gameState = moveController.GetGameStatus();
+        
+        
+        if (gameState == CheckersMove.GameStatus.WhiteWin)
+        {
+            newText.text = "White won " + moveController.CountWhitePiecesRemaining().ToString() + " to " + moveController.CountBlackPiecesRemaining().ToString() +"!";
+            popupChild.SetActive(true);
+
+        }
+        else if (gameState == CheckersMove.GameStatus.BlackWin)
+        {
+            newText.text = "Black won " + moveController.CountBlackPiecesRemaining().ToString() + " to " + moveController.CountWhitePiecesRemaining().ToString() +"!";
+            popupChild.SetActive(true);
+        }
+        else if (gameState == CheckersMove.GameStatus.Draw)
+        {
+            newText.text = "It was a draw!";
+            popupChild.SetActive(true);
+        };
+        
     }
 
     /// <summary>

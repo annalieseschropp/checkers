@@ -3,16 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using CheckersState;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using UnityEngine.EventSystems;
 
 /// <summary>
 /// Class
 /// Helps control the process of making moves. Keeps track of the "game state",
 /// while acting as an interface for the LegalMoveGenerator static class.
 /// </summary>
-public class MoveController : MonoBehaviour
+public class MoveController
 {
     CheckersState.State[,] boardState;
     CheckersMove.Square? selectedSquare;
@@ -22,9 +19,6 @@ public class MoveController : MonoBehaviour
     int startingBlackPieceCount;
     bool isMulticaptureInProgress;
     bool forceCaptures;
-
-    public GameObject popup;
-
 
     /// <summary>
     /// Method
@@ -39,7 +33,6 @@ public class MoveController : MonoBehaviour
         forceCaptures = forceCapturesRule;
         startingWhitePieceCount = CountWhitePiecesRemaining();
         startingBlackPieceCount = CountBlackPiecesRemaining();
-
     }
 
     /// <summary>
@@ -74,7 +67,7 @@ public class MoveController : MonoBehaviour
 
         selectedSquare = square;
 
-        if (selectedSquare is CheckersMove.Square validSquare)
+        if(selectedSquare is CheckersMove.Square validSquare)
         {
             legalMoves = LegalMoveGenerator.GetLegalMoves(validSquare, boardState, currentTurn, forceCaptures);
         }
@@ -95,7 +88,7 @@ public class MoveController : MonoBehaviour
     /// </summary>
     public void DeselectPiece()
     {
-        if (isMulticaptureInProgress) return;
+        if(isMulticaptureInProgress) return;
         selectedSquare = null;
         legalMoves.Clear();
     }
@@ -108,15 +101,15 @@ public class MoveController : MonoBehaviour
     /// </summary>
     public bool MakeMove(CheckersMove.Square destSquare)
     {
-        if (selectedSquare is CheckersMove.Square srcSquare)
+        if(selectedSquare is CheckersMove.Square srcSquare)
         {
             CheckersMove.Move move = new CheckersMove.Move(srcSquare, destSquare);
-            if (legalMoves.Contains(move))
+            if(legalMoves.Contains(move))
             {
                 List<CheckersMove.Move> multicaptures = LegalMoveGenerator.MakeLegalMove(move, ref boardState, currentTurn);
                 isMulticaptureInProgress = false;
 
-                if (multicaptures.Count > 0)
+                if(multicaptures.Count > 0)
                 {
                     SelectPiece(move.dest);
                     isMulticaptureInProgress = true;
@@ -131,7 +124,7 @@ public class MoveController : MonoBehaviour
                 return true;
             }
         }
-
+        
         return false;
     }
 
@@ -143,7 +136,7 @@ public class MoveController : MonoBehaviour
     /// </summary>
     public void DeclineMulticapture()
     {
-        if (!forceCaptures && isMulticaptureInProgress)
+        if(!forceCaptures && isMulticaptureInProgress)
         {
             isMulticaptureInProgress = false;
             SwapTurns();
@@ -204,30 +197,7 @@ public class MoveController : MonoBehaviour
     /// Check this status at the start of each turn, or else a player may be left with no legal moves.
     /// </summary>
     public CheckersMove.GameStatus GetGameStatus()
-    { 
-
-        popup = GameObject.Find("endGameElement");
-        GameObject popupChild = popup.transform.GetChild(0).gameObject;    
-        //GameObject textObj = popupChild.transform.GetChild(2).gameObject;   
-        Text newText = popupChild.GetComponentInChildren<Text>();
-
-        if (LegalMoveGenerator.GetGameStatus(boardState, currentTurn).ToString() == "WhiteWin")
-        {
-            newText.text = "White won " + CountWhitePiecesRemaining().ToString() + " to " + CountBlackPiecesRemaining().ToString() +"!";
-            popupChild.SetActive(true);
-
-        }
-        else if (LegalMoveGenerator.GetGameStatus(boardState, currentTurn).ToString() == "BlackWin")
-        {
-            newText.text = "Black won " + CountBlackPiecesRemaining().ToString() + " to " + CountWhitePiecesRemaining().ToString() +"!";
-            popupChild.SetActive(true);
-        }
-        else if (LegalMoveGenerator.GetGameStatus(boardState, currentTurn).ToString() == "Draw")
-        {
-            newText.text = "It was a draw!";
-            popupChild.SetActive(true);
-        };
-
+    {
         return LegalMoveGenerator.GetGameStatus(boardState, currentTurn);
     }
 
@@ -238,23 +208,16 @@ public class MoveController : MonoBehaviour
     public int CountWhitePiecesRemaining()
     {
         int count = 0;
-        for (int i = 0; i < boardState.GetLength(0); i++)
+        for(int i = 0; i < boardState.GetLength(0); i++ )
         {
-            for (int j = 0; j < boardState.GetLength(1); j++)
-            {
-                if (boardState[i, j] == CheckersState.State.White || boardState[i, j] == CheckersState.State.WhiteKing)
+            for(int j = 0; j < boardState.GetLength(1); j++ )
+            {  
+                if(boardState[i,j] == CheckersState.State.White || boardState[i,j] == CheckersState.State.WhiteKing)
                 {
                     count++;
                 }
             }
         }
-
-        if (count == 0)
-        {
-            //popupPanel.SetActive(true);
-            //Text.text = whoOne + " won the game";
-        }
-
         return count;
     }
 
@@ -265,11 +228,11 @@ public class MoveController : MonoBehaviour
     public int CountBlackPiecesRemaining()
     {
         int count = 0;
-        for (int i = 0; i < boardState.GetLength(0); i++)
+        for(int i = 0; i < boardState.GetLength(0); i++ )
         {
-            for (int j = 0; j < boardState.GetLength(1); j++)
-            {
-                if (boardState[i, j] == CheckersState.State.Black || boardState[i, j] == CheckersState.State.BlackKing)
+            for(int j = 0; j < boardState.GetLength(1); j++ )
+            {  
+                if(boardState[i,j] == CheckersState.State.Black || boardState[i,j] == CheckersState.State.BlackKing)
                 {
                     count++;
                 }

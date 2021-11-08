@@ -4,7 +4,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.EventSystems;
-//using MoveController;
 using CheckersState;
 
 
@@ -15,9 +14,6 @@ public class EndGamePopup : MonoBehaviour
     public GameObject popupPanel;
     public Text whoWonText;
 
-
-    //MoveController move = new MoveController();
-
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +22,6 @@ public class EndGamePopup : MonoBehaviour
 
         Button restartButton = restartGameButton.GetComponent<Button>();
         restartButton.onClick.AddListener(restartGameFunc);
-        
     }
 
 

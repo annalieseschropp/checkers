@@ -66,7 +66,6 @@ public static class LegalMoveGenerator
     /// </summary>
     public static CheckersMove.GameStatus GetGameStatus(CheckersState.State[,] boardstate, CheckersMove.Turn currentTurn)
     {
-
         List<CheckersMove.Move> currentSideMoves = GetAllLegalMoves(boardstate, currentTurn);
         if(currentSideMoves.Count > 0)
         {
