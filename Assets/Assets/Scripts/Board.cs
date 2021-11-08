@@ -169,6 +169,8 @@ public class Board : MonoBehaviour
 
     void CheckForEndGame()
     {
+        if(animationInProgress) return;
+
         popup = GameObject.Find("endGameElement");
         GameObject popupChild = popup.transform.GetChild(0).gameObject;    
         //GameObject textObj = popupChild.transform.GetChild(2).gameObject;   
@@ -260,6 +262,8 @@ public class Board : MonoBehaviour
                 CheckersMove.Turn curTurn = moveController.GetCurrentTurn();
 
                 // Check if clickedSquare contains a piece and if it does, show selection prefab and select piece
+                if(x < 0 || y < 0 || x > curState.GetLength(0) || y > curState.GetLength(0)) return;
+                
                 if (curState[x, y] != CheckersState.State.Empty)
                 {
                     // Ensure that piece is of the correct players colour based on current turn

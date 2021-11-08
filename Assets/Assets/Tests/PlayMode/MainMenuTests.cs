@@ -16,14 +16,14 @@ public class MainMenuTests
     }
 
     [UnityTest]
-    public IEnumerator SwitchToBoardState()
+    public IEnumerator SwitchToNameEntryState()
     {
         var button = GameObject.Find("/Canvas/mainMenu").GetComponent(typeof(mainMenu)) as mainMenu;
         button.PlayGame();
         yield return new WaitForSeconds(1);
         string scene = SceneManager.GetActiveScene().name;
         yield return null;
-        Assert.AreEqual(true, scene == "GameBoard");
+        Assert.AreEqual(true, scene == "NameEntry");
     }
 
     [UnityTest]
