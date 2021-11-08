@@ -18,8 +18,6 @@ public class Board : MonoBehaviour
     public GameObject selectedPiecePrefab;
     public GameObject highlightedTilePrefab;
     public CheckersState.State[,] curState;
-    CheckersState.State[,] boardState;
-    CheckersMove.Turn currentTurn;
 
     private PieceSet pieceSet;
     private MoveController moveController;
