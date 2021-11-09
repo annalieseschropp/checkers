@@ -24,6 +24,7 @@ public class Board : MonoBehaviour
     private GameObject selected;
     private List<GameObject> possibleMoves;
     private bool animationInProgress;
+    private bool updatedRecord;
 
     //For the final screen popup
     public GameObject popup;
@@ -40,6 +41,7 @@ public class Board : MonoBehaviour
         selected = null;
         possibleMoves = new List<GameObject>();
         animationInProgress = false;
+        updatedRecord = false;
     }
 
     /// <summary>
@@ -181,12 +183,26 @@ public class Board : MonoBehaviour
         if (gameState == CheckersMove.GameStatus.WhiteWin)
         {
             newText.text = "White won " + moveController.CountWhitePiecesRemaining().ToString() + " to " + moveController.CountBlackPiecesRemaining().ToString() +"!";
+            if (!updatedRecord)
+            {
+                RecordKeeper.UpdateRecordWon(NameStaticClass.playerTwoName);
+                RecordKeeper.UpdateRecordLost(NameStaticClass.playerOneName);
+                RecordKeeper.SaveData();
+                updatedRecord = true;
+            }
             popupChild.SetActive(true);
 
         }
         else if (gameState == CheckersMove.GameStatus.BlackWin)
         {
             newText.text = "Black won " + moveController.CountBlackPiecesRemaining().ToString() + " to " + moveController.CountWhitePiecesRemaining().ToString() +"!";
+            if (!updatedRecord)
+            {
+                RecordKeeper.UpdateRecordWon(NameStaticClass.playerOneName);
+                RecordKeeper.UpdateRecordLost(NameStaticClass.playerTwoName);
+                RecordKeeper.SaveData();
+                updatedRecord = true;
+            }
             popupChild.SetActive(true);
         }
         else if (gameState == CheckersMove.GameStatus.Draw)
