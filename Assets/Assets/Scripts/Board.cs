@@ -25,6 +25,9 @@ public class Board : MonoBehaviour
     private List<GameObject> possibleMoves;
     private bool animationInProgress;
 
+    //For the final screen popup
+    public GameObject popup;
+
     /// <summary>
     /// Board initialization performed before anything can access it.
     /// </summary>
@@ -159,6 +162,39 @@ public class Board : MonoBehaviour
     /// </summary>
     void Update () {
         MoveControl();
+        CheckForEndGame();
+    }
+
+    void CheckForEndGame()
+    {
+        if(animationInProgress) return;
+
+        popup = GameObject.Find("endGameElement");
+        GameObject popupChild = popup.transform.GetChild(0).gameObject;    
+        //GameObject textObj = popupChild.transform.GetChild(2).gameObject;   
+        Text newText = popupChild.GetComponentInChildren<Text>();
+
+        
+        CheckersMove.GameStatus gameState = moveController.GetGameStatus();
+        
+        
+        if (gameState == CheckersMove.GameStatus.WhiteWin)
+        {
+            newText.text = "White won " + moveController.CountWhitePiecesRemaining().ToString() + " to " + moveController.CountBlackPiecesRemaining().ToString() +"!";
+            popupChild.SetActive(true);
+
+        }
+        else if (gameState == CheckersMove.GameStatus.BlackWin)
+        {
+            newText.text = "Black won " + moveController.CountBlackPiecesRemaining().ToString() + " to " + moveController.CountWhitePiecesRemaining().ToString() +"!";
+            popupChild.SetActive(true);
+        }
+        else if (gameState == CheckersMove.GameStatus.Draw)
+        {
+            newText.text = "It was a draw!";
+            popupChild.SetActive(true);
+        };
+        
     }
 
     /// <summary>
@@ -224,6 +260,8 @@ public class Board : MonoBehaviour
                 CheckersMove.Turn curTurn = moveController.GetCurrentTurn();
 
                 // Check if clickedSquare contains a piece and if it does, show selection prefab and select piece
+                if(x < 0 || y < 0 || x > curState.GetLength(0) || y > curState.GetLength(0)) return;
+                
                 if (curState[x, y] != CheckersState.State.Empty)
                 {
                     // Ensure that piece is of the correct players colour based on current turn
