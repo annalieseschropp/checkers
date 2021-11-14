@@ -331,4 +331,14 @@ public class Board : MonoBehaviour
             Destroy(move);
         }
     }
+
+    public int GetBlackPiecesLost() 
+    {
+        return moveController.countBlackPiecesLost();
+    }
+
+    public int GetWhitePiecesLost() 
+    {
+        return moveController.countWhitePiecesLost();
+    }
 }
