@@ -342,11 +342,11 @@ public class Board : MonoBehaviour
     {
         if (moveController.GetCurrentTurn() == CheckersMove.Turn.White)
         {
-            currentTurnText.text = "White's Turn";
+            currentTurnText.text = NameStaticClass.playerTwoName + "'s Turn";
         }
         else 
         {
-            currentTurnText.text = "Black's Turn";
+            currentTurnText.text = NameStaticClass.playerOneName + "'s Turn";
         }
     }
 }
