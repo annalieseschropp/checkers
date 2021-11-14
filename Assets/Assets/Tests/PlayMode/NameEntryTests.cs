@@ -93,4 +93,17 @@ public class NameEntryTests
         yield return null;
         Assert.AreEqual(true, scene == "Menu");
     }
+
+    [UnityTest]
+    public IEnumerator SwapNamesTest()
+    {
+        var control = GameObject.Find("/Canvas/nameEntry").GetComponent(typeof(NameEntry)) as NameEntry;
+        control.playerOneName.text = "TestOne";
+        control.playerTwoName.text = "TestTwo";
+        control.PlayGameButtonOnClick();
+        NameStaticClass.SwapPlayerNames();
+        yield return null;
+        Assert.AreEqual("TestTwo", NameStaticClass.playerOneName);
+        Assert.AreEqual("TestOne", NameStaticClass.playerTwoName);
+    }
 }
