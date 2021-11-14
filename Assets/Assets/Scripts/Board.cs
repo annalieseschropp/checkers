@@ -17,6 +17,7 @@ public class Board : MonoBehaviour
     public GameObject whiteTilePrefab;
     public GameObject selectedPiecePrefab;
     public GameObject highlightedTilePrefab;
+    public Text currentTurnText;
     public CheckersState.State[,] curState;
 
     private PieceSet pieceSet;
@@ -164,6 +165,7 @@ public class Board : MonoBehaviour
     /// </summary>
     void Update () {
         MoveControl();
+        UpdateCurrentTurnText();
         CheckForEndGame();
     }
 
@@ -329,6 +331,22 @@ public class Board : MonoBehaviour
         foreach (var move in possibleMoves)
         {
             Destroy(move);
+        }
+    }
+
+    /// <summary>
+    /// Method
+    /// Helper to update UI to show who's turn it currently is
+    /// </summary>
+    private void UpdateCurrentTurnText() 
+    {
+        if (moveController.GetCurrentTurn() == CheckersMove.Turn.White)
+        {
+            currentTurnText.text = "White's Turn";
+        }
+        else 
+        {
+            currentTurnText.text = "Black's Turn";
         }
     }
 }
