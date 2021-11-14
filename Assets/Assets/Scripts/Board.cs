@@ -185,18 +185,18 @@ public class Board : MonoBehaviour
         CheckForEndGame();
     }
 
+    /// <summary>
+    /// Checks to see if game has ended, updates the endgame popup with results and displays it to the user
+    /// </summary>
     void CheckForEndGame()
     {
         if(animationInProgress) return;
 
         popup = GameObject.Find("endGameElement");
-        GameObject popupChild = popup.transform.GetChild(0).gameObject;    
-        //GameObject textObj = popupChild.transform.GetChild(2).gameObject;   
+        GameObject popupChild = popup.transform.GetChild(0).gameObject;       
         Text newText = popupChild.GetComponentInChildren<Text>();
-
         
         CheckersMove.GameStatus gameState = moveController.GetGameStatus();
-        
         
         if (gameState == CheckersMove.GameStatus.WhiteWin)
         {
@@ -228,7 +228,6 @@ public class Board : MonoBehaviour
             newText.text = "It was a draw!";
             popupChild.SetActive(true);
         };
-        
     }
 
     /// <summary>
