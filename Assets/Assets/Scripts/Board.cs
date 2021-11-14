@@ -159,6 +159,24 @@ public class Board : MonoBehaviour
         return curState;
     }
 
+        /// <summary>
+    /// Method
+    /// Helper for score keeping black pieces
+    /// </summary>
+    public int GetBlackPiecesLost() 
+    {
+        return moveController.countBlackPiecesLost();
+    }
+
+    /// <summary>
+    /// Method
+    /// Helper for score keeping white pieces
+    /// </summary>
+    public int GetWhitePiecesLost() 
+    {
+        return moveController.countWhitePiecesLost();
+    }
+
     /// <summary>
     /// Checks for updates on input from user
     /// </summary>
@@ -330,15 +348,5 @@ public class Board : MonoBehaviour
         {
             Destroy(move);
         }
-    }
-
-    public int GetBlackPiecesLost() 
-    {
-        return moveController.countBlackPiecesLost();
-    }
-
-    public int GetWhitePiecesLost() 
-    {
-        return moveController.countWhitePiecesLost();
     }
 }
