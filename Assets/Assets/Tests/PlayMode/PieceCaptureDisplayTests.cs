@@ -17,8 +17,8 @@ public class PieceCaptureDisplayTests
     [UnityTest]
     public IEnumerator GetStartingScore()
     {
-        var whiteCount = GameObject.Find("Canvas/TakenWhite").GetComponent<Text>();
-        var blackCount = GameObject.Find("Canvas/TakenBlack").GetComponent<Text>();
+        var whiteCount = GameObject.Find("Canvas/WhiteScore").GetComponent<Text>();
+        var blackCount = GameObject.Find("Canvas/BlackScore").GetComponent<Text>();
         yield return null;
         Assert.AreEqual("0", whiteCount.text.ToString());
         Assert.AreEqual("0", blackCount.text.ToString());
