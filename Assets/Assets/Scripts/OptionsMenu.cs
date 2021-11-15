@@ -17,11 +17,12 @@ public class OptionsMenu : MonoBehaviour
 
         Slider speedSlider = moveSpeedSlider.GetComponent<Slider>();
         speedSlider.onValueChanged.AddListener(OnMoveSpeedSliderChanged);
+        speedSlider.value = GameOptionsStaticClass.moveSpeed;
     }
 
     public void OnMoveSpeedSliderChanged(float value)
     {
-        Debug.Log("Slider Value" + value);
+        GameOptionsStaticClass.moveSpeed = value;
     }
 
     public void GoBack()

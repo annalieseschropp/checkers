@@ -99,7 +99,7 @@ public class Piece : MonoBehaviour
     /// <param name=newPosition>new position to move to</param>
     private IEnumerator MovePieceCoroutine(Vector2 newPosition)
     {
-        float totalTime = 0.75f;
+        float totalTime = (1 - GameOptionsStaticClass.moveSpeed);
         float elapsedTime = 0f;
         Vector2 startPosition = this.sprite.transform.position;
         Vector2 endPosition = newPosition;
