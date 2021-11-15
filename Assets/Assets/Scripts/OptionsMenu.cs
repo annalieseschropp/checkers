@@ -7,12 +7,22 @@ using UnityEngine.SceneManagement;
 public class OptionsMenu : MonoBehaviour
 {
     public Button backButton;
+    public Slider moveSpeedSlider;
 
     // Start is called before the first frame update
     void Start()
     {
         Button backBtn = backButton.GetComponent<Button>();
         backBtn.onClick.AddListener(GoBack);
+
+        Slider speedSlider = moveSpeedSlider.GetComponent<Slider>();
+        speedSlider.onValueChanged.AddListener(OnMoveSpeedSliderChanged);
+        speedSlider.value = GameOptionsStaticClass.moveSpeed;
+    }
+
+    public void OnMoveSpeedSliderChanged(float value)
+    {
+        GameOptionsStaticClass.moveSpeed = value;
     }
 
     public void GoBack()
