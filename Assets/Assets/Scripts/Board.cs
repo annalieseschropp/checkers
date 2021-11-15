@@ -18,6 +18,7 @@ public class Board : MonoBehaviour
     public GameObject selectedPiecePrefab;
     public GameObject highlightedTilePrefab;
     public CheckersState.State[,] curState;
+    public EndTurn endTurn;
 
     private PieceSet pieceSet;
     private MoveController moveController;
@@ -266,6 +267,7 @@ public class Board : MonoBehaviour
                         {
                             if (moveController.IsMulticaptureInProgress())
                             {
+                                endTurn.ShowEndTurnButton();
                                 tempPosition = new Vector3(clickedSquare.x, clickedSquare.y, 1);
                                 DisplaySelection(tempPosition, clickedSquare);
                             }
