@@ -79,13 +79,13 @@ public class NameEntry : MonoBehaviour
 
         // Load the first players name into memory
         if (dropdownPlayerOne.value != 0)
-            NameStaticClass.playerOneName = RecordKeeper.listOfRecords[dropdownPlayerOne.value].name;
+            NameStaticClass.playerOneName = RecordKeeper.listOfRecords[dropdownPlayerOne.value - 1].name;
         else
             NameStaticClass.playerOneName = playerOneName.text;
         
         // Load the second players name into memory
         if (dropdownPlayerTwo.value != 0)
-            NameStaticClass.playerTwoName = RecordKeeper.listOfRecords[dropdownPlayerTwo.value].name;
+            NameStaticClass.playerTwoName = RecordKeeper.listOfRecords[dropdownPlayerTwo.value - 1].name;
         else
             NameStaticClass.playerTwoName = playerTwoName.text;
 
