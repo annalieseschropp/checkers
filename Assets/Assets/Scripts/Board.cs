@@ -269,7 +269,9 @@ public class Board : MonoBehaviour
                         {
                             if (moveController.IsMulticaptureInProgress())
                             {
-                                endTurn.ShowEndTurnButton(); // Display decline button if multicapture available
+                                if (!NameStaticClass.forcedMove) {
+                                    endTurn.ShowEndTurnButton(); // Display decline button if multicapture available
+                                }
                                 tempPosition = new Vector3(clickedSquare.x, clickedSquare.y, 1);
                                 DisplaySelection(tempPosition, clickedSquare);
                             }
