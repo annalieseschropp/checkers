@@ -9,4 +9,15 @@ public class NameStaticClass : MonoBehaviour
     public static string playerOneName;
     public static string playerTwoName;
     public static bool forcedMove;
+
+    /// <summary>
+    /// Method
+    /// Swaps the existing player names, simulating the players swapping colours.
+    /// </summary>
+    public static void SwapPlayerNames()
+    {
+        string temp = playerOneName;
+        playerOneName = playerTwoName;
+        playerTwoName = temp;
+    }
 }
