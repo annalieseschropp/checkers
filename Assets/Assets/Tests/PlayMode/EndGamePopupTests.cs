@@ -19,7 +19,7 @@ public class EndGamePopupTest
     [UnityTest]
     public IEnumerator QuitClickTest()
     {
-        var control = GameObject.Find("/endGameElement").GetComponent(typeof(EndGamePopup)) as EndGamePopup;
+        var control = GameObject.Find("Canvas/endGameElement").GetComponent(typeof(EndGamePopup)) as EndGamePopup;
         control.quitIsClicked();
         yield return new WaitForSeconds(1);
         string scene = SceneManager.GetActiveScene().name;
@@ -31,7 +31,7 @@ public class EndGamePopupTest
     [UnityTest]
     public IEnumerator PlayAgainClickTest()
     {
-        var control = GameObject.Find("/endGameElement").GetComponent(typeof(EndGamePopup)) as EndGamePopup;
+        var control = GameObject.Find("Canvas/endGameElement").GetComponent(typeof(EndGamePopup)) as EndGamePopup;
         NameStaticClass.playerOneName = "Alice";
         NameStaticClass.playerTwoName = "Bob";
         control.restartGameFunc();
