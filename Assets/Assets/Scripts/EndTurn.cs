@@ -5,15 +5,16 @@ using UnityEngine;
 public class EndTurn : MonoBehaviour
 {
     public GameObject endTurnButton;
-    // Start is called before the first frame update
+    public Board board;
+
     void Start()
     {
         HideEndTurnButton();
     }
 
-    public void EndTurnFunction()
+    public void EndTurnOnClick()
     {
-        Debug.Log("End Turn Button Clicked!");
+        board.EndTurnOnMulticapture();
         HideEndTurnButton();
     }
     

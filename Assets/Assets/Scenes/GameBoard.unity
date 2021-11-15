@@ -2226,7 +2226,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1327713853}
         m_TargetAssemblyTypeName: EndTurn, Scripts
-        m_MethodName: EndTurnFunction
+        m_MethodName: EndTurnOnClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2287,6 +2287,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   endTurnButton: {fileID: 1327713848}
+  board: {fileID: 1368847221}
 --- !u!1 &1368847220
 GameObject:
   m_ObjectHideFlags: 0

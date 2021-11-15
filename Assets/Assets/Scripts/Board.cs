@@ -269,9 +269,13 @@ public class Board : MonoBehaviour
                         {
                             if (moveController.IsMulticaptureInProgress())
                             {
-                                endTurn.ShowEndTurnButton();
+                                endTurn.ShowEndTurnButton(); // Display decline button if multicapture available
                                 tempPosition = new Vector3(clickedSquare.x, clickedSquare.y, 1);
                                 DisplaySelection(tempPosition, clickedSquare);
+                            }
+                            else
+                            {
+                                endTurn.HideEndTurnButton(); // Hide decline button when either piece captured or declined
                             }
                             animationInProgress = false;
                         }
@@ -280,11 +284,7 @@ public class Board : MonoBehaviour
                 else
                 {
                     CleanSelection();
-                    if (moveController.IsMulticaptureInProgress())
-                    {
-                        moveController.DeclineMulticapture(); // This does nothing if captures are forced
-                    }
-                    else
+                    if (!moveController.IsMulticaptureInProgress())
                     {
                         moveController.DeselectPiece();
                     }
@@ -367,5 +367,10 @@ public class Board : MonoBehaviour
         {
             currentTurnText.text = NameStaticClass.playerOneName + "'s Turn";
         }
+    }
+
+    public void EndTurnOnMulticapture()
+    {
+        moveController.DeclineMulticapture(); // This does nothing if captures are forced
     }
 }
