@@ -19,7 +19,7 @@ public class PopupsTest
     [UnityTest]
     public IEnumerator quitClicked()
     {
-        var control = GameObject.Find("/popupElement").GetComponent(typeof(Popup)) as Popup;;
+        var control = GameObject.Find("Canvas/popupElement").GetComponent(typeof(Popup)) as Popup;;
         control.quitClicked();
         yield return new WaitForSeconds(1);
         string scene = SceneManager.GetActiveScene().name;
@@ -30,7 +30,7 @@ public class PopupsTest
     [UnityTest]
     public IEnumerator openPopup()
     {
-        var control = GameObject.Find("/popupElement").GetComponent(typeof(Popup)) as Popup;;
+        var control = GameObject.Find("Canvas/popupElement").GetComponent(typeof(Popup)) as Popup;;
         control.openPopup();
         yield return new WaitForSeconds(1);
         bool popupState = control.getPopupState();
@@ -41,7 +41,7 @@ public class PopupsTest
     [UnityTest]
     public IEnumerator closePopup()
     {
-        var control = GameObject.Find("/popupElement").GetComponent(typeof(Popup)) as Popup;;
+        var control = GameObject.Find("Canvas/popupElement").GetComponent(typeof(Popup)) as Popup;;
         control.closePopup();
         yield return new WaitForSeconds(1);
         bool popupState = control.getPopupState();
@@ -54,7 +54,7 @@ public class PopupsTest
     [UnityTest]
     public IEnumerator quitIsClicked()
     {
-        var control = GameObject.Find("/endGameElement").GetComponent(typeof(EndGamePopup)) as EndGamePopup;
+        var control = GameObject.Find("Canvas/endGameElement").GetComponent(typeof(EndGamePopup)) as EndGamePopup;
         control.quitIsClicked();
         yield return new WaitForSeconds(1);
         string scene = SceneManager.GetActiveScene().name;
@@ -65,7 +65,7 @@ public class PopupsTest
     [UnityTest]
     public IEnumerator restartGameFunc()
     {
-        var control = GameObject.Find("/endGameElement").GetComponent(typeof(EndGamePopup)) as EndGamePopup;
+        var control = GameObject.Find("Canvas/endGameElement").GetComponent(typeof(EndGamePopup)) as EndGamePopup;
         control.restartGameFunc();
         yield return new WaitForSeconds(1);
         string scene = SceneManager.GetActiveScene().name;

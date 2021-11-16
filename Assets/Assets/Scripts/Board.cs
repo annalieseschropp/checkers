@@ -17,7 +17,9 @@ public class Board : MonoBehaviour
     public GameObject whiteTilePrefab;
     public GameObject selectedPiecePrefab;
     public GameObject highlightedTilePrefab;
+    public Text currentTurnText;
     public CheckersState.State[,] curState;
+    public EndTurn endTurn;
 
     private PieceSet pieceSet;
     private MoveController moveController;
@@ -159,30 +161,49 @@ public class Board : MonoBehaviour
         return curState;
     }
 
+        /// <summary>
+    /// Method
+    /// Helper for score keeping black pieces
+    /// </summary>
+    public int GetBlackPiecesLost() 
+    {
+        return moveController.countBlackPiecesLost();
+    }
+
+    /// <summary>
+    /// Method
+    /// Helper for score keeping white pieces
+    /// </summary>
+    public int GetWhitePiecesLost() 
+    {
+        return moveController.countWhitePiecesLost();
+    }
+
     /// <summary>
     /// Checks for updates on input from user
     /// </summary>
     void Update () {
         MoveControl();
+        UpdateCurrentTurnText();
         CheckForEndGame();
     }
 
+    /// <summary>
+    /// Checks to see if game has ended, updates the endgame popup with results and displays it to the user
+    /// </summary>
     void CheckForEndGame()
     {
         if(animationInProgress) return;
 
         popup = GameObject.Find("endGameElement");
-        GameObject popupChild = popup.transform.GetChild(0).gameObject;    
-        //GameObject textObj = popupChild.transform.GetChild(2).gameObject;   
+        GameObject popupChild = popup.transform.GetChild(0).gameObject;       
         Text newText = popupChild.GetComponentInChildren<Text>();
-
         
         CheckersMove.GameStatus gameState = moveController.GetGameStatus();
         
-        
         if (gameState == CheckersMove.GameStatus.WhiteWin)
         {
-            newText.text = "White won with " + moveController.CountWhitePiecesRemaining().ToString() + " pieces remaining!";
+            newText.text = "White won " + moveController.CountWhitePiecesRemaining().ToString() + " to " + moveController.CountBlackPiecesRemaining().ToString() +"!";
             if (!updatedRecord)
             {
                 RecordKeeper.UpdateRecordWon(NameStaticClass.playerTwoName);
@@ -195,7 +216,7 @@ public class Board : MonoBehaviour
         }
         else if (gameState == CheckersMove.GameStatus.BlackWin)
         {
-            newText.text = "Black won with " + moveController.CountBlackPiecesRemaining().ToString() + " pieces remaining!";
+            newText.text = "Black won " + moveController.CountBlackPiecesRemaining().ToString() + " to " + moveController.CountWhitePiecesRemaining().ToString() +"!";
             if (!updatedRecord)
             {
                 RecordKeeper.UpdateRecordWon(NameStaticClass.playerOneName);
@@ -210,7 +231,6 @@ public class Board : MonoBehaviour
             newText.text = "It was a draw!";
             popupChild.SetActive(true);
         };
-        
     }
 
     /// <summary>
@@ -249,8 +269,15 @@ public class Board : MonoBehaviour
                         {
                             if (moveController.IsMulticaptureInProgress())
                             {
+                                if (!NameStaticClass.forcedMove) {
+                                    endTurn.ShowEndTurnButton(); // Display decline button if multicapture available
+                                }
                                 tempPosition = new Vector3(clickedSquare.x, clickedSquare.y, 1);
                                 DisplaySelection(tempPosition, clickedSquare);
+                            }
+                            else
+                            {
+                                endTurn.HideEndTurnButton(); // Hide decline button when either piece captured or declined
                             }
                             animationInProgress = false;
                         }
@@ -259,11 +286,7 @@ public class Board : MonoBehaviour
                 else
                 {
                     CleanSelection();
-                    if (moveController.IsMulticaptureInProgress())
-                    {
-                        moveController.DeclineMulticapture(); // This does nothing if captures are forced
-                    }
-                    else
+                    if (!moveController.IsMulticaptureInProgress())
                     {
                         moveController.DeselectPiece();
                     }
@@ -330,5 +353,26 @@ public class Board : MonoBehaviour
         {
             Destroy(move);
         }
+    }
+
+    /// <summary>
+    /// Method
+    /// Helper to update UI to show who's turn it currently is
+    /// </summary>
+    private void UpdateCurrentTurnText() 
+    {
+        if (moveController.GetCurrentTurn() == CheckersMove.Turn.White)
+        {
+            currentTurnText.text = NameStaticClass.playerTwoName + "'s Turn";
+        }
+        else 
+        {
+            currentTurnText.text = NameStaticClass.playerOneName + "'s Turn";
+        }
+    }
+
+    public void EndTurnOnMulticapture()
+    {
+        moveController.DeclineMulticapture(); // This does nothing if captures are forced
     }
 }

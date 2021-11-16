@@ -34,9 +34,8 @@ public class EndGamePopup : MonoBehaviour
     public void restartGameFunc()
     {
         Debug.Log("RESTART Clicked");
+        NameStaticClass.SwapPlayerNames();
         SceneManager.LoadScene("GameBoard");
-
-        
     }
     
 }
