@@ -182,7 +182,7 @@ public class Board : MonoBehaviour
         
         if (gameState == CheckersMove.GameStatus.WhiteWin)
         {
-            newText.text = "White won " + moveController.CountWhitePiecesRemaining().ToString() + " to " + moveController.CountBlackPiecesRemaining().ToString() +"!";
+            newText.text = "White won with " + moveController.CountWhitePiecesRemaining().ToString() + " pieces remaining!";
             if (!updatedRecord)
             {
                 RecordKeeper.UpdateRecordWon(NameStaticClass.playerTwoName);
@@ -195,7 +195,7 @@ public class Board : MonoBehaviour
         }
         else if (gameState == CheckersMove.GameStatus.BlackWin)
         {
-            newText.text = "Black won " + moveController.CountBlackPiecesRemaining().ToString() + " to " + moveController.CountWhitePiecesRemaining().ToString() +"!";
+            newText.text = "Black won with " + moveController.CountBlackPiecesRemaining().ToString() + " pieces remaining!";
             if (!updatedRecord)
             {
                 RecordKeeper.UpdateRecordWon(NameStaticClass.playerOneName);

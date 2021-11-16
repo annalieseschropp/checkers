@@ -10,17 +10,20 @@ public class mainMenu : MonoBehaviour
     public Button leaderboardButton;
     public Button optionsButton;
     public Button quitButton;
+    public Button creditsButton;
 
     void Start() {
         Button twoButton = twoPlayerButton.GetComponent<Button>();
         Button leaderboard = leaderboardButton.GetComponent<Button>();
         Button options = optionsButton.GetComponent<Button>();
         Button quit = quitButton.GetComponent<Button>();
+        Button credits = creditsButton.GetComponent<Button>();
 
         twoButton.onClick.AddListener(PlayGame);
         leaderboard.onClick.AddListener(ShowLeaderboards);
         options.onClick.AddListener(LoadOptions);
         quit.onClick.AddListener(QuitGame);
+        creditsButton.onClick.AddListener(LoadCredits);
     }
 
     public void PlayGame()
@@ -39,6 +42,12 @@ public class mainMenu : MonoBehaviour
     {
         Debug.Log("Loading Options!");
         SceneManager.LoadScene("OptionsMenu");
+    }
+
+    public void LoadCredits()
+    {
+        Debug.Log("Loading credits screen!");
+        SceneManager.LoadScene("Credits");
     }
 
     public void QuitGame()
