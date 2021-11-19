@@ -20,7 +20,7 @@ public static class GameHistoryRecordKeeper
 
     public static string filePath = Application.persistentDataPath + "\\gameHistoryRecords.save";
     
-    public static void saveData()
+    public static void SaveData()
     {
         FileStream fs = new FileStream(filePath, FileMode.Create);
         BinaryFormatter binaryFormatter = new BinaryFormatter();
@@ -33,7 +33,7 @@ public static class GameHistoryRecordKeeper
         fs.Close();
     }
 
-    public static void loadData()
+    public static void LoadData()
     {
         if (!System.IO.File.Exists(filePath))
         {
@@ -69,6 +69,6 @@ public static class GameHistoryRecordKeeper
     public static void DestroyAllData()
     {
         listOfGameHistory.Clear();
-        saveData();
+        SaveData();
     }
 }
