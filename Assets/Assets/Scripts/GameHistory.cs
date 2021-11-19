@@ -14,7 +14,7 @@ public class GameHistory : MonoBehaviour
     {
         switchActive();
         GameHistoryRecordKeeper.LoadData();
-        for (int i = GameHistoryRecordKeeper.listOfGameHistory.Count - 1; i <= 0; i--)
+        for (int i = GameHistoryRecordKeeper.listOfGameHistory.Count - 1; i >= 0; i--)
         {
             GameObject newGo = Instantiate(rowPrefab, rowsParent);
             Text[] texts = newGo.GetComponentsInChildren<Text>();
