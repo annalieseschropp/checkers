@@ -65,4 +65,10 @@ public static class GameHistoryRecordKeeper
 
         listOfGameHistory.Add(rec);
     }
+
+    public static void DestroyAllData()
+    {
+        listOfGameHistory.Clear();
+        saveData();
+    }
 }
