@@ -11,7 +11,7 @@ public class GameHistoryRecord
     public string whitePlayerName;
     public string gameWinner;
     public int blackFinalScore;
-    public int whileFinalScore;
+    public int whiteFinalScore;
 }
 
 public static class GameHistoryRecordKeeper
@@ -42,5 +42,27 @@ public static class GameHistoryRecordKeeper
         }
 
         FileStream fs = new FileStream(filePath, FileMode.Open);
+        BinaryFormatter binaryFormatter = new BinaryFormatter();
+
+        listOfGameHistory.Clear();
+        while (fs.Position != fs.Length)
+        {
+            GameHistoryRecord rec = (GameHistoryRecord)binaryFormatter.Deserialize(fs);
+            listOfGameHistory.Add(rec);
+        }
+
+        fs.Close();
+    }
+
+    public static void AddRecord(string blackPlayer, string whitePlayer, string gameWinner, int blackPlayerPoints, int whitePlayerPoints)
+    {
+        GameHistoryRecord rec = new GameHistoryRecord();
+        rec.blackPlayerName = blackPlayer;
+        rec.whitePlayerName = whitePlayer;
+        rec.gameWinner = gameWinner;
+        rec.blackFinalScore = blackPlayerPoints;
+        rec.whiteFinalScore = whitePlayerPoints;
+
+        listOfGameHistory.Add(rec);
     }
 }
