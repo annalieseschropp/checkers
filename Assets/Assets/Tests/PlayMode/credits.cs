@@ -9,7 +9,6 @@ using CheckersState;
 
 public class credits : MonoBehaviour
 {
-    private Button button;
 
     [SetUp]
     public void SetUp()
@@ -20,10 +19,10 @@ public class credits : MonoBehaviour
     [UnityTest]
     public IEnumerator BackButton()
     {
-        button = GameObject.Find("BackButton").GetComponent<Button>();
-        button.onClick.Invoke();
+        var button = GameObject.Find("Canvas").GetComponent(typeof(Credits)) as Credits;
+        button.GoBack();
         yield return new WaitForSeconds(1);
-        string scene = SceneManager.GetActiveScene().name; 
+        string scene = SceneManager.GetActiveScene().name;
         yield return null;
         Assert.AreEqual(true, scene == "Menu");
     }
