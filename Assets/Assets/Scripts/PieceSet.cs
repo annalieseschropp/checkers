@@ -50,6 +50,8 @@ public class PieceSet : MonoBehaviour
         {
             yield return StartCoroutine(toMove.MovePiece(new Vector2(move.dest.x, move.dest.y)));
         }
+
+        gameObject.GetComponent(typeof(AudioSource));
         callback();
     }
 
