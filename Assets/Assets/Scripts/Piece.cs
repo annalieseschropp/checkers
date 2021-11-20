@@ -73,7 +73,6 @@ public class Piece : MonoBehaviour
     {
         if(this.sprite != null)
         {
-            Debug.Log("Rotation: " + Camera.main.transform.localEulerAngles);
             this.sprite.transform.rotation = Quaternion.Euler(0.0f, 0.0f, Camera.main.transform.localEulerAngles.z);
         }
     }
