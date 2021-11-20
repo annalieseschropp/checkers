@@ -52,7 +52,7 @@ public class Piece : MonoBehaviour
         this.sprite.transform.parent = this.transform;
         this.sprite.name = "sprite";
         this.sprite.GetComponent<SpriteRenderer>().sortingOrder = 1;
-
+        this.AlignRotationToCamera();
         return;
     }
 
@@ -67,6 +67,19 @@ public class Piece : MonoBehaviour
 
     /// <summary>
     /// Method
+    /// Rotates the piece so that kings will not appear upside down.
+    /// </summary>
+    public void AlignRotationToCamera()
+    {
+        if(this.sprite != null)
+        {
+            Debug.Log("Rotation: " + Camera.main.transform.localEulerAngles);
+            this.sprite.transform.rotation = Quaternion.Euler(0.0f, 0.0f, Camera.main.transform.localEulerAngles.z);
+        }
+    }
+
+    /// <summary>
+    /// Method
     /// Initializes a piece at a location.
     /// </summary>
     public void InitializePiece(CheckersState.State type, Vector2 position, GameObject whitePiecePrefab, GameObject blackPiecePrefab, GameObject whiteKingPrefab, GameObject blackKingPrefab)
@@ -75,7 +88,11 @@ public class Piece : MonoBehaviour
         this.InitPieceMap();
         this.ResetSprite();
         this.SetPieceType(type);
-        if(this.sprite != null) this.sprite.transform.position = position;
+        if(this.sprite != null)
+        {
+            this.sprite.transform.position = position;
+            this.AlignRotationToCamera();
+        }
         return;
     }
 

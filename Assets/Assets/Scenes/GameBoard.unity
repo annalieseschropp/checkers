@@ -1002,7 +1002,6 @@ GameObject:
   m_Component:
   - component: {fileID: 959209905}
   - component: {fileID: 959209904}
-  - component: {fileID: 959209903}
   - component: {fileID: 959209902}
   m_Layer: 0
   m_Name: SkyboxCamera
@@ -1020,14 +1019,6 @@ Skybox:
   m_GameObject: {fileID: 959209901}
   m_Enabled: 1
   m_CustomSkybox: {fileID: 2100000, guid: 617d9be015db68348a623b01ea51a8c5, type: 2}
---- !u!81 &959209903
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 959209901}
-  m_Enabled: 1
 --- !u!20 &959209904
 Camera:
   m_ObjectHideFlags: 0
