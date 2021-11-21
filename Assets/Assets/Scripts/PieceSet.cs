@@ -55,6 +55,10 @@ public class PieceSet : MonoBehaviour
         callback();
     }
 
+    /// <summary>
+    /// Method
+    /// Randomizes the sound played after a checker moves.
+    /// </summary>
     private void MakeCheckerSound()
     {
         int random = Random.Range(1,4);

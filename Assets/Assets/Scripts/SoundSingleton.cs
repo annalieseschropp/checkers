@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Class
+/// Singleton for playing sounds that can continue past scene loading. Also useful for menu SFX.
+/// </summary>
 public class SoundSingleton : MonoBehaviour
 {
     private static GameObject objectInstance;
@@ -13,6 +17,10 @@ public class SoundSingleton : MonoBehaviour
     private static ControlledAudioSource checker3Source;
     private static ControlledAudioSource gameOverSource;
 
+    /// <summary>
+    /// Method
+    /// Getter for the initialized instance.
+    /// </summary>
     public static SoundSingleton GetInstance()
     {
         if(!instance)
@@ -35,6 +43,10 @@ public class SoundSingleton : MonoBehaviour
         return instance;
     }
 
+    /// <summary>
+    /// Method
+    /// Utility to load the correct asset reference and settings for a given sound.
+    /// </summary>
     private static ControlledAudioSource AddAudioSource(AudioClip clip, bool isMusic, bool isLooping, float volumeMultiplier)
     {
         ControlledAudioSource source = objectInstance.AddComponent<ControlledAudioSource>();
@@ -45,11 +57,19 @@ public class SoundSingleton : MonoBehaviour
         return source;
     }
 
+    /// <summary>
+    /// Method
+    /// Plays a sound effect stored in the given audio source.
+    /// </summary>
     public void PlaySFX(ControlledAudioSource audioSource)
     {
         Play(audioSource, sfxAudioSource);
     }
 
+    /// <summary>
+    /// Method
+    /// Plays music stored in the given audio source.
+    /// </summary>
     public void PlayMusic(ControlledAudioSource audioSource)
     {
         if(!musicAudioSource.GetAudioSource().isPlaying)
@@ -58,6 +78,10 @@ public class SoundSingleton : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method
+    /// Stops playing music.
+    /// </summary>
     public void StopMusic(ControlledAudioSource audioSource)
     {
         if(musicAudioSource.GetAudioSource().isPlaying)
@@ -66,46 +90,82 @@ public class SoundSingleton : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method
+    /// Updates the volume of music while it might still be playing.
+    /// </summary>
     public void UpdateMusicVolume()
     {
         musicAudioSource.GetAudioSource().volume = musicAudioSource.volumeMultiplier * GameOptionsStaticClass.musicVolume;
     }
 
+    /// <summary>
+    /// Method
+    /// Updates the volume of SFX while it might still be playing.
+    /// </summary>
     public void UpdateSFXVolume()
     {
         sfxAudioSource.GetAudioSource().volume = sfxAudioSource.volumeMultiplier * GameOptionsStaticClass.sfxVolume;
     }
 
+    /// <summary>
+    /// Method
+    /// Play button click sound effect for menu UI.
+    /// </summary>
     public void PlayButtonClickSound()
     {
         PlaySFX(buttonClickSource);
     }
 
+    /// <summary>
+    /// Method
+    /// Play one of three checker movement sound effects.
+    /// </summary>
     public void PlayCheckerSound1()
     {
         PlaySFX(checker1Source);
     }
 
+    /// <summary>
+    /// Method
+    /// Play one of three checker movement sound effects.
+    /// </summary>
     public void PlayCheckerSound2()
     {
         PlaySFX(checker2Source);
     }
 
+    /// <summary>
+    /// Method
+    /// Play one of three checker movement sound effects.
+    /// </summary>
     public void PlayCheckerSound3()
     {
         PlaySFX(checker3Source);
     }
 
+    /// <summary>
+    /// Method
+    /// Play the sound effect for when the game is over.
+    /// </summary>
     public void PlayGameOverSound()
     {
         PlaySFX(gameOverSource);
     }
 
+    /// <summary>
+    /// Method
+    /// Play music intended for the main menu.
+    /// </summary>
     public void PlayMenuMusic()
     {
         PlayMusic(menuMusicSource);
     }
 
+    /// <summary>
+    /// Method
+    /// Utility for playing music or sound effects.
+    /// </summary>
     private void Play(ControlledAudioSource audioSource, ControlledAudioSource player)
     {
         player.sound = audioSource.sound;

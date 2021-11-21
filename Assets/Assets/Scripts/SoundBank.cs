@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// Class
+/// Utility class to access sound assets all in one place.
+/// </summary>
 public class SoundBank : MonoBehaviour
 {
     public AudioClip buttonClickSound;
@@ -11,6 +15,10 @@ public class SoundBank : MonoBehaviour
 
     private static SoundBank instance;
 
+    /// <summary>
+    /// Method
+    /// Getter for the initialized instance with references to sound assets.
+    /// </summary>
     public static SoundBank GetInstance()
     {
         if (instance == null)

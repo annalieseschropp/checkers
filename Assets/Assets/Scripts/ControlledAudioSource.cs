@@ -5,7 +5,7 @@ using CheckersState;
 
 /// <summary>
 /// Class
-/// Visual representation of a set of related 2D checker pieces.
+/// Component for playing audio sources that respect global volume settings.
 /// </summary>
 public class ControlledAudioSource : MonoBehaviour
 {
@@ -37,6 +37,10 @@ public class ControlledAudioSource : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Method
+    /// Stop the currently playing sound.
+    /// </summary>
     public void Stop()
     {
         if(this.audioSource.isPlaying)
@@ -75,6 +79,10 @@ public class ControlledAudioSource : MonoBehaviour
         this.audioSource.volume = volume * volumeMultiplier;
     }
 
+    /// <summary>
+    /// Method
+    /// Getter for the AuidoSource.
+    /// </summary>
     public AudioSource GetAudioSource()
     {
         this.UpdateAudioSource();

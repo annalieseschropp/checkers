@@ -11,7 +11,10 @@ public class OptionsMenu : MonoBehaviour
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
 
-    // Start is called before the first frame update
+    /// <summary>
+    /// Method
+    /// Adds event listeners to all buttons and sliders.
+    /// </summary>
     void Start()
     {
         Button backBtn = backButton.GetComponent<Button>();
@@ -31,17 +34,29 @@ public class OptionsMenu : MonoBehaviour
         sfxSlider.value = GameOptionsStaticClass.sfxVolume;
     }
 
+    /// <summary>
+    /// Method
+    /// Event listener for speed slider.
+    /// </summary>
     public void OnMoveSpeedSliderChanged(float value)
     {
         GameOptionsStaticClass.moveSpeed = value;
     }
 
+    /// <summary>
+    /// Method
+    /// Event listener for music slider.
+    /// </summary>
     public void MusicVolumeSliderChanged(float value)
     {
         GameOptionsStaticClass.musicVolume = value;
         SoundSingleton.GetInstance().UpdateMusicVolume();
     }
 
+    /// <summary>
+    /// Method
+    /// Event listener for SFX slider.
+    /// </summary>
     public void SFXVolumeSliderChanged(float value)
     {
         GameOptionsStaticClass.sfxVolume = value;
@@ -49,6 +64,10 @@ public class OptionsMenu : MonoBehaviour
         SoundSingleton.GetInstance().PlayButtonClickSound();
     }
 
+    /// <summary>
+    /// Method
+    /// Event listener for the back button.
+    /// </summary>
     public void GoBack()
     {
         Debug.Log("Back To Main Menu");
