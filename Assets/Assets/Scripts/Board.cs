@@ -272,7 +272,7 @@ public class Board : MonoBehaviour
                 RecordKeeper.UpdateRecordLost(NameStaticClass.playerOneName);
                 RecordKeeper.SaveData();
                 GameHistoryRecordKeeper.LoadData();
-                GameHistoryRecordKeeper.AddRecord(NameStaticClass.playerOneName, NameStaticClass.playerTwoName, NameStaticClass.playerTwoName, GetBlackPiecesLost(), GetWhitePiecesLost());
+                GameHistoryRecordKeeper.AddRecord(NameStaticClass.playerOneName, NameStaticClass.playerTwoName, NameStaticClass.playerTwoName, GetWhitePiecesLost(), GetBlackPiecesLost());
                 GameHistoryRecordKeeper.SaveData();
                 updatedRecord = true;
             }
@@ -288,7 +288,7 @@ public class Board : MonoBehaviour
                 RecordKeeper.UpdateRecordLost(NameStaticClass.playerTwoName);
                 RecordKeeper.SaveData();
                 GameHistoryRecordKeeper.LoadData();
-                GameHistoryRecordKeeper.AddRecord(NameStaticClass.playerOneName, NameStaticClass.playerTwoName, NameStaticClass.playerOneName, GetBlackPiecesLost(), GetWhitePiecesLost());
+                GameHistoryRecordKeeper.AddRecord(NameStaticClass.playerOneName, NameStaticClass.playerTwoName, NameStaticClass.playerOneName, GetWhitePiecesLost(), GetBlackPiecesLost());
                 GameHistoryRecordKeeper.SaveData();
                 updatedRecord = true;
             }
