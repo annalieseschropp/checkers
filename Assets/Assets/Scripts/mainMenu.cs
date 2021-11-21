@@ -12,6 +12,17 @@ public class mainMenu : MonoBehaviour
     public Button quitButton;
     public Button creditsButton;
 
+    private ControlledAudioSource controlledAudioSource;
+
+    /// <summary>
+    /// Method
+    /// Initializer performed before any script attempts to access the PieceSet.
+    /// </summary>
+    void Awake()
+    {
+        controlledAudioSource = gameObject.GetComponent<ControlledAudioSource>();
+    }
+
     void Start() {
         Button twoButton = twoPlayerButton.GetComponent<Button>();
         Button leaderboard = leaderboardButton.GetComponent<Button>();
@@ -29,30 +40,34 @@ public class mainMenu : MonoBehaviour
     public void PlayGame()
     {
         Debug.Log("Loading Game!");
+        controlledAudioSource.PlayGlobal();
         SceneManager.LoadScene("NameEntry");
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void ShowLeaderboards()
     {
+        controlledAudioSource.PlayGlobal();
         SceneManager.LoadScene("LeaderBoard");
     }
 
     public void LoadOptions()
     {
         Debug.Log("Loading Options!");
+        controlledAudioSource.PlayGlobal();
         SceneManager.LoadScene("OptionsMenu");
     }
 
     public void LoadCredits()
     {
         Debug.Log("Loading credits screen!");
+        controlledAudioSource.PlayGlobal();
         SceneManager.LoadScene("Credits");
     }
 
     public void QuitGame()
     {
         Debug.Log("QUIT!");
+        controlledAudioSource.Play();
         Application.Quit();
     }
 }

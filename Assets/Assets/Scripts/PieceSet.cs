@@ -15,6 +15,7 @@ public class PieceSet : MonoBehaviour
     public GameObject blackKingPrefab;
 
     private Piece[,] pieces;
+    private ControlledAudioSource controlledAudioSource;
 
     /// <summary>
     /// Method
@@ -23,6 +24,7 @@ public class PieceSet : MonoBehaviour
     void Awake()
     {
         pieces = new Piece[8,8];
+        controlledAudioSource = gameObject.GetComponent<ControlledAudioSource>();
     }
 
     /// <summary>
@@ -51,7 +53,7 @@ public class PieceSet : MonoBehaviour
             yield return StartCoroutine(toMove.MovePiece(new Vector2(move.dest.x, move.dest.y)));
         }
 
-        gameObject.GetComponent(typeof(AudioSource));
+        controlledAudioSource.Play();
         callback();
     }
 
