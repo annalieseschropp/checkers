@@ -24,23 +24,24 @@ public class SoundSingleton : MonoBehaviour
             musicAudioSource.isMusic = true;
             instance = objectInstance.AddComponent<SoundSingleton>();
 
-            buttonClickSource = AddAudioSource(SoundBank.GetInstance().buttonClickSound, false, false);
-            menuMusicSource = AddAudioSource(SoundBank.GetInstance().menuMusicSound, true, true);
-            checker1Source = AddAudioSource(SoundBank.GetInstance().checkerSound1, false, false);
-            checker2Source = AddAudioSource(SoundBank.GetInstance().checkerSound2, false, false);
-            checker3Source = AddAudioSource(SoundBank.GetInstance().checkerSound3, false, false);
-            gameOverSource = AddAudioSource(SoundBank.GetInstance().gameOverSound, false, false);
+            buttonClickSource = AddAudioSource(SoundBank.GetInstance().buttonClickSound, false, false, 1.0f);
+            menuMusicSource = AddAudioSource(SoundBank.GetInstance().menuMusicSound, true, true, 0.5f);
+            checker1Source = AddAudioSource(SoundBank.GetInstance().checkerSound1, false, false, 1.0f);
+            checker2Source = AddAudioSource(SoundBank.GetInstance().checkerSound2, false, false, 1.0f);
+            checker3Source = AddAudioSource(SoundBank.GetInstance().checkerSound3, false, false, 1.0f);
+            gameOverSource = AddAudioSource(SoundBank.GetInstance().gameOverSound, false, false, 1.0f);
             DontDestroyOnLoad(objectInstance);
         }
         return instance;
     }
 
-    private static ControlledAudioSource AddAudioSource(AudioClip clip, bool isMusic, bool isLooping)
+    private static ControlledAudioSource AddAudioSource(AudioClip clip, bool isMusic, bool isLooping, float volumeMultiplier)
     {
         ControlledAudioSource source = objectInstance.AddComponent<ControlledAudioSource>();
         source.sound = clip;
         source.isMusic = isMusic;
         source.isLooping = isLooping;
+        source.volumeMultiplier = volumeMultiplier;
         return source;
     }
 

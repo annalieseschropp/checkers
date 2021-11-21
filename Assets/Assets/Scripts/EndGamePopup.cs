@@ -17,7 +17,6 @@ public class EndGamePopup : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SoundSingleton.GetInstance().PlayGameOverSound();
         Button quitBtn = quitButtonInPopupWindow.GetComponent<Button>();
         quitBtn.onClick.AddListener(quitIsClicked);
         quitBtn.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
