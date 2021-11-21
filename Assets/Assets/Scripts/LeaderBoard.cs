@@ -14,6 +14,8 @@ public class LeaderBoard : MonoBehaviour
         // Set the on click listener for the back button
         Button back = backButton.GetComponent<Button>();
         back.onClick.AddListener(BackButtonOnClick);
+        back.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
+        
         // Load the data from the records
         RecordKeeper.LoadData();
         for (int i = 0; i < RecordKeeper.listOfRecords.Count; i++)

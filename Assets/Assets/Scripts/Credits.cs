@@ -13,6 +13,7 @@ public class Credits : MonoBehaviour
     {
         Button backBtn = backButton.GetComponent<Button>();
         backBtn.onClick.AddListener(GoBack);
+        backBtn.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
     }
 
     public void GoBack()

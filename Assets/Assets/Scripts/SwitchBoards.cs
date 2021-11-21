@@ -15,6 +15,7 @@ public class SwitchBoards : MonoBehaviour
         // Set the on click listener for the back button
         Button back = switchButton.GetComponent<Button>();
         back.onClick.AddListener(SwitchBoard);
+        back.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
     }
 
     // Listener for the back button

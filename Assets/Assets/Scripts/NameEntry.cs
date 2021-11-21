@@ -45,6 +45,11 @@ public class NameEntry : MonoBehaviour
 
         playGame.onClick.AddListener(PlayGameButtonOnClick);
         cancelGame.onClick.AddListener(CancelGameButtonOnClick);
+        
+        playGame.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
+        cancelGame.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
+        forcedCapture.onValueChanged.AddListener(delegate {SoundSingleton.GetInstance().PlayButtonClickSound();});
+        
         playerOneName.onValueChanged.AddListener(delegate {PlayerOneNameOnUpdate();});
         dropdownPlayerOne.onValueChanged.AddListener(delegate {PlayerOneDropdownOnUpdate();});
         playerTwoName.onValueChanged.AddListener(delegate {PlayerTwoNameOnUpdate();});

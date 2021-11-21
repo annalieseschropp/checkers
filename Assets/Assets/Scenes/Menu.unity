@@ -189,6 +189,58 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &322578251
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 322578252}
+  - component: {fileID: 322578253}
+  m_Layer: 5
+  m_Name: ClickSound
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &322578252
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322578251}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1104905530}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -0.000061035156, y: 0.000061035156}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &322578253
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 322578251}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f00e65bb1aa127439a540dad04627e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isMusic: 0
+  isLooping: 0
+  volumeMultiplier: 1
+  sound: {fileID: 8300000, guid: 685b9034e6b7abc47b3c9e74703e8d65, type: 3}
 --- !u!1 &487599204
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,7 +541,7 @@ RectTransform:
   m_Children:
   - {fileID: 809317091}
   m_Father: {fileID: 1104905530}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -874,6 +926,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 322578252}
   - {fileID: 1765501491}
   - {fileID: 1136768991}
   - {fileID: 620859040}
@@ -903,6 +956,7 @@ MonoBehaviour:
   optionsButton: {fileID: 1136768992}
   quitButton: {fileID: 620859041}
   creditsButton: {fileID: 748390671}
+  ClickSound: {fileID: 322578251}
 --- !u!114 &1104905532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -915,9 +969,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f00e65bb1aa127439a540dad04627e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isMusic: 0
+  isMusic: 1
+  isLooping: 1
   volumeMultiplier: 1
-  sound: {fileID: 8300000, guid: 685b9034e6b7abc47b3c9e74703e8d65, type: 3}
+  sound: {fileID: 8300000, guid: 6a57ef00a43a20042ab07cdd8a812261, type: 3}
 --- !u!1 &1136768990
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,7 +1005,7 @@ RectTransform:
   m_Children:
   - {fileID: 1259010176}
   m_Father: {fileID: 1104905530}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1280,7 +1335,7 @@ RectTransform:
   m_Children:
   - {fileID: 1947194077}
   m_Father: {fileID: 1104905530}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1413,7 +1468,7 @@ RectTransform:
   m_Children:
   - {fileID: 563639922}
   m_Father: {fileID: 1104905530}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1463,19 +1518,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1765501493}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 11500000, guid: a5b1b108614406345b03ec8ea62dd78b, type: 3}
-        m_TargetAssemblyTypeName: UnityEngine.Object, UnityEngine
-        m_MethodName: set_name
-        m_Mode: 5
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1765501493
 MonoBehaviour:
   m_ObjectHideFlags: 0

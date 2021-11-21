@@ -21,6 +21,7 @@ public class mainMenu : MonoBehaviour
     void Awake()
     {
         controlledAudioSource = gameObject.GetComponent<ControlledAudioSource>();
+        SoundSingleton.GetInstance().PlayMenuMusic();
     }
 
     void Start() {
@@ -35,6 +36,12 @@ public class mainMenu : MonoBehaviour
         options.onClick.AddListener(LoadOptions);
         quit.onClick.AddListener(QuitGame);
         creditsButton.onClick.AddListener(LoadCredits);
+
+        twoButton.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
+        leaderboard.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
+        options.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
+        quit.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
+        creditsButton.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
     }
 
     public void PlayGame()

@@ -14,6 +14,7 @@ public class OptionsMenu : MonoBehaviour
     {
         Button backBtn = backButton.GetComponent<Button>();
         backBtn.onClick.AddListener(GoBack);
+        backBtn.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
 
         Slider speedSlider = moveSpeedSlider.GetComponent<Slider>();
         speedSlider.onValueChanged.AddListener(OnMoveSpeedSliderChanged);
