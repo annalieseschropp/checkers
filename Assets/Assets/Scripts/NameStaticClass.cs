@@ -9,6 +9,7 @@ public class NameStaticClass : MonoBehaviour
     public static string playerOneName;
     public static string playerTwoName;
     public static bool forcedMove;
+    public static bool ai;
 
     /// <summary>
     /// Method
