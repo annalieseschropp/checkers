@@ -66,6 +66,16 @@ public class SoundSingleton : MonoBehaviour
         }
     }
 
+    public void UpdateMusicVolume()
+    {
+        musicAudioSource.GetAudioSource().volume = musicAudioSource.volumeMultiplier * GameOptionsStaticClass.musicVolume;
+    }
+
+    public void UpdateSFXVolume()
+    {
+        sfxAudioSource.GetAudioSource().volume = sfxAudioSource.volumeMultiplier * GameOptionsStaticClass.sfxVolume;
+    }
+
     public void PlayButtonClickSound()
     {
         PlaySFX(buttonClickSource);
