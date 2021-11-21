@@ -10,6 +10,7 @@ using CheckersState;
 public class ControlledAudioSource : MonoBehaviour
 {
     public bool isMusic;
+    public bool isLooping;
     public float volumeMultiplier = 1.0f;
     public AudioClip sound;
     private AudioSource audioSource;
@@ -36,6 +37,14 @@ public class ControlledAudioSource : MonoBehaviour
         }
     }
 
+    public void Stop()
+    {
+        if(this.audioSource.isPlaying)
+        {
+            this.audioSource.Stop();
+        }
+    }
+
     /// <summary>
     /// Method
     /// Plays the sound respecting the level in the options menu, but on a global level.
@@ -43,9 +52,14 @@ public class ControlledAudioSource : MonoBehaviour
     public void PlayGlobal()
     {
         this.UpdateAudioSource();
-        Debug.Log("Transform.position: " + Camera.main.transform.position);
-        //AudioSource.PlayClipAtPoint(this.audioSource.clip, this.transform.position, this.audioSource.volume);
-        AudioSource.PlayClipAtPoint(this.audioSource.clip, Camera.main.transform.position, this.audioSource.volume);
+        if(isMusic)
+        {
+            SoundSingleton.GetInstance().PlayMusic(this);
+        }
+        else
+        {
+            SoundSingleton.GetInstance().PlaySFX(this);
+        }
     }
 
     /// <summary>
@@ -56,7 +70,14 @@ public class ControlledAudioSource : MonoBehaviour
     {
         audioSource = audioSource == null ? this.gameObject.AddComponent<AudioSource>() : audioSource;
         this.audioSource.clip = sound;
+        this.audioSource.loop = isLooping;
         float volume = isMusic ? GameOptionsStaticClass.musicVolume : GameOptionsStaticClass.sfxVolume;
         this.audioSource.volume = volume * volumeMultiplier;
+    }
+
+    public AudioSource GetAudioSource()
+    {
+        this.UpdateAudioSource();
+        return this.audioSource;
     }
 }
