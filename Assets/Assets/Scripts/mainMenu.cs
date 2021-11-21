@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class mainMenu : MonoBehaviour
 {
+    public Button singlePlayerButton;
     public Button twoPlayerButton;
     public Button leaderboardButton;
     public Button optionsButton;
@@ -13,12 +14,14 @@ public class mainMenu : MonoBehaviour
     public Button creditsButton;
 
     void Start() {
+        Button singleButton = singlePlayerButton.GetComponent<Button>();
         Button twoButton = twoPlayerButton.GetComponent<Button>();
         Button leaderboard = leaderboardButton.GetComponent<Button>();
         Button options = optionsButton.GetComponent<Button>();
         Button quit = quitButton.GetComponent<Button>();
         Button credits = creditsButton.GetComponent<Button>();
 
+        singleButton.onClick.AddListener(PlayAIGame);
         twoButton.onClick.AddListener(PlayGame);
         leaderboard.onClick.AddListener(ShowLeaderboards);
         options.onClick.AddListener(LoadOptions);
@@ -26,6 +29,11 @@ public class mainMenu : MonoBehaviour
         creditsButton.onClick.AddListener(LoadCredits);
     }
 
+    public void PlayAIGame()
+    {
+        SceneManager.LoadScene("AINameEntry");
+    }
+    
     public void PlayGame()
     {
         Debug.Log("Loading Game!");
