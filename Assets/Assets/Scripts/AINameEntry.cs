@@ -81,7 +81,14 @@ public class AINameEntry : MonoBehaviour
         NameStaticClass.forcedMove = forcedCapture.isOn;
         NameStaticClass.ai = true;
 
-        RecordKeeper.AddRecord(NameStaticClass.playerOneName);
+        if (NameStaticClass.playerOneName != "Computer") 
+        {
+            RecordKeeper.AddRecord(NameStaticClass.playerOneName);
+        }
+        else 
+        {
+            RecordKeeper.AddRecord(NameStaticClass.playerTwoName);
+        }
         RecordKeeper.SaveData();
         SceneManager.LoadScene("GameBoard");
     }
