@@ -15,7 +15,6 @@ public class PieceSet : MonoBehaviour
     public GameObject blackKingPrefab;
 
     private Piece[,] pieces;
-    private ControlledAudioSource controlledAudioSource;
 
     /// <summary>
     /// Method
@@ -24,7 +23,6 @@ public class PieceSet : MonoBehaviour
     void Awake()
     {
         pieces = new Piece[8,8];
-        controlledAudioSource = gameObject.GetComponent<ControlledAudioSource>();
     }
 
     /// <summary>
@@ -53,8 +51,25 @@ public class PieceSet : MonoBehaviour
             yield return StartCoroutine(toMove.MovePiece(new Vector2(move.dest.x, move.dest.y)));
         }
 
-        controlledAudioSource.Play();
+        MakeCheckerSound();
         callback();
+    }
+
+    private void MakeCheckerSound()
+    {
+        int random = Random.Range(1,4);
+        switch(Random.Range(1,4)) 
+        {
+        case 1:
+            SoundSingleton.GetInstance().PlayCheckerSound1();
+            break;
+        case 2:
+            SoundSingleton.GetInstance().PlayCheckerSound2();
+            break;
+        default:
+            SoundSingleton.GetInstance().PlayCheckerSound3();
+            break;
+        }
     }
 
     /// <summary>

@@ -18,13 +18,15 @@ public class Popup : MonoBehaviour
     {
         Button quitBtn = quitButtonInPopupWindow.GetComponent<Button>();
         quitBtn.onClick.AddListener(quitClicked);
+        quitBtn.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
 
         Button goBackBtn = goBackButton.GetComponent<Button>();
         goBackBtn.onClick.AddListener(closePopup);
+        goBackBtn.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
 
         Button quitGame = quitButtonOnCheckBoard.GetComponent<Button>();
         quitGame.onClick.AddListener(openPopup);
-
+        quitGame.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
     }
 
     // Update is called once per frame

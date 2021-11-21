@@ -14,6 +14,7 @@ public class EndTurn : MonoBehaviour
 
     public void EndTurnOnClick()
     {
+        SoundSingleton.GetInstance().PlayButtonClickSound();
         board.EndTurnOnMulticapture();
         HideEndTurnButton();
     }

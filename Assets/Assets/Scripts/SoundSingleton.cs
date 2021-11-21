@@ -8,6 +8,10 @@ public class SoundSingleton : MonoBehaviour
     private static ControlledAudioSource musicAudioSource;
     private static ControlledAudioSource buttonClickSource;
     private static ControlledAudioSource menuMusicSource;
+    private static ControlledAudioSource checker1Source;
+    private static ControlledAudioSource checker2Source;
+    private static ControlledAudioSource checker3Source;
+    private static ControlledAudioSource gameOverSource;
 
     public static SoundSingleton GetInstance()
     {
@@ -22,7 +26,10 @@ public class SoundSingleton : MonoBehaviour
 
             buttonClickSource = AddAudioSource(SoundBank.GetInstance().buttonClickSound, false, false);
             menuMusicSource = AddAudioSource(SoundBank.GetInstance().menuMusicSound, true, true);
-
+            checker1Source = AddAudioSource(SoundBank.GetInstance().checkerSound1, false, false);
+            checker2Source = AddAudioSource(SoundBank.GetInstance().checkerSound2, false, false);
+            checker3Source = AddAudioSource(SoundBank.GetInstance().checkerSound3, false, false);
+            gameOverSource = AddAudioSource(SoundBank.GetInstance().gameOverSound, false, false);
             DontDestroyOnLoad(objectInstance);
         }
         return instance;
@@ -61,6 +68,26 @@ public class SoundSingleton : MonoBehaviour
     public void PlayButtonClickSound()
     {
         PlaySFX(buttonClickSource);
+    }
+
+    public void PlayCheckerSound1()
+    {
+        PlaySFX(checker1Source);
+    }
+
+    public void PlayCheckerSound2()
+    {
+        PlaySFX(checker2Source);
+    }
+
+    public void PlayCheckerSound3()
+    {
+        PlaySFX(checker3Source);
+    }
+
+    public void PlayGameOverSound()
+    {
+        PlaySFX(gameOverSource);
     }
 
     public void PlayMenuMusic()

@@ -4,6 +4,10 @@ public class SoundBank : MonoBehaviour
 {
     public AudioClip buttonClickSound;
     public AudioClip menuMusicSound;
+    public AudioClip checkerSound1;
+    public AudioClip checkerSound2;
+    public AudioClip checkerSound3;
+    public AudioClip gameOverSound;
 
     private static SoundBank instance;
 
