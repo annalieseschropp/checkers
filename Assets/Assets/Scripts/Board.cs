@@ -31,6 +31,9 @@ public class Board : MonoBehaviour
     //For the final screen popup
     public GameObject popup;
 
+    // For AI
+    private bool isAITurn;
+
     /// <summary>
     /// Board initialization performed before anything can access it.
     /// </summary>
@@ -44,6 +47,15 @@ public class Board : MonoBehaviour
         possibleMoves = new List<GameObject>();
         animationInProgress = false;
         updatedRecord = false;
+
+        if (NameStaticClass.ai == true)
+        {
+            SetCurrentAITurn();
+        }
+        else
+        {
+            isAITurn = false; // If in two player mode, AI is always false
+        }
     }
 
     /// <summary>
@@ -152,6 +164,47 @@ public class Board : MonoBehaviour
 
     /// <summary>
     /// Method
+    /// Sets the current turn of the AI
+    /// </summary>
+    private void SetCurrentAITurn()
+    {
+        if (NameStaticClass.ai == true) 
+        {
+            if ((NameStaticClass.playerOneName == "Computer") && (moveController.GetCurrentTurn() == CheckersMove.Turn.Black))
+            {
+                isAITurn = true;
+            }
+            else if ((NameStaticClass.playerTwoName == "Computer") && (moveController.GetCurrentTurn() == CheckersMove.Turn.White))
+            {
+                isAITurn = true;
+            }
+            else if ((NameStaticClass.playerOneName == "Computer") && (moveController.GetCurrentTurn() == CheckersMove.Turn.White))
+            {
+                isAITurn = false;
+            }
+            else 
+            {
+                isAITurn = false;
+            }
+        }
+        else 
+        {
+            isAITurn = false;
+        }
+    }
+
+    /// <summary>
+    /// Method
+    /// Gets the current turn of the AI
+    /// </summary>
+    /// <returns>bool</returns>
+    public bool GetCurrentAITurn()
+    {
+        return isAITurn;
+    }
+
+    /// <summary>
+    /// Method
     /// Getter for the overall board state
     /// </summary>
     /// <params>None</params>
@@ -183,7 +236,16 @@ public class Board : MonoBehaviour
     /// Checks for updates on input from user
     /// </summary>
     void Update () {
-        MoveControl();
+        if (GetCurrentAITurn() == true)
+        {
+            //AI MOVE
+            SetCurrentAITurn();
+        }
+        else
+        {
+            MoveControl();
+            SetCurrentAITurn();
+        }
         UpdateCurrentTurnText();
         CheckForEndGame();
     }

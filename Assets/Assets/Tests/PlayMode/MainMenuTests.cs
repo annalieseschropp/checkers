@@ -65,4 +65,15 @@ public class MainMenuTests
         yield return null;
         Assert.AreEqual(true, scene == "Credits");
     }
+
+    [UnityTest]
+    public IEnumerator GoToOnePlayer()
+    {
+        button = GameObject.Find("aiButton").GetComponent<Button>();
+        button.onClick.Invoke();
+        yield return new WaitForSeconds(1);
+        string scene = SceneManager.GetActiveScene().name; 
+        yield return null;
+        Assert.AreEqual(true, scene == "AINameEntry");
+    }
 }
