@@ -9,6 +9,9 @@ using CheckersState;
 
 public class MainMenuTests
 {
+
+    private Button button;
+
     [SetUp]
     public void SetUp()
     {
@@ -50,5 +53,16 @@ public class MainMenuTests
         yield return null;
         Debug.Log(scene);
         Assert.AreEqual(true, scene == "Menu");
+    }
+
+    [UnityTest]
+    public IEnumerator GoToCredits()
+    {
+        button = GameObject.Find("creditsButton").GetComponent<Button>();
+        button.onClick.Invoke();
+        yield return new WaitForSeconds(1);
+        string scene = SceneManager.GetActiveScene().name; 
+        yield return null;
+        Assert.AreEqual(true, scene == "Credits");
     }
 }
