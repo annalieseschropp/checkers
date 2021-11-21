@@ -13,7 +13,6 @@ public class AINameEntry : MonoBehaviour
     public Dropdown dropdownPlayerColour;
     public Toggle forcedCapture;
     public Text topText;
-    int update = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -59,6 +58,7 @@ public class AINameEntry : MonoBehaviour
         if (playerOneName.text == "Computer")
         {
             topText.text = "Player Cannot Use this Reserved Name";
+            return;
         }
 
         // Load the first players name into memory
