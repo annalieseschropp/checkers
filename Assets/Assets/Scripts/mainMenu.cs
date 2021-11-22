@@ -37,6 +37,7 @@ public class mainMenu : MonoBehaviour
         quit.onClick.AddListener(QuitGame);
         creditsButton.onClick.AddListener(LoadCredits);
 
+        singleButton.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
         twoButton.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
         leaderboard.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
         options.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);

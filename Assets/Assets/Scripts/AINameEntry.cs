@@ -41,8 +41,11 @@ public class AINameEntry : MonoBehaviour
 
         playGame.onClick.AddListener(PlayGameButtonOnClick);
         cancelGame.onClick.AddListener(CancelGameButtonOnClick);
+        playGame.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
+        cancelGame.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
         playerOneName.onValueChanged.AddListener(delegate {PlayerOneNameOnUpdate();});
         dropdownPlayerOne.onValueChanged.AddListener(delegate {PlayerOneDropdownOnUpdate();});
+        forcedCapture.onValueChanged.AddListener(delegate {SoundSingleton.GetInstance().PlayButtonClickSound();});
     }
 
     // Function to check inputs and pass the data onto the game scene
