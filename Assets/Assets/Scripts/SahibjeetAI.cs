@@ -9,6 +9,8 @@ public class SahibjeetNode
     public List<SahibjeetNode> children = new List<SahibjeetNode>();
     public int stateEvaluation;
     public MoveController moveController;
+    public CheckersMove.Move storedMove = new CheckersMove.Move();
+    public CheckersMove.Turn moveTurn;
 
     public void AddChild(SahibjeetNode newNode)
     {
@@ -57,8 +59,18 @@ public class SahibjeetNode
                         state -= 1;
                     else if (curState[i, j] == CheckersState.State.WhiteKing)
                         state -= 2;
+                    if (2 < i && i < 6)
+                    {
+                        if (2 < j && j < 6)
+                        {
+                            if (curState[i, j] == CheckersState.State.Black)
+                                state += 2;
+                            else if (curState[i, j] == CheckersState.State.BlackKing)
+                                state += 3;
+                        }
+                    }
                 }
-                else if (aiColour == CheckersMove.Turn.Black)
+                else if (aiColour == CheckersMove.Turn.White)
                 {
                     if (curState[i, j] == CheckersState.State.White)
                         state += 1;
@@ -68,7 +80,18 @@ public class SahibjeetNode
                         state -= 1;
                     else if (curState[i, j] == CheckersState.State.BlackKing)
                         state -= 2;
+                    if (2 < i && i < 6)
+                    {
+                        if (2 < j && j < 6)
+                        {
+                            if (curState[i, j] == CheckersState.State.White)
+                                state += 2;
+                            else if (curState[i, j] == CheckersState.State.WhiteKing)
+                                state += 3;
+                        }
+                    }
                 }
+                
             }
         }
         stateEvaluation = state;
@@ -81,8 +104,9 @@ public class SahibjeetAI : MonoBehaviour
     private SahibjeetNode rootNode = new SahibjeetNode();
     private CheckersMove.Turn aiColour = CheckersMove.Turn.Black;
     private MoveController controller;
+    private SahibjeetNode currentBestMove;
 
-    private void calculateNewMoves(SahibjeetNode node, int depth)
+    private void calculateNewMoves(SahibjeetNode node, CheckersMove.Turn currentTurn, int depth)
     {
         if (depth == 0)
             return;
@@ -91,25 +115,86 @@ public class SahibjeetAI : MonoBehaviour
         {
             for (int j = 0; j < 8; j++)
             {
-                if (aiColour == CheckersMove.Turn.Black && (node.curState[i, j] == CheckersState.State.Black || node.curState[i, j] == CheckersState.State.BlackKing))
+                if (currentTurn == CheckersMove.Turn.Black && (node.curState[i, j] == CheckersState.State.Black || node.curState[i, j] == CheckersState.State.BlackKing))
                 {
                     CheckersMove.Square square = new CheckersMove.Square();
                     square.x = i;
                     square.y = j;
-                    //List<CheckersMove.Move> moves = new List<CheckersMove.Move>();
-                    List<CheckersMove.Move> temp = controller.SelectPiece(square);
-                    
+                    List<CheckersMove.Move> temp = node.moveController.SelectPiece(square);
+                    // If there is no possible moves there is no point in continuing the tree.
+                    if (temp.Count == 0)
+                        return;
                     // Place all the possible moves as a child of the new node and recursively go down the tree to generate all possible game states.
                     foreach (CheckersMove.Move move in temp)
                     {
                         SahibjeetNode tempOne = new SahibjeetNode();
+
                         tempOne.curState = (CheckersState.State[,])node.curState.Clone();
                         tempOne.moveController = new MoveController(ref tempOne.curState, NameStaticClass.forcedMove);
+                        
                         CheckersState.State tempState = tempOne.curState[move.src.x, move.src.y];
+                        
+                        // Calculate if the piece jumps over a piece,
+                        // if it does remove that piece from the board
+                        int moveDistance = Mathf.RoundToInt(Mathf.Sqrt(((move.src.x + move.dest.x) ^ 2) + ((move.src.y + move.dest.y) ^ 2)));
+                        if (moveDistance > 1)
+                        {
+                            CheckersMove.Square removedElement = move.src + move.dest;
+                            removedElement /= 2;
+                            tempOne.curState[removedElement.x, removedElement.y] = CheckersState.State.Empty;
+                        }
                         tempOne.curState[move.src.x, move.src.y] = CheckersState.State.Empty;
                         tempOne.curState[move.dest.x, move.dest.y] = tempState;
+                        
+                        tempOne.storedMove.src = move.src;
+                        tempOne.storedMove.dest = move.dest;
+                        tempOne.moveTurn = currentTurn;
+                        
                         node.AddChild(tempOne);
-                        calculateNewMoves(tempOne, depth - 1);
+                        
+                        calculateNewMoves(tempOne, CheckersMove.Turn.White, depth - 1);
+                    }
+                }
+                else if (currentTurn == CheckersMove.Turn.White && (node.curState[i, j] == CheckersState.State.White || node.curState[i, j] == CheckersState.State.WhiteKing))
+                {
+                    CheckersMove.Square square = new CheckersMove.Square();
+                    square.x = i;
+                    square.y = j;
+                    List<CheckersMove.Move> temp = node.moveController.SelectPiece(square);
+                    if (temp.Count == 0)
+                        return;
+                    
+                    foreach (CheckersMove.Move move in temp)
+                    {
+                        SahibjeetNode tempOne = new SahibjeetNode();
+                        
+                        tempOne.curState = (CheckersState.State[,])node.curState.Clone();
+                        tempOne.moveController = new MoveController(ref tempOne.curState, NameStaticClass.forcedMove);
+                        
+                        CheckersState.State tempState = tempOne.curState[move.src.x, move.src.y];
+                        
+                        // Calculate if the piece jumps over a piece,
+                        // if it does remove that piece from the board
+                        int moveDistance = Mathf.RoundToInt(Mathf.Sqrt(((move.src.x + move.dest.x) ^ 2) + ((move.src.y + move.dest.y) ^ 2)));
+                        if (moveDistance > 1)
+                        {
+                            CheckersMove.Square removedElement = move.src + move.dest;
+                            removedElement /= 2;
+                            tempOne.curState[removedElement.x, removedElement.y] = CheckersState.State.Empty;
+                        }
+                        tempOne.curState[move.src.x, move.src.y] = CheckersState.State.Empty;
+                        tempOne.curState[move.dest.x, move.dest.y] = tempState;
+                        
+                        tempOne.curState[move.src.x, move.src.y] = CheckersState.State.Empty;
+                        tempOne.curState[move.dest.x, move.dest.y] = tempState;
+
+                        tempOne.storedMove.src = move.src;
+                        tempOne.storedMove.dest = move.dest;
+                        tempOne.moveTurn = currentTurn;
+
+                        node.AddChild(tempOne);
+
+                        calculateNewMoves(tempOne, CheckersMove.Turn.Black, depth - 1);
                     }
                 }
             }
@@ -122,12 +207,39 @@ public class SahibjeetAI : MonoBehaviour
         calculateAIMoves();
     }
 
+    // Function to create the AI search tree for the movement.
     public void calculateAIMoves()
     {
         rootNode.curState = board.curState;
         rootNode.moveController = new MoveController(ref rootNode.curState, NameStaticClass.forcedMove);
-        calculateNewMoves(rootNode, 3);
+        // Create the move tree with all movements
+        calculateNewMoves(rootNode, aiColour, 3);
+        evaluateAllBoardStates(rootNode);
     }
+
+    private void evaluateAllBoardStates(SahibjeetNode node)
+    {
+        foreach (SahibjeetNode child in node.children)
+        {
+            child.EvaluateState(aiColour);
+            evaluateAllBoardStates(child);
+        }
+    }
+
+    private int searchNodes(SahibjeetNode node, int finalAnswer, CheckersMove.Turn maximizingPlayer)
+    {
+        
+
+        return finalAnswer;
+    }
+
+    // Function to search the tree for the best move to make
+    // private SahibjeetNode alphaBetaPrune(SahibjeetNode node, int depth, int alpha, int beta, CheckersMove.Turn maximizingPlayer)
+    // {
+        
+    // }
+
+    
 
     // Update is called once per frame
     void Update()
