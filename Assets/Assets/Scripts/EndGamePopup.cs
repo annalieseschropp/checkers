@@ -19,9 +19,11 @@ public class EndGamePopup : MonoBehaviour
     {
         Button quitBtn = quitButtonInPopupWindow.GetComponent<Button>();
         quitBtn.onClick.AddListener(quitIsClicked);
+        quitBtn.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
 
         Button restartButton = restartGameButton.GetComponent<Button>();
         restartButton.onClick.AddListener(restartGameFunc);
+        restartButton.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
     }
 
 

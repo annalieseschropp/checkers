@@ -262,6 +262,7 @@ public class Board : MonoBehaviour
         Text newText = popupChild.GetComponentInChildren<Text>();
         
         CheckersMove.GameStatus gameState = moveController.GetGameStatus();
+        if (gameState == CheckersMove.GameStatus.InProgress) return;
         
         if (gameState == CheckersMove.GameStatus.WhiteWin)
         {
@@ -275,6 +276,7 @@ public class Board : MonoBehaviour
                 GameHistoryRecordKeeper.AddRecord(NameStaticClass.playerOneName, NameStaticClass.playerTwoName, NameStaticClass.playerTwoName, GetWhitePiecesLost(), GetBlackPiecesLost());
                 GameHistoryRecordKeeper.SaveData();
                 updatedRecord = true;
+                SoundSingleton.GetInstance().PlayGameOverSound();
             }
             popupChild.SetActive(true);
 
@@ -291,6 +293,7 @@ public class Board : MonoBehaviour
                 GameHistoryRecordKeeper.AddRecord(NameStaticClass.playerOneName, NameStaticClass.playerTwoName, NameStaticClass.playerOneName, GetWhitePiecesLost(), GetBlackPiecesLost());
                 GameHistoryRecordKeeper.SaveData();
                 updatedRecord = true;
+                SoundSingleton.GetInstance().PlayGameOverSound();
             }
             popupChild.SetActive(true);
         }
@@ -298,6 +301,7 @@ public class Board : MonoBehaviour
         {
             newText.text = "It was a draw!";
             popupChild.SetActive(true);
+            SoundSingleton.GetInstance().PlayGameOverSound();
         };
     }
 

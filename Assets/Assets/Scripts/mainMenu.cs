@@ -13,6 +13,15 @@ public class mainMenu : MonoBehaviour
     public Button quitButton;
     public Button creditsButton;
 
+    /// <summary>
+    /// Method
+    /// Initializer performed before any script attempts to access the PieceSet.
+    /// </summary>
+    void Awake()
+    {
+        SoundSingleton.GetInstance().PlayMenuMusic();
+    }
+
     void Start() {
         Button singleButton = singlePlayerButton.GetComponent<Button>();
         Button twoButton = twoPlayerButton.GetComponent<Button>();
@@ -27,6 +36,13 @@ public class mainMenu : MonoBehaviour
         options.onClick.AddListener(LoadOptions);
         quit.onClick.AddListener(QuitGame);
         creditsButton.onClick.AddListener(LoadCredits);
+
+        singleButton.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
+        twoButton.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
+        leaderboard.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
+        options.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
+        quit.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
+        creditsButton.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
     }
 
     public void PlayAIGame()
@@ -38,7 +54,6 @@ public class mainMenu : MonoBehaviour
     {
         Debug.Log("Loading Game!");
         SceneManager.LoadScene("NameEntry");
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     public void ShowLeaderboards()

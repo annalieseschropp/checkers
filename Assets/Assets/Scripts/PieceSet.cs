@@ -50,7 +50,30 @@ public class PieceSet : MonoBehaviour
         {
             yield return StartCoroutine(toMove.MovePiece(new Vector2(move.dest.x, move.dest.y)));
         }
+
+        MakeCheckerSound();
         callback();
+    }
+
+    /// <summary>
+    /// Method
+    /// Randomizes the sound played after a checker moves.
+    /// </summary>
+    private void MakeCheckerSound()
+    {
+        int random = Random.Range(1,4);
+        switch(Random.Range(1,4)) 
+        {
+        case 1:
+            SoundSingleton.GetInstance().PlayCheckerSound1();
+            break;
+        case 2:
+            SoundSingleton.GetInstance().PlayCheckerSound2();
+            break;
+        default:
+            SoundSingleton.GetInstance().PlayCheckerSound3();
+            break;
+        }
     }
 
     /// <summary>
