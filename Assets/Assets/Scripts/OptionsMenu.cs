@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 public class OptionsMenu : MonoBehaviour
 {
     public Button backButton;
+    public Button sfxTestButton;
     public Slider moveSpeedSlider;
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
@@ -20,6 +21,9 @@ public class OptionsMenu : MonoBehaviour
         Button backBtn = backButton.GetComponent<Button>();
         backBtn.onClick.AddListener(GoBack);
         backBtn.onClick.AddListener(SoundSingleton.GetInstance().PlayButtonClickSound);
+
+        Button sfxTestBtn = sfxTestButton.GetComponent<Button>();
+        sfxTestBtn.onClick.AddListener(TestSFX);
 
         Slider speedSlider = moveSpeedSlider.GetComponent<Slider>();
         speedSlider.onValueChanged.AddListener(OnMoveSpeedSliderChanged);
@@ -61,7 +65,15 @@ public class OptionsMenu : MonoBehaviour
     {
         GameOptionsStaticClass.sfxVolume = value;
         SoundSingleton.GetInstance().UpdateSFXVolume();
-        SoundSingleton.GetInstance().PlayButtonClickSound();
+    }
+
+    /// <summary>
+    /// Method
+    /// Event listener for SFX test button.
+    /// </summary>
+    public void TestSFX()
+    {
+        SoundSingleton.GetInstance().PlayCheckerSound2();
     }
 
     /// <summary>
