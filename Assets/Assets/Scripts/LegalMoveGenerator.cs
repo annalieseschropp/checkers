@@ -36,7 +36,7 @@ public static class LegalMoveGenerator
 
     /// <summary>
     /// Method
-    /// Returns the list of legal moves available all pieces. Accounts for forced capture.
+    /// Returns the list of legal moves available for all pieces. Accounts for forced capture.
     /// </summary>
     public static List<CheckersMove.Move> GetLegalMoves(CheckersState.State[,] boardState, CheckersMove.Turn currentTurn, bool forceCapture = false)
     {
