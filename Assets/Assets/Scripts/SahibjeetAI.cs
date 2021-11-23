@@ -12,6 +12,11 @@ public class SahibjeetNode
     public CheckersMove.Move storedMove = new CheckersMove.Move();
     public CheckersMove.Turn moveTurn;
 
+    public SahibjeetNode()
+    {
+        curState = new CheckersState.State[8, 8];
+    }
+
     public void AddChild(SahibjeetNode newNode)
     {
         newNode.parent = this;
@@ -105,6 +110,13 @@ public class SahibjeetAI : MonoBehaviour
     private CheckersMove.Turn aiColour = CheckersMove.Turn.Black;
     private MoveController controller;
     private SahibjeetNode currentBestMove;
+
+    void Start()
+    {
+        board = board.GetComponent<Board>();
+        Debug.Log(board.ToString());
+        Debug.Log(board);
+    }
 
     private void calculateNewMoves(SahibjeetNode node, CheckersMove.Turn currentTurn, int depth)
     {
@@ -200,21 +212,27 @@ public class SahibjeetAI : MonoBehaviour
             }
         }
     }
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        calculateAIMoves();
-    }
 
     // Function to create the AI search tree for the movement.
-    public void calculateAIMoves()
+    public CheckersMove.Move calculateAIMoves()
     {
-        rootNode.curState = board.curState;
-        rootNode.moveController = new MoveController(ref rootNode.curState, NameStaticClass.forcedMove);
-        // Create the move tree with all movements
-        calculateNewMoves(rootNode, aiColour, 3);
-        evaluateAllBoardStates(rootNode);
+        // Debug.Log(rootNode);
+        // Debug.Log(board);
+        // Debug.Log(rootNode.curState);
+        // Debug.Log(board.curState);
+        // rootNode.curState = (CheckersState.State[,])board.curState.Clone();
+        // rootNode.moveController = new MoveController(ref rootNode.curState, NameStaticClass.forcedMove);
+        // // Create the move tree with all movements
+        // calculateNewMoves(rootNode, aiColour, 3);
+        // evaluateAllBoardStates(rootNode);
+        // SahibjeetNode bestMove = getBestMove(rootNode);
+        // return bestMove.storedMove;
+        return new CheckersMove.Move(2, 2, 3, 3);
+    }
+
+    public void destroyTree()
+    {
+        rootNode = null;
     }
 
     private void evaluateAllBoardStates(SahibjeetNode node)
@@ -226,10 +244,38 @@ public class SahibjeetAI : MonoBehaviour
         }
     }
 
-    private int searchNodes(SahibjeetNode node, int finalAnswer, CheckersMove.Turn maximizingPlayer)
+    private SahibjeetNode getBestMove(SahibjeetNode root)
     {
+        List<int> element = new List<int>();
+        foreach(SahibjeetNode child in root.children)
+        {
+            int final = child.stateEvaluation;
+            final = searchNodes(child, final);
+            element.Add(final);
+        }
         
+        int currentIndex = 0;
+        
+        // Find the highest integer value in the list of integer.
+        // for (int i = 0; i < element.Count; i++)
+        // {
+        //     if (element[i] > element[currentIndex])
+        //         currentIndex = i;
+        // }
 
+        return root.children[0];
+    }
+
+    private int searchNodes(SahibjeetNode node, int finalAnswer)
+    {
+        if (node.children.Count == 0)
+            return finalAnswer + node.stateEvaluation;
+
+        finalAnswer += node.stateEvaluation;
+        foreach(SahibjeetNode child in node.children)
+        {
+            finalAnswer = Mathf.Max(finalAnswer, searchNodes(child, finalAnswer));
+        }
         return finalAnswer;
     }
 
@@ -238,12 +284,4 @@ public class SahibjeetAI : MonoBehaviour
     // {
         
     // }
-
-    
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
