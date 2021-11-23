@@ -20,7 +20,7 @@ public class Board : MonoBehaviour
     public Text currentTurnText;
     public CheckersState.State[,] curState;
     public EndTurn endTurn;
-    public _AIPlayer myAIPlayer;
+    public AIPlayer myAIPlayer;
 
     private PieceSet pieceSet;
     private MoveController moveController;
@@ -171,6 +171,14 @@ public class Board : MonoBehaviour
     {
         if (NameStaticClass.ai == true) 
         {
+            /* FIXME 
+                I could be wrong, but I think all of this logic could just be simplified with XOR (|):
+                    isAITurn = (NameStaticClass.playerOneName == "Computer") | (moveController.GetCurrentTurn() == CheckersMove.Turn.White);
+                    T F ==> T
+                    F T ==> T
+                    T T ==> F
+                    F F ==> F
+            */
             if ((NameStaticClass.playerOneName == "Computer") && (moveController.GetCurrentTurn() == CheckersMove.Turn.Black))
             {
                 isAITurn = true;
@@ -237,6 +245,7 @@ public class Board : MonoBehaviour
     /// Checks for updates on input from user
     /// </summary>
     void Update () {
+        // Do all game status checks first so our AI doesn't get confused.
         CheckForEndGame();
         if(animationInProgress) return;
         if (moveController.GetGameStatus() != CheckersMove.GameStatus.InProgress) return;
@@ -245,6 +254,8 @@ public class Board : MonoBehaviour
         {
             //AI MOVE
             CheckersMove.Move? aiMove = null;
+
+            // We send the AI different information dependeing on whether a multicapture is in progress.
             if(moveController.IsMulticaptureInProgress())
             {
                 aiMove = myAIPlayer.GetAIMove(curState, moveController.GetCurrentTurn(), NameStaticClass.forcedMove, moveController.GetSelectedSquare());
@@ -403,7 +414,13 @@ public class Board : MonoBehaviour
         }
     }
 
-    /* Fix me */
+    /// <summary>
+    /// Method
+    /// Performs the AI's intended move visually on the board.
+    /// The move will only be made if it is valid. An invalid move
+    /// will count as declining multicapture, but if force capture is
+    /// on or we were not multicapturing, the AI will be prompted to move again.
+    /// </summary>
     private void MakeAIMove(CheckersMove.Move? aiMove)
     {
         if(aiMove is CheckersMove.Move move)
