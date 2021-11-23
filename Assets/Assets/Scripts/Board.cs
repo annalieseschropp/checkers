@@ -20,6 +20,7 @@ public class Board : MonoBehaviour
     public Text currentTurnText;
     public CheckersState.State[,] curState;
     public EndTurn endTurn;
+    public _AIPlayer myAIPlayer;
 
     private PieceSet pieceSet;
     private MoveController moveController;
@@ -236,9 +237,24 @@ public class Board : MonoBehaviour
     /// Checks for updates on input from user
     /// </summary>
     void Update () {
+        CheckForEndGame();
+        if(animationInProgress) return;
+        if (moveController.GetGameStatus() != CheckersMove.GameStatus.InProgress) return;
+
         if (GetCurrentAITurn() == true)
         {
             //AI MOVE
+            CheckersMove.Move? aiMove = null;
+            if(moveController.IsMulticaptureInProgress())
+            {
+                aiMove = myAIPlayer.GetAIMove(curState, moveController.GetCurrentTurn(), NameStaticClass.forcedMove, moveController.GetSelectedSquare());
+            }
+            else
+            {
+                aiMove = myAIPlayer.GetAIMove(curState, moveController.GetCurrentTurn(), NameStaticClass.forcedMove);
+            }
+
+            MakeAIMove(aiMove);
             SetCurrentAITurn();
         }
         else
@@ -247,7 +263,7 @@ public class Board : MonoBehaviour
             SetCurrentAITurn();
         }
         UpdateCurrentTurnText();
-        CheckForEndGame();
+        
     }
 
     /// <summary>
@@ -384,6 +400,34 @@ public class Board : MonoBehaviour
                 }
                 
             }
+        }
+    }
+
+    /* Fix me */
+    private void MakeAIMove(CheckersMove.Move? aiMove)
+    {
+        if(aiMove is CheckersMove.Move move)
+        {
+            moveController.SelectPiece(move.src);
+            if(moveController.MakeMove(move.dest))
+            {
+                animationInProgress = true;
+                CleanSelection();
+                StartCoroutine(pieceSet.MakeMove(curState, move, ()=>
+                    {
+                        SetCurrentAITurn();
+                        animationInProgress = false;
+                    }
+                ));
+            }
+            else
+            {
+                moveController.DeclineMulticapture();
+            }
+        }
+        else
+        {
+            moveController.DeclineMulticapture();
         }
     }
 
