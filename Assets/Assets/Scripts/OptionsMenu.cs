@@ -11,6 +11,8 @@ public class OptionsMenu : MonoBehaviour
     public Slider moveSpeedSlider;
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
+    public Button clearRecordsButton;
+    public Text clearedRecordsStatusText;
 
     /// <summary>
     /// Method
@@ -36,6 +38,12 @@ public class OptionsMenu : MonoBehaviour
         Slider sfxSlider = sfxVolumeSlider.GetComponent<Slider>();
         sfxSlider.onValueChanged.AddListener(SFXVolumeSliderChanged);
         sfxSlider.value = GameOptionsStaticClass.sfxVolume;
+
+        Button clearBtn = clearRecordsButton.GetComponent<Button>();
+        clearBtn.onClick.AddListener(ClearRecords);
+
+        Text statusText = clearedRecordsStatusText.GetComponent<Text>();
+        clearedRecordsStatusText.text = "";
     }
 
     /// <summary>
@@ -84,5 +92,23 @@ public class OptionsMenu : MonoBehaviour
     {
         Debug.Log("Back To Main Menu");
         SceneManager.LoadScene("Menu");
+    }
+
+    /// <summary>
+    /// Method
+    /// Event listener for the clear records button.
+    /// </summary>
+    public void ClearRecords()
+    {
+        RecordKeeper.ClearRecords();
+        GameHistoryRecordKeeper.DestroyAllData();
+        StartCoroutine(UpdateStatus());
+    }
+
+    public IEnumerator UpdateStatus()
+    { 
+        clearedRecordsStatusText.text = "Successfully Cleared Records";
+        yield return new WaitForSeconds(2);
+        clearedRecordsStatusText.text = "";
     }
 }
