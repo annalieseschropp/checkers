@@ -13,6 +13,9 @@ public class OptionsMenu : MonoBehaviour
     public Slider sfxVolumeSlider;
     public Button clearRecordsButton;
     public Text clearedRecordsStatusText;
+    public GameObject clearRecordsPopup;
+    public Button confirmClearButton;
+    public Button cancelClear;
 
     /// <summary>
     /// Method
@@ -40,10 +43,17 @@ public class OptionsMenu : MonoBehaviour
         sfxSlider.value = GameOptionsStaticClass.sfxVolume;
 
         Button clearBtn = clearRecordsButton.GetComponent<Button>();
-        clearBtn.onClick.AddListener(ClearRecords);
+        clearBtn.onClick.AddListener(DisplayPopup);
 
         Text statusText = clearedRecordsStatusText.GetComponent<Text>();
         clearedRecordsStatusText.text = "";
+
+        GameObject popup = clearRecordsPopup.GetComponent<GameObject>();
+        HidePopup();
+        Button confirmBtn = confirmClearButton.GetComponent<Button>();
+        confirmBtn.onClick.AddListener(ClearRecords);
+        Button cancelBtn = cancelClear.GetComponent<Button>();
+        cancelBtn.onClick.AddListener(HidePopup);
     }
 
     /// <summary>
@@ -96,12 +106,31 @@ public class OptionsMenu : MonoBehaviour
 
     /// <summary>
     /// Method
+    /// Event listener for displaying the clear records popup.
+    /// </summary>
+    public void DisplayPopup()
+    {
+        clearRecordsPopup.SetActive(true);
+    }
+
+    /// <summary>
+    /// Method
+    /// Event listener for hiding the clear records popup.
+    /// </summary>
+    public void HidePopup()
+    {
+        clearRecordsPopup.SetActive(false);
+    }
+
+    /// <summary>
+    /// Method
     /// Event listener for the clear records button.
     /// </summary>
     public void ClearRecords()
     {
         RecordKeeper.ClearRecords();
         GameHistoryRecordKeeper.DestroyAllData();
+        HidePopup();
         StartCoroutine(UpdateStatus());
     }
 
