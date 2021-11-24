@@ -171,30 +171,7 @@ public class Board : MonoBehaviour
     {
         if (NameStaticClass.ai == true) 
         {
-            /* FIXME 
-                I could be wrong, but I think all of this logic could just be simplified with XOR (|):
-                    isAITurn = (NameStaticClass.playerOneName == "Computer") | (moveController.GetCurrentTurn() == CheckersMove.Turn.White);
-                    T F ==> T
-                    F T ==> T
-                    T T ==> F
-                    F F ==> F
-            */
-            if ((NameStaticClass.playerOneName == "Computer") && (moveController.GetCurrentTurn() == CheckersMove.Turn.Black))
-            {
-                isAITurn = true;
-            }
-            else if ((NameStaticClass.playerTwoName == "Computer") && (moveController.GetCurrentTurn() == CheckersMove.Turn.White))
-            {
-                isAITurn = true;
-            }
-            else if ((NameStaticClass.playerOneName == "Computer") && (moveController.GetCurrentTurn() == CheckersMove.Turn.White))
-            {
-                isAITurn = false;
-            }
-            else 
-            {
-                isAITurn = false;
-            }
+            isAITurn = (NameStaticClass.playerOneName == "Computer") | (moveController.GetCurrentTurn() == CheckersMove.Turn.White);
         }
         else 
         {
