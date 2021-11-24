@@ -2283,6 +2283,7 @@ MonoBehaviour:
   currentTurnText: {fileID: 299549606}
   endTurn: {fileID: 1327713853}
   myAIPlayer: {fileID: 824239280}
+  humanReplacementAIPlayer: {fileID: 0}
   popup: {fileID: 0}
 --- !u!4 &1368847222
 Transform:

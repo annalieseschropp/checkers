@@ -21,6 +21,7 @@ public class Board : MonoBehaviour
     public CheckersState.State[,] curState;
     public EndTurn endTurn;
     public AIPlayer myAIPlayer;
+    public AIPlayer humanReplacementAIPlayer;
 
     private PieceSet pieceSet;
     private MoveController moveController;
@@ -171,7 +172,7 @@ public class Board : MonoBehaviour
     {
         if (NameStaticClass.ai == true) 
         {
-            isAITurn = (NameStaticClass.playerOneName == "Computer") | (moveController.GetCurrentTurn() == CheckersMove.Turn.White);
+            isAITurn = (NameStaticClass.playerOneName == "Computer") ^ (moveController.GetCurrentTurn() == CheckersMove.Turn.White);
         }
         else 
         {
@@ -229,25 +230,20 @@ public class Board : MonoBehaviour
 
         if (GetCurrentAITurn() == true)
         {
-            //AI MOVE
-            CheckersMove.Move? aiMove = null;
-
-            // We send the AI different information dependeing on whether a multicapture is in progress.
-            if(moveController.IsMulticaptureInProgress())
-            {
-                aiMove = myAIPlayer.GetAIMove(curState, moveController.GetCurrentTurn(), NameStaticClass.forcedMove, moveController.GetSelectedSquare());
-            }
-            else
-            {
-                aiMove = myAIPlayer.GetAIMove(curState, moveController.GetCurrentTurn(), NameStaticClass.forcedMove);
-            }
-
-            MakeAIMove(aiMove);
+            AIMoveControl(myAIPlayer);
             SetCurrentAITurn();
         }
         else
         {
-            MoveControl();
+            if(humanReplacementAIPlayer == null)
+            {
+                MoveControl();
+            }
+            else
+            {
+                // If we have a 2nd AI player loaded in, then it will replace the human player
+                AIMoveControl(humanReplacementAIPlayer);
+            }
             SetCurrentAITurn();
         }
         UpdateCurrentTurnText();
@@ -389,6 +385,27 @@ public class Board : MonoBehaviour
                 
             }
         }
+    }
+
+    /// <summary>
+    /// Method
+    /// Get and submit a move from an AI.
+    /// </summary>
+    private void AIMoveControl(AIPlayer aiToUse)
+    {
+        CheckersMove.Move? aiMove = null;
+
+        // We send the AI different information dependeing on whether a multicapture is in progress.
+        if(moveController.IsMulticaptureInProgress())
+        {
+            aiMove = aiToUse.GetAIMove(curState, moveController.GetCurrentTurn(), NameStaticClass.forcedMove, moveController.GetSelectedSquare());
+        }
+        else
+        {
+            aiMove = aiToUse.GetAIMove(curState, moveController.GetCurrentTurn(), NameStaticClass.forcedMove);
+        }
+
+        MakeAIMove(aiMove);
     }
 
     /// <summary>
