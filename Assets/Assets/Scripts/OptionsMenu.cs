@@ -105,6 +105,10 @@ public class OptionsMenu : MonoBehaviour
         StartCoroutine(UpdateStatus());
     }
 
+    /// <summary>
+    /// Method
+    /// Helper to display success message.
+    /// </summary>
     public IEnumerator UpdateStatus()
     { 
         clearedRecordsStatusText.text = "Successfully Cleared Records";
