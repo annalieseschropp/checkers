@@ -80,11 +80,11 @@ public class SahibjeetNode
                     if (curState[i, j] == CheckersState.State.White)
                         state += 1;
                     else if (curState[i, j] == CheckersState.State.WhiteKing)
-                        state += 2;
+                        state += 1;
                     else if (curState[i, j] == CheckersState.State.Black)
                         state -= 1;
                     else if (curState[i, j] == CheckersState.State.BlackKing)
-                        state -= 2;
+                        state -= 1;
                     if (2 < i && i < 6)
                     {
                         if (2 < j && j < 6)
@@ -107,7 +107,7 @@ public class SahibjeetAI : MonoBehaviour
 {
     public Board board;
     private SahibjeetNode rootNode = new SahibjeetNode();
-    private CheckersMove.Turn aiColour = CheckersMove.Turn.Black;
+    private CheckersMove.Turn aiColour = CheckersMove.Turn.White;
     private MoveController controller;
     private SahibjeetNode currentBestMove;
 
@@ -127,36 +127,38 @@ public class SahibjeetAI : MonoBehaviour
         {
             for (int j = 0; j < 8; j++)
             {
+                Debug.Log(i + " , " + j);
                 if (currentTurn == CheckersMove.Turn.Black && (node.curState[i, j] == CheckersState.State.Black || node.curState[i, j] == CheckersState.State.BlackKing))
                 {
                     CheckersMove.Square square = new CheckersMove.Square();
                     square.x = i;
                     square.y = j;
-                    List<CheckersMove.Move> temp = node.moveController.SelectPiece(square);
+                    // List<CheckersMove.Move> temp = node.moveController.SelectPiece(square);
+                    List<CheckersMove.Move> temp = LegalMoveGenerator.GetLegalMoves(square, node.curState, currentTurn, NameStaticClass.forcedMove);
+                    
                     // If there is no possible moves there is no point in continuing the tree.
-                    if (temp.Count == 0)
-                        return;
+                    // if (temp.Count == 0)
+                    //     break;
                     // Place all the possible moves as a child of the new node and recursively go down the tree to generate all possible game states.
                     foreach (CheckersMove.Move move in temp)
                     {
                         SahibjeetNode tempOne = new SahibjeetNode();
 
                         tempOne.curState = (CheckersState.State[,])node.curState.Clone();
-                        tempOne.moveController = new MoveController(ref tempOne.curState, NameStaticClass.forcedMove);
+                        LegalMoveGenerator.MakeLegalMove(move, ref tempOne.curState, currentTurn);
+                        // tempOne.moveController = new MoveController(ref tempOne.curState, NameStaticClass.forcedMove);
                         
-                        CheckersState.State tempState = tempOne.curState[move.src.x, move.src.y];
+                        // CheckersState.State tempState = tempOne.curState[move.src.x, move.src.y];
                         
-                        // Calculate if the piece jumps over a piece,
-                        // if it does remove that piece from the board
-                        int moveDistance = Mathf.RoundToInt(Mathf.Sqrt(((move.src.x + move.dest.x) ^ 2) + ((move.src.y + move.dest.y) ^ 2)));
-                        if (moveDistance > 1)
-                        {
-                            CheckersMove.Square removedElement = move.src + move.dest;
-                            removedElement /= 2;
-                            tempOne.curState[removedElement.x, removedElement.y] = CheckersState.State.Empty;
-                        }
-                        tempOne.curState[move.src.x, move.src.y] = CheckersState.State.Empty;
-                        tempOne.curState[move.dest.x, move.dest.y] = tempState;
+                        // int moveDistance = Mathf.RoundToInt(Mathf.Sqrt(((move.src.x + move.dest.x) ^ 2) + ((move.src.y + move.dest.y) ^ 2)));
+                        // if (moveDistance > 1)
+                        // {
+                        //     CheckersMove.Square removedElement = move.src + move.dest;
+                        //     removedElement /= 2;
+                        //     tempOne.curState[removedElement.x, removedElement.y] = CheckersState.State.Empty;
+                        // }
+                        // tempOne.curState[move.src.x, move.src.y] = CheckersState.State.Empty;
+                        // tempOne.curState[move.dest.x, move.dest.y] = tempState;
                         
                         tempOne.storedMove.src = move.src;
                         tempOne.storedMove.dest = move.dest;
@@ -172,33 +174,35 @@ public class SahibjeetAI : MonoBehaviour
                     CheckersMove.Square square = new CheckersMove.Square();
                     square.x = i;
                     square.y = j;
-                    List<CheckersMove.Move> temp = node.moveController.SelectPiece(square);
-                    if (temp.Count == 0)
-                        return;
+                    //List<CheckersMove.Move> temp = node.moveController.SelectPiece(square);
+                    List<CheckersMove.Move> temp = LegalMoveGenerator.GetLegalMoves(square, node.curState, currentTurn, NameStaticClass.forcedMove);
+                    
+                    // if (temp.Count == 0)
+                    //     break;
                     
                     foreach (CheckersMove.Move move in temp)
                     {
                         SahibjeetNode tempOne = new SahibjeetNode();
                         
                         tempOne.curState = (CheckersState.State[,])node.curState.Clone();
-                        tempOne.moveController = new MoveController(ref tempOne.curState, NameStaticClass.forcedMove);
+                        LegalMoveGenerator.MakeLegalMove(move, ref tempOne.curState, currentTurn);
                         
-                        CheckersState.State tempState = tempOne.curState[move.src.x, move.src.y];
+                        //tempOne.moveController = new MoveController(ref tempOne.curState, NameStaticClass.forcedMove);
                         
-                        // Calculate if the piece jumps over a piece,
-                        // if it does remove that piece from the board
-                        int moveDistance = Mathf.RoundToInt(Mathf.Sqrt(((move.src.x + move.dest.x) ^ 2) + ((move.src.y + move.dest.y) ^ 2)));
-                        if (moveDistance > 1)
-                        {
-                            CheckersMove.Square removedElement = move.src + move.dest;
-                            removedElement /= 2;
-                            tempOne.curState[removedElement.x, removedElement.y] = CheckersState.State.Empty;
-                        }
-                        tempOne.curState[move.src.x, move.src.y] = CheckersState.State.Empty;
-                        tempOne.curState[move.dest.x, move.dest.y] = tempState;
+                        //CheckersState.State tempState = tempOne.curState[move.src.x, move.src.y];
                         
-                        tempOne.curState[move.src.x, move.src.y] = CheckersState.State.Empty;
-                        tempOne.curState[move.dest.x, move.dest.y] = tempState;
+                        // int moveDistance = Mathf.RoundToInt(Mathf.Sqrt(((move.src.x + move.dest.x) ^ 2) + ((move.src.y + move.dest.y) ^ 2)));
+                        // if (moveDistance > 1)
+                        // {
+                        //     CheckersMove.Square removedElement = move.src + move.dest;
+                        //     removedElement /= 2;
+                        //     tempOne.curState[removedElement.x, removedElement.y] = CheckersState.State.Empty;
+                        // }
+                        // tempOne.curState[move.src.x, move.src.y] = CheckersState.State.Empty;
+                        // tempOne.curState[move.dest.x, move.dest.y] = tempState;
+                        
+                        // tempOne.curState[move.src.x, move.src.y] = CheckersState.State.Empty;
+                        // tempOne.curState[move.dest.x, move.dest.y] = tempState;
 
                         tempOne.storedMove.src = move.src;
                         tempOne.storedMove.dest = move.dest;
@@ -216,23 +220,25 @@ public class SahibjeetAI : MonoBehaviour
     // Function to create the AI search tree for the movement.
     public CheckersMove.Move calculateAIMoves()
     {
-        // Debug.Log(rootNode);
-        // Debug.Log(board);
-        // Debug.Log(rootNode.curState);
-        // Debug.Log(board.curState);
-        // rootNode.curState = (CheckersState.State[,])board.curState.Clone();
-        // rootNode.moveController = new MoveController(ref rootNode.curState, NameStaticClass.forcedMove);
-        // // Create the move tree with all movements
-        // calculateNewMoves(rootNode, aiColour, 3);
-        // evaluateAllBoardStates(rootNode);
-        // SahibjeetNode bestMove = getBestMove(rootNode);
-        // return bestMove.storedMove;
-        return new CheckersMove.Move(2, 2, 3, 3);
+        Debug.Log(rootNode);
+        Debug.Log(board);
+        Debug.Log(rootNode.curState);
+        Debug.Log(board.curState);
+        rootNode.curState = (CheckersState.State[,])board.curState.Clone();
+        rootNode.moveController = new MoveController(ref rootNode.curState, NameStaticClass.forcedMove);
+        // Create the move tree with all movements
+        calculateNewMoves(rootNode, aiColour, 3);
+        evaluateAllBoardStates(rootNode);
+        Debug.Log(rootNode.children.Count);
+        SahibjeetNode bestMove = getBestMove(rootNode);
+        return bestMove.storedMove;
+        //return new CheckersMove.Move(2, 2, 3, 3);
     }
 
     public void destroyTree()
     {
         rootNode = null;
+        rootNode = new SahibjeetNode();
     }
 
     private void evaluateAllBoardStates(SahibjeetNode node)
@@ -257,13 +263,13 @@ public class SahibjeetAI : MonoBehaviour
         int currentIndex = 0;
         
         // Find the highest integer value in the list of integer.
-        // for (int i = 0; i < element.Count; i++)
-        // {
-        //     if (element[i] > element[currentIndex])
-        //         currentIndex = i;
-        // }
+        for (int i = 0; i < element.Count; i++)
+        {
+            if (element[i] > element[currentIndex])
+                currentIndex = i;
+        }
 
-        return root.children[0];
+        return root.children[currentIndex];
     }
 
     private int searchNodes(SahibjeetNode node, int finalAnswer)
