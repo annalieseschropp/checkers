@@ -62,6 +62,7 @@ public class PieceSet : MonoBehaviour
     private void MakeCheckerSound()
     {
         int random = Random.Range(1,4);
+        
         switch(Random.Range(1,4)) 
         {
         case 1:

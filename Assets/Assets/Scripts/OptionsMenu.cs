@@ -11,6 +11,11 @@ public class OptionsMenu : MonoBehaviour
     public Slider moveSpeedSlider;
     public Slider musicVolumeSlider;
     public Slider sfxVolumeSlider;
+    public Button clearRecordsButton;
+    public Text clearedRecordsStatusText;
+    public GameObject clearRecordsPopup;
+    public Button confirmClearButton;
+    public Button cancelClear;
 
     /// <summary>
     /// Method
@@ -36,6 +41,19 @@ public class OptionsMenu : MonoBehaviour
         Slider sfxSlider = sfxVolumeSlider.GetComponent<Slider>();
         sfxSlider.onValueChanged.AddListener(SFXVolumeSliderChanged);
         sfxSlider.value = GameOptionsStaticClass.sfxVolume;
+
+        Button clearBtn = clearRecordsButton.GetComponent<Button>();
+        clearBtn.onClick.AddListener(DisplayPopup);
+
+        Text statusText = clearedRecordsStatusText.GetComponent<Text>();
+        clearedRecordsStatusText.text = "";
+
+        GameObject popup = clearRecordsPopup.GetComponent<GameObject>();
+        HidePopup();
+        Button confirmBtn = confirmClearButton.GetComponent<Button>();
+        confirmBtn.onClick.AddListener(ClearRecords);
+        Button cancelBtn = cancelClear.GetComponent<Button>();
+        cancelBtn.onClick.AddListener(HidePopup);
     }
 
     /// <summary>
@@ -84,5 +102,46 @@ public class OptionsMenu : MonoBehaviour
     {
         Debug.Log("Back To Main Menu");
         SceneManager.LoadScene("Menu");
+    }
+
+    /// <summary>
+    /// Method
+    /// Event listener for displaying the clear records popup.
+    /// </summary>
+    public void DisplayPopup()
+    {
+        clearRecordsPopup.SetActive(true);
+    }
+
+    /// <summary>
+    /// Method
+    /// Event listener for hiding the clear records popup.
+    /// </summary>
+    public void HidePopup()
+    {
+        clearRecordsPopup.SetActive(false);
+    }
+
+    /// <summary>
+    /// Method
+    /// Event listener for the clear records button.
+    /// </summary>
+    public void ClearRecords()
+    {
+        RecordKeeper.ClearRecords();
+        GameHistoryRecordKeeper.DestroyAllData();
+        HidePopup();
+        StartCoroutine(UpdateStatus());
+    }
+
+    /// <summary>
+    /// Method
+    /// Helper to display success message.
+    /// </summary>
+    public IEnumerator UpdateStatus()
+    { 
+        clearedRecordsStatusText.text = "Successfully Cleared Records";
+        yield return new WaitForSeconds(2);
+        clearedRecordsStatusText.text = "";
     }
 }
