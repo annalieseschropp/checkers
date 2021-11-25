@@ -189,6 +189,81 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &95083749
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 95083750}
+  - component: {fileID: 95083752}
+  - component: {fileID: 95083751}
+  m_Layer: 5
+  m_Name: BackGround2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &95083750
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95083749}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1889115188}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.54227084, y: 0.5}
+  m_AnchoredPosition: {x: 0.00012207031, y: -79}
+  m_SizeDelta: {x: 654.3, y: 549.4017}
+  m_Pivot: {x: 0.49999997, y: 0.5}
+--- !u!114 &95083751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95083749}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 0.7169812, g: 0.44980422, b: 0.44980422, a: 0.5019608}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Type: 1
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &95083752
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 95083749}
+  m_CullTransparentMesh: 1
 --- !u!1 &218370191
 GameObject:
   m_ObjectHideFlags: 0
@@ -330,8 +405,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4280821800
-  m_fontColor: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -354,7 +429,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 0
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -469,10 +544,10 @@ MonoBehaviour:
   m_enableVertexGradient: 1
   m_colorMode: 0
   m_fontColorGradient:
-    topLeft: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    topRight: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    bottomLeft: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    bottomRight: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
@@ -568,8 +643,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -7.7352905, y: -135}
-  m_SizeDelta: {x: 236.8601, y: 137.0549}
+  m_AnchoredPosition: {x: -2, y: -157.9}
+  m_SizeDelta: {x: 735.36, y: 109}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &620859041
 MonoBehaviour:
@@ -733,12 +808,12 @@ RectTransform:
   m_Children:
   - {fileID: 487599205}
   m_Father: {fileID: 1889115188}
-  m_RootOrder: 3
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -80, y: 15}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -80, y: 31.402}
+  m_SizeDelta: {x: 160, y: 62.8046}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &748390671
 MonoBehaviour:
@@ -1014,10 +1089,10 @@ MonoBehaviour:
   m_enableVertexGradient: 1
   m_colorMode: 0
   m_fontColorGradient:
-    topLeft: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    topRight: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    bottomLeft: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    bottomRight: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
@@ -1145,12 +1220,12 @@ RectTransform:
   m_Children:
   - {fileID: 1701695585}
   m_Father: {fileID: 1104905530}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000015259, y: 287}
-  m_SizeDelta: {x: 726.6101, y: 137.0549}
+  m_AnchoredPosition: {x: -1.055, y: 278.1}
+  m_SizeDelta: {x: 735.37, y: 109}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &841081245
 MonoBehaviour:
@@ -1485,17 +1560,17 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1781245843}
   - {fileID: 841081244}
   - {fileID: 1765501491}
+  - {fileID: 1754468695}
   - {fileID: 1136768991}
   - {fileID: 620859040}
   m_Father: {fileID: 1889115188}
-  m_RootOrder: 1
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 7.7353, y: -150}
+  m_AnchoredPosition: {x: 40.155, y: -138}
   m_SizeDelta: {x: 736.3107, y: 776.8806}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1104905531
@@ -1547,14 +1622,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1259010176}
-  - {fileID: 1754468695}
   m_Father: {fileID: 1104905530}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4.848221, y: -23}
-  m_SizeDelta: {x: 362.8601, y: 137.0549}
+  m_AnchoredPosition: {x: -1.5249729, y: -48.900024}
+  m_SizeDelta: {x: 736.31, y: 109}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1136768992
 MonoBehaviour:
@@ -1784,10 +1858,10 @@ MonoBehaviour:
   m_enableVertexGradient: 1
   m_colorMode: 0
   m_fontColorGradient:
-    topLeft: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    topRight: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    bottomLeft: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    bottomRight: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
@@ -2052,10 +2126,10 @@ MonoBehaviour:
   m_enableVertexGradient: 1
   m_colorMode: 0
   m_fontColorGradient:
-    topLeft: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    topRight: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    bottomLeft: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    bottomRight: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
@@ -2221,13 +2295,13 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1947194077}
-  m_Father: {fileID: 1136768991}
-  m_RootOrder: 1
+  m_Father: {fileID: 1104905530}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.000015258789, y: 109}
-  m_SizeDelta: {x: 726.6101, y: 137.0549}
+  m_AnchoredPosition: {x: 0.47036982, y: 60.099983}
+  m_SizeDelta: {x: 735.37, y: 109}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1754468696
 MonoBehaviour:
@@ -2355,12 +2429,12 @@ RectTransform:
   m_Children:
   - {fileID: 563639922}
   m_Father: {fileID: 1104905530}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -4.848221, y: 184}
-  m_SizeDelta: {x: 726.6101, y: 137.0549}
+  m_AnchoredPosition: {x: 0.47038, y: 169.09999}
+  m_SizeDelta: {x: 735.37, y: 109}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1765501492
 MonoBehaviour:
@@ -2485,13 +2559,13 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 1104905530}
-  m_RootOrder: 0
+  m_Father: {fileID: 1889115188}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 5.5408936, y: 440}
-  m_SizeDelta: {x: -9.700684, y: -639.8257}
+  m_AnchoredPosition: {x: 245.36, y: 300}
+  m_SizeDelta: {x: -1193.3899, y: -942.94507}
   m_Pivot: {x: 0.33211493, y: 0.5}
 --- !u!114 &1781245844
 MonoBehaviour:
@@ -2528,9 +2602,9 @@ MonoBehaviour:
   m_colorMode: 3
   m_fontColorGradient:
     topLeft: {r: 1, g: 0.6039216, b: 0.6039216, a: 1}
-    topRight: {r: 1, g: 0.8000001, b: 0.70980394, a: 1}
+    topRight: {r: 1, g: 0.7176471, b: 0.6666667, a: 1}
     bottomLeft: {r: 1, g: 0.6039216, b: 0.6039216, a: 1}
-    bottomRight: {r: 1, g: 0.8745099, b: 0.76470596, a: 1}
+    bottomRight: {r: 1, g: 0.8000001, b: 0.70980394, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
@@ -2621,7 +2695,7 @@ RectTransform:
   - {fileID: 789709023}
   - {fileID: 1952721894}
   m_Father: {fileID: 1889115188}
-  m_RootOrder: 2
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -2720,6 +2794,8 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 1705674860}
+  - {fileID: 1781245843}
+  - {fileID: 95083750}
   - {fileID: 1104905530}
   - {fileID: 1784407334}
   - {fileID: 748390670}
@@ -2802,10 +2878,10 @@ MonoBehaviour:
   m_enableVertexGradient: 1
   m_colorMode: 0
   m_fontColorGradient:
-    topLeft: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    topRight: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    bottomLeft: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
-    bottomRight: {r: 0.15686275, g: 0.15686275, b: 0.15686275, a: 1}
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
   m_fontColorGradientPreset: {fileID: 0}
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
