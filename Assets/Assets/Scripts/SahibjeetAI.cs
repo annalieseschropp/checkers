@@ -8,10 +8,12 @@ public class SahibjeetNode
     public SahibjeetNode parent = null;
     public List<SahibjeetNode> children = new List<SahibjeetNode>();
     public int stateEvaluation;
-    public MoveController moveController;
     public CheckersMove.Move storedMove = new CheckersMove.Move();
     public CheckersMove.Turn moveTurn;
-
+    private int numberOfBlackPieces = 0;
+    private int numberOfBlackKings = 0;
+    private int numberOfWhitePieces = 0;
+    private int numberOfWhiteKings = 0;
     public SahibjeetNode()
     {
         curState = new CheckersState.State[8, 8];
@@ -42,6 +44,28 @@ public class SahibjeetNode
         return deepest;
     }
 
+    public void countPieces()
+    {
+        for (int i = 0; i < 8; i++)
+        {
+            for (int j = 0; j < 8; j++)
+            {
+                if (curState[i, j] == CheckersState.State.Black)
+                    numberOfBlackPieces++;
+                else if (curState[i, j] == CheckersState.State.White)
+                    numberOfWhitePieces++;
+                else if (curState[i, j] == CheckersState.State.BlackKing)
+                    numberOfBlackKings++;
+                else if (curState[i, j] ==CheckersState.State.WhiteKing)
+                    numberOfWhiteKings++;
+            }
+        }
+        foreach (SahibjeetNode child in children)
+        {
+            child.countPieces();
+        }
+    }
+
     /// <summary>
     /// Method
     /// Used to evaluate the state of the current board represented by the board,
@@ -50,75 +74,120 @@ public class SahibjeetNode
     public void EvaluateState(CheckersMove.Turn aiColour)
     {
         int state = 0;
+        if (aiColour == CheckersMove.Turn.Black)
+        {
+            state = numberOfBlackPieces + numberOfBlackKings - numberOfWhitePieces - numberOfWhiteKings;
+            if (parent.numberOfWhitePieces > this.numberOfWhitePieces)
+                state *= 2;
+            if (parent.numberOfWhiteKings > this.numberOfWhiteKings)
+                state *= 3;
+        }
+        else if (aiColour == CheckersMove.Turn.White)
+        {
+            state = numberOfWhitePieces + numberOfWhiteKings - numberOfBlackPieces - numberOfBlackKings;
+            if (parent.numberOfBlackPieces > this.numberOfBlackPieces)
+                state *= 2;
+            if (parent.numberOfBlackKings > this.numberOfBlackKings)
+                state *= 3;    
+        }
         for (int i = 0; i < 8; i++)
         {
             for (int j = 0; j < 8; j++)
             {
+                int xVar = i + 1;
+                int xVarM = j - 1;
+                int yVar = j + 1;
+                int yVarM = j - 1;
+                        
                 if (aiColour == CheckersMove.Turn.Black)
                 {
                     if (curState[i, j] == CheckersState.State.Black)
-                        state += 1;
-                    else if (curState[i, j] == CheckersState.State.BlackKing)
-                        state += 2;
-                    else if (curState[i, j] == CheckersState.State.White)
-                        state -= 1;
-                    else if (curState[i, j] == CheckersState.State.WhiteKing)
-                        state -= 2;
+                    {
+                        if (xVar != 8 && yVar != 8)
+                            if (curState[xVar, yVar] == CheckersState.State.White || curState[xVar, yVar] == CheckersState.State.WhiteKing)
+                                state += 1;
+                        if (xVar != 8 && yVarM != -1)
+                            if (curState[xVar, yVarM] == CheckersState.State.White || curState[xVar, yVarM] == CheckersState.State.WhiteKing)
+                                state += 1;
+                    }
+                    if (curState[i, j] == CheckersState.State.BlackKing)
+                    {
+                        if (xVar != 8 && yVar != 8)
+                            if (curState[xVar, yVar] == CheckersState.State.White || curState[xVar, yVar] == CheckersState.State.WhiteKing)
+                                state += 1;
+                        if (xVarM != -1 && yVar != 8)
+                            if (curState[xVarM, yVar] == CheckersState.State.White || curState[xVarM, yVar] == CheckersState.State.WhiteKing)
+                                state += 1;
+                        if (xVar != 8 && yVarM != -1)
+                            if (curState[xVar, yVarM] == CheckersState.State.White || curState[xVar, yVarM] == CheckersState.State.WhiteKing)
+                                state += 1;
+                        if (xVarM != -1 && yVarM != -1)
+                            if (curState[xVarM, yVarM] == CheckersState.State.White || curState[xVarM, yVarM] == CheckersState.State.WhiteKing)
+                                state += 1;
+                    }
                     if (2 < i && i < 6)
                     {
                         if (2 < j && j < 6)
                         {
                             if (curState[i, j] == CheckersState.State.Black)
-                                state += 2;
+                                state += 1;
                             else if (curState[i, j] == CheckersState.State.BlackKing)
-                                state += 3;
+                                state += 1;
                         }
                     }
                 }
                 else if (aiColour == CheckersMove.Turn.White)
                 {
                     if (curState[i, j] == CheckersState.State.White)
-                        state += 1;
-                    else if (curState[i, j] == CheckersState.State.WhiteKing)
-                        state += 1;
-                    else if (curState[i, j] == CheckersState.State.Black)
-                        state -= 1;
-                    else if (curState[i, j] == CheckersState.State.BlackKing)
-                        state -= 1;
+                    {
+                        if (xVar != 8 && yVar != 8)
+                            if (curState[xVar, yVar] == CheckersState.State.Black || curState[xVar, yVar] == CheckersState.State.BlackKing)
+                                state += 1;
+                        if (xVar != 8 && yVarM != -1)
+                            if (curState[xVar, yVarM] == CheckersState.State.Black || curState[xVar, yVarM] == CheckersState.State.BlackKing)
+                                state += 1;
+                    }
+                    if (curState[i, j] == CheckersState.State.WhiteKing)
+                    {
+                        if (xVar != 8 && yVar != 8)
+                            if (curState[xVar, yVar] == CheckersState.State.Black || curState[xVar, yVar] == CheckersState.State.BlackKing)
+                                state += 1;
+                        if (xVarM != -1 && yVar != 8)
+                            if (curState[xVarM, yVar] == CheckersState.State.Black || curState[xVarM, yVar] == CheckersState.State.BlackKing)
+                                state += 1;
+                        if (xVar != 8 && yVarM != -1)
+                            if (curState[xVar, yVarM] == CheckersState.State.Black || curState[xVar, yVarM] == CheckersState.State.BlackKing)
+                                state += 1;
+                        if (xVarM != -1 && yVarM != -1)
+                            if (curState[xVarM, yVarM] == CheckersState.State.Black || curState[xVarM, yVarM] == CheckersState.State.BlackKing)
+                                state += 1;
+                    }
                     if (2 < i && i < 6)
                     {
                         if (2 < j && j < 6)
                         {
                             if (curState[i, j] == CheckersState.State.White)
-                                state += 2;
+                                state += 1;
                             else if (curState[i, j] == CheckersState.State.WhiteKing)
-                                state += 3;
+                                state += 1;
                         }
                     }
                 }
-                
             }
         }
+        Debug.Log(storedMove.src + ":" + storedMove.dest + " = " + state);
         stateEvaluation = state;
     }
 }
 
-public class SahibjeetAI : MonoBehaviour
+public class SahibjeetAI : AIPlayer
 {
-    public Board board;
     private SahibjeetNode rootNode = new SahibjeetNode();
     private CheckersMove.Turn aiColour = CheckersMove.Turn.White;
     private MoveController controller;
     private SahibjeetNode currentBestMove;
 
-    void Start()
-    {
-        board = board.GetComponent<Board>();
-        Debug.Log(board.ToString());
-        Debug.Log(board);
-    }
-
-    private void calculateNewMoves(SahibjeetNode node, CheckersMove.Turn currentTurn, int depth)
+    private void calculateNewMoves(SahibjeetNode node, CheckersMove.Turn currentTurn, bool forcedMove, int depth)
     {
         if (depth == 0)
             return;
@@ -134,7 +203,7 @@ public class SahibjeetAI : MonoBehaviour
                     square.x = i;
                     square.y = j;
                     // List<CheckersMove.Move> temp = node.moveController.SelectPiece(square);
-                    List<CheckersMove.Move> temp = LegalMoveGenerator.GetLegalMoves(square, node.curState, currentTurn, NameStaticClass.forcedMove);
+                    List<CheckersMove.Move> temp = LegalMoveGenerator.GetLegalMoves(square, node.curState, currentTurn, forcedMove);
                     
                     // If there is no possible moves there is no point in continuing the tree.
                     // if (temp.Count == 0)
@@ -146,19 +215,6 @@ public class SahibjeetAI : MonoBehaviour
 
                         tempOne.curState = (CheckersState.State[,])node.curState.Clone();
                         LegalMoveGenerator.MakeLegalMove(move, ref tempOne.curState, currentTurn);
-                        // tempOne.moveController = new MoveController(ref tempOne.curState, NameStaticClass.forcedMove);
-                        
-                        // CheckersState.State tempState = tempOne.curState[move.src.x, move.src.y];
-                        
-                        // int moveDistance = Mathf.RoundToInt(Mathf.Sqrt(((move.src.x + move.dest.x) ^ 2) + ((move.src.y + move.dest.y) ^ 2)));
-                        // if (moveDistance > 1)
-                        // {
-                        //     CheckersMove.Square removedElement = move.src + move.dest;
-                        //     removedElement /= 2;
-                        //     tempOne.curState[removedElement.x, removedElement.y] = CheckersState.State.Empty;
-                        // }
-                        // tempOne.curState[move.src.x, move.src.y] = CheckersState.State.Empty;
-                        // tempOne.curState[move.dest.x, move.dest.y] = tempState;
                         
                         tempOne.storedMove.src = move.src;
                         tempOne.storedMove.dest = move.dest;
@@ -166,7 +222,7 @@ public class SahibjeetAI : MonoBehaviour
                         
                         node.AddChild(tempOne);
                         
-                        calculateNewMoves(tempOne, CheckersMove.Turn.White, depth - 1);
+                        calculateNewMoves(tempOne, CheckersMove.Turn.White, forcedMove, depth - 1);
                     }
                 }
                 else if (currentTurn == CheckersMove.Turn.White && (node.curState[i, j] == CheckersState.State.White || node.curState[i, j] == CheckersState.State.WhiteKing))
@@ -175,7 +231,7 @@ public class SahibjeetAI : MonoBehaviour
                     square.x = i;
                     square.y = j;
                     //List<CheckersMove.Move> temp = node.moveController.SelectPiece(square);
-                    List<CheckersMove.Move> temp = LegalMoveGenerator.GetLegalMoves(square, node.curState, currentTurn, NameStaticClass.forcedMove);
+                    List<CheckersMove.Move> temp = LegalMoveGenerator.GetLegalMoves(square, node.curState, currentTurn, forcedMove);
                     
                     // if (temp.Count == 0)
                     //     break;
@@ -186,23 +242,6 @@ public class SahibjeetAI : MonoBehaviour
                         
                         tempOne.curState = (CheckersState.State[,])node.curState.Clone();
                         LegalMoveGenerator.MakeLegalMove(move, ref tempOne.curState, currentTurn);
-                        
-                        //tempOne.moveController = new MoveController(ref tempOne.curState, NameStaticClass.forcedMove);
-                        
-                        //CheckersState.State tempState = tempOne.curState[move.src.x, move.src.y];
-                        
-                        // int moveDistance = Mathf.RoundToInt(Mathf.Sqrt(((move.src.x + move.dest.x) ^ 2) + ((move.src.y + move.dest.y) ^ 2)));
-                        // if (moveDistance > 1)
-                        // {
-                        //     CheckersMove.Square removedElement = move.src + move.dest;
-                        //     removedElement /= 2;
-                        //     tempOne.curState[removedElement.x, removedElement.y] = CheckersState.State.Empty;
-                        // }
-                        // tempOne.curState[move.src.x, move.src.y] = CheckersState.State.Empty;
-                        // tempOne.curState[move.dest.x, move.dest.y] = tempState;
-                        
-                        // tempOne.curState[move.src.x, move.src.y] = CheckersState.State.Empty;
-                        // tempOne.curState[move.dest.x, move.dest.y] = tempState;
 
                         tempOne.storedMove.src = move.src;
                         tempOne.storedMove.dest = move.dest;
@@ -210,7 +249,7 @@ public class SahibjeetAI : MonoBehaviour
 
                         node.AddChild(tempOne);
 
-                        calculateNewMoves(tempOne, CheckersMove.Turn.Black, depth - 1);
+                        calculateNewMoves(tempOne, CheckersMove.Turn.Black, forcedMove, depth - 1);
                     }
                 }
             }
@@ -218,21 +257,21 @@ public class SahibjeetAI : MonoBehaviour
     }
 
     // Function to create the AI search tree for the movement.
-    public CheckersMove.Move calculateAIMoves()
+    override public CheckersMove.Move? GetAIMove(CheckersState.State[,] boardState, CheckersMove.Turn currentTurn, bool forceCapture, CheckersMove.Square? multicaptureSquare = null)
     {
-        Debug.Log(rootNode);
-        Debug.Log(board);
-        Debug.Log(rootNode.curState);
-        Debug.Log(board.curState);
-        rootNode.curState = (CheckersState.State[,])board.curState.Clone();
-        rootNode.moveController = new MoveController(ref rootNode.curState, NameStaticClass.forcedMove);
-        // Create the move tree with all movements
-        calculateNewMoves(rootNode, aiColour, 3);
-        evaluateAllBoardStates(rootNode);
-        Debug.Log(rootNode.children.Count);
+        rootNode.curState = boardState;
+        calculateNewMoves(rootNode, currentTurn, forceCapture, 3);
+        countAllPieces();
+        evaluateAllBoardStates(rootNode, currentTurn);
         SahibjeetNode bestMove = getBestMove(rootNode);
+        destroyTree();
+        Debug.Log("Best Move = " + bestMove.storedMove.src + ":" + bestMove.storedMove.dest + " = " + bestMove.stateEvaluation);
         return bestMove.storedMove;
-        //return new CheckersMove.Move(2, 2, 3, 3);
+    }
+
+    private void countAllPieces()
+    {
+        rootNode.countPieces();
     }
 
     public void destroyTree()
@@ -241,12 +280,16 @@ public class SahibjeetAI : MonoBehaviour
         rootNode = new SahibjeetNode();
     }
 
-    private void evaluateAllBoardStates(SahibjeetNode node)
+    private void evaluateAllBoardStates(SahibjeetNode node, CheckersMove.Turn currentTurn)
     {
         foreach (SahibjeetNode child in node.children)
         {
-            child.EvaluateState(aiColour);
-            evaluateAllBoardStates(child);
+            child.EvaluateState(currentTurn);
+            evaluateAllBoardStates(child, currentTurn);
+            // if (currentTurn == CheckersMove.Turn.Black)
+            //     evaluateAllBoardStates(child, CheckersMove.Turn.White);
+            // else
+            //     evaluateAllBoardStates(child, CheckersMove.Turn.Black);
         }
     }
 
@@ -280,7 +323,8 @@ public class SahibjeetAI : MonoBehaviour
         finalAnswer += node.stateEvaluation;
         foreach(SahibjeetNode child in node.children)
         {
-            finalAnswer = Mathf.Max(finalAnswer, searchNodes(child, finalAnswer));
+            // finalAnswer = Mathf.Max(finalAnswer, searchNodes(child, finalAnswer));
+            finalAnswer = searchNodes(child, finalAnswer);
         }
         return finalAnswer;
     }
