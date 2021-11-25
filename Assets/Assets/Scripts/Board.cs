@@ -20,6 +20,8 @@ public class Board : MonoBehaviour
     public Text currentTurnText;
     public CheckersState.State[,] curState;
     public EndTurn endTurn;
+    public AIPlayer myAIPlayer;
+    public AIPlayer humanReplacementAIPlayer;
 
     private PieceSet pieceSet;
     private MoveController moveController;
@@ -170,22 +172,7 @@ public class Board : MonoBehaviour
     {
         if (NameStaticClass.ai == true) 
         {
-            if ((NameStaticClass.playerOneName == "Computer") && (moveController.GetCurrentTurn() == CheckersMove.Turn.Black))
-            {
-                isAITurn = true;
-            }
-            else if ((NameStaticClass.playerTwoName == "Computer") && (moveController.GetCurrentTurn() == CheckersMove.Turn.White))
-            {
-                isAITurn = true;
-            }
-            else if ((NameStaticClass.playerOneName == "Computer") && (moveController.GetCurrentTurn() == CheckersMove.Turn.White))
-            {
-                isAITurn = false;
-            }
-            else 
-            {
-                isAITurn = false;
-            }
+            isAITurn = (NameStaticClass.playerOneName == "Computer") ^ (moveController.GetCurrentTurn() == CheckersMove.Turn.White);
         }
         else 
         {
@@ -236,18 +223,31 @@ public class Board : MonoBehaviour
     /// Checks for updates on input from user
     /// </summary>
     void Update () {
+        // Do all game status checks first so our AI doesn't get confused.
+        CheckForEndGame();
+        if(animationInProgress) return;
+        if (moveController.GetGameStatus() != CheckersMove.GameStatus.InProgress) return;
+
         if (GetCurrentAITurn() == true)
         {
-            //AI MOVE
+            AIMoveControl(myAIPlayer);
             SetCurrentAITurn();
         }
         else
         {
-            MoveControl();
+            if(humanReplacementAIPlayer == null)
+            {
+                MoveControl();
+            }
+            else
+            {
+                // If we have a 2nd AI player loaded in, then it will replace the human player
+                AIMoveControl(humanReplacementAIPlayer);
+            }
             SetCurrentAITurn();
         }
         UpdateCurrentTurnText();
-        CheckForEndGame();
+        
     }
 
     /// <summary>
@@ -384,6 +384,61 @@ public class Board : MonoBehaviour
                 }
                 
             }
+        }
+    }
+
+    /// <summary>
+    /// Method
+    /// Get and submit a move from an AI.
+    /// </summary>
+    private void AIMoveControl(AIPlayer aiToUse)
+    {
+        CheckersMove.Move? aiMove = null;
+
+        // We send the AI different information dependeing on whether a multicapture is in progress.
+        if(moveController.IsMulticaptureInProgress())
+        {
+            aiMove = aiToUse.GetAIMove(curState, moveController.GetCurrentTurn(), NameStaticClass.forcedMove, moveController.GetSelectedSquare());
+        }
+        else
+        {
+            aiMove = aiToUse.GetAIMove(curState, moveController.GetCurrentTurn(), NameStaticClass.forcedMove);
+        }
+
+        MakeAIMove(aiMove);
+    }
+
+    /// <summary>
+    /// Method
+    /// Performs the AI's intended move visually on the board.
+    /// The move will only be made if it is valid. An invalid move
+    /// will count as declining multicapture, but if force capture is
+    /// on or we were not multicapturing, the AI will be prompted to move again.
+    /// </summary>
+    private void MakeAIMove(CheckersMove.Move? aiMove)
+    {
+        if(aiMove is CheckersMove.Move move)
+        {
+            moveController.SelectPiece(move.src);
+            if(moveController.MakeMove(move.dest))
+            {
+                animationInProgress = true;
+                CleanSelection();
+                StartCoroutine(pieceSet.MakeMove(curState, move, ()=>
+                    {
+                        SetCurrentAITurn();
+                        animationInProgress = false;
+                    }
+                ));
+            }
+            else
+            {
+                moveController.DeclineMulticapture();
+            }
+        }
+        else
+        {
+            moveController.DeclineMulticapture();
         }
     }
 
