@@ -20,7 +20,10 @@ public static class LegalMoveGenerator
         if (!IsSquareInbounds(square, boardState)) return new List<CheckersMove.Move>();
 
         CheckersState.State piece = GetMovablePiece(square, boardState, currentTurn);
-        if(piece == CheckersState.State.Empty) return new List<CheckersMove.Move>();
+        if(piece == CheckersState.State.Empty)
+        {
+            return new List<CheckersMove.Move>();
+        } 
 
         if(forceCapture)
         {
@@ -278,9 +281,30 @@ public static class LegalMoveGenerator
                 break;
 
             default:
+                Debug.Log("I got a really bad feeling about this");
                 return CheckersState.State.Empty;
         }
         
         return piece;
+    }
+
+
+    /// <summary>
+    /// Method
+    /// Runs a theoretical move on a board and updates the boardstate and returns it. Used in Ians JARVIS AI
+    /// </summary>
+    public static CheckersState.State[,] makeTheoreticalMove(CheckersMove.Move move, CheckersState.State[,] boardstate, CheckersMove.Turn currentTurn)
+    {
+        boardstate[move.dest.x, move.dest.y] = GetDestinationPiece(move, boardstate, currentTurn);
+        boardstate[move.src.x, move.src.y] = CheckersState.State.Empty;
+
+        if(IsMoveACapture(move))
+        {
+            CheckersMove.Square capturedSquare = GetCaptureSquare(move);
+            boardstate[capturedSquare.x, capturedSquare.y] = CheckersState.State.Empty;
+            //multicaptures = GenerateLegalCaptures(move.dest, boardstate, currentTurn);
+        }
+
+        return boardstate;
     }
 }

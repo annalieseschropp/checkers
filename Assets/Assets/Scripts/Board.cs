@@ -405,6 +405,8 @@ public class Board : MonoBehaviour
             aiMove = aiToUse.GetAIMove(curState, moveController.GetCurrentTurn(), NameStaticClass.forcedMove);
         }
 
+        Debug.Log("Grand Finale");
+
         MakeAIMove(aiMove);
     }
 

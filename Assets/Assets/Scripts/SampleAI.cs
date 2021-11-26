@@ -26,6 +26,7 @@ public class SampleAI : AIPlayer
     /// </summary>
     override public CheckersMove.Move? GetAIMove(CheckersState.State[,] boardState, CheckersMove.Turn currentTurn, bool forceCapture, CheckersMove.Square? multicaptureSquare = null)
     {
+        Debug.Log("SAMPLEAI");
         List<CheckersMove.Move> legalMoveList;
 
         /*

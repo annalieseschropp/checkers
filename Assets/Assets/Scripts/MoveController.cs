@@ -258,4 +258,38 @@ public class MoveController
     {
         return startingBlackPieceCount - CountBlackPiecesRemaining();
     }
+
+    /// <summary>
+    /// Method
+    /// Helper function for Ian's AI, counts the number of pieces given a colour
+    /// </summary>
+    public int countPiecesRemaining(CheckersState.State[,] tempBoardstate, bool isBlack)
+    {
+        int count = 0;
+        for(int i = 0; i < tempBoardstate.GetLength(0); i++ )
+        {
+            for(int j = 0; j < tempBoardstate.GetLength(1); j++ )
+            {  
+                //If we are counting black pieces
+                if (isBlack)
+                {
+                    if(tempBoardstate[i,j] == CheckersState.State.Black || tempBoardstate[i,j] == CheckersState.State.BlackKing)
+                    {
+                        count++;
+                    }
+                }
+
+                //For white pieces
+                else  
+                {
+                    if(tempBoardstate[i,j] == CheckersState.State.White || tempBoardstate[i,j] == CheckersState.State.WhiteKing)
+                    {
+                        count++;
+                    }
+                }
+                
+            }
+        }
+        return count;
+    }
 }
