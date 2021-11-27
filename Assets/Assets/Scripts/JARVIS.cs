@@ -64,32 +64,32 @@ public class JARVIS : AIPlayer
             legalMoveList = LegalMoveGenerator.GetLegalMoves(boardState, currentTurn, forceCapture);
 
             //Get the current colour of the ai's turn and set it to the enum
-            CurrentColour curColour = new CurrentColour();
+            /*CurrentColour curColour = new CurrentColour();
             
-            if (moveController.GetCurrentTurn() == CheckersMove.Turn.White) //Gets the AIs colour
-            {
-                curColour = CurrentColour.White;
-            }
-            else 
+            if (moveController.GetCurrentTurn() == CheckersMove.Turn.White) //Gets the AIs colour, notice it's reversed, that's intentional
             {
                 curColour = CurrentColour.Black;
             }
-
-
-            //Runs the minimax algo
-            CheckersState.State[,] referenceBoard = findOptimalMove(boardState, 3, legalMoveList, true, curColour).move; 
-            
-            /*foreach (CheckersMove.Move move in legalMoveList)
+            else 
             {
-                boardState = LegalMoveGenerator.makeTheoreticalMove(move, boardState, moveController.GetCurrentTurn());
+                curColour = CurrentColour.White;
+            }*/
+
+
+            CheckersState.State[,] referenceBoard = (CheckersState.State[,]) (findOptimalMove((CheckersState.State[,])boardState.Clone(), 4, forceCapture, true).move).Clone(); 
+
+            foreach (CheckersMove.Move move in legalMoveList)
+            {
+                CheckersState.State[,] boardCopy = (CheckersState.State[,])boardState.Clone();
+
+                LegalMoveGenerator.makeTheoreticalMove(move, boardCopy, moveController.GetCurrentTurn());
 
                 if (boardState == referenceBoard)
                 {
                     Debug.Log("We here bitch");
-                    Debug.Log("the move = " + move.ToString());
                     return move;
                 }
-            }*/
+            }
         }
 
         //If something crazy happens it just makes a random move
@@ -97,44 +97,29 @@ public class JARVIS : AIPlayer
         return legalMoveList[random];
     }
 
-    private Tuple findOptimalMove(CheckersState.State[,] boardState, int depth, List<CheckersMove.Move> legalMoveList, bool isMax, CurrentColour curColour) //curColour is the AIs Colour
+    //Assuming white is always AI for NOW-------------------------------------
+    private Tuple findOptimalMove(CheckersState.State[,] boardState, int depth, bool forceCapture, bool isMax) //curColour is the AIs Colour
     {   
-        Debug.Log("Depth = " + depth.ToString());
-        Debug.Log("isMax = " + isMax.ToString());
+
+        //Debug.Log("Depth = " + depth.ToString());
+        //Debug.Log("isMax = " + isMax.ToString());
         Tuple returnTuple = new Tuple();
+        //returnTuple.move = boardState;
+        //return returnTuple;
         
-        //Get the ai colour
-        bool isBlack;
-        CheckersMove.Turn turn = moveController.GetCurrentTurn();
-
-        if (turn == CheckersMove.Turn.White)
-        {
-            isBlack = false;
-        }
-        else
-        {
-            isBlack = true;
-        }
-
-        CheckersMove.GameStatus status = LegalMoveGenerator.GetGameStatus(boardState, turn);
+        CheckersMove.GameStatus status = LegalMoveGenerator.GetGameStatus(boardState, CheckersMove.Turn.White);
         
         //Check if we've reached the end of a branch or if the game has ended in some way
         if (depth == 0 || status != CheckersMove.GameStatus.InProgress)
         {
-            Debug.Log("WWWWWWWWHHHHHHHAAAAAAATTTTTTTTTTTTTTT");
-
             //Get the score for this branch
-            if (isBlack) 
-            {
-                returnTuple.numeric = moveController.countPiecesRemaining(boardState, true) - moveController.countPiecesRemaining(boardState, false);
-            }
-            else 
-            {
-               returnTuple.numeric = moveController.countPiecesRemaining(boardState, false) - moveController.countPiecesRemaining(boardState, true);
-            }
-
+            returnTuple.numeric = moveController.countPiecesRemaining(boardState, CheckersMove.Turn.White) - moveController.countPiecesRemaining(boardState, CheckersMove.Turn.Black);
+            Debug.Log("whites = " + moveController.countPiecesRemaining(boardState, CheckersMove.Turn.White).ToString());
+            Debug.Log("blacks = " +  moveController.countPiecesRemaining(boardState, CheckersMove.Turn.Black).ToString());
+            Debug.Log("Score = " + returnTuple.numeric.ToString());
+    
             //return the move being made
-            returnTuple.move = boardState;
+            returnTuple.move = (CheckersState.State[,]) boardState.Clone();
 
             return returnTuple;
         }
@@ -142,34 +127,24 @@ public class JARVIS : AIPlayer
 
         if (isMax)  //Use AI colour
         {
-            Debug.Log("AI Checking for move");
-            CheckersState.State[,] bestMove = null;
-            int maxEval = 0;
+            CheckersState.State[,] bestMove = (CheckersState.State[,]) boardState.Clone();
+            int maxEval = int.MinValue;
 
-            foreach (CheckersMove.Move move in legalMoveList)
+            foreach (CheckersMove.Move move in LegalMoveGenerator.GetLegalMoves(boardState, CheckersMove.Turn.White, forceCapture))
             {
-                CheckersMove.Turn tempTurnVar;
-
-                if (curColour == CurrentColour.White)   //If the AI is white this game
-                {   
-                    tempTurnVar = CheckersMove.Turn.White;
-                    boardState = LegalMoveGenerator.makeTheoreticalMove(move, boardState, CheckersMove.Turn.White);
-                }
-                else //If the AI is black this 
-                {
-                    tempTurnVar = CheckersMove.Turn.Black;
-                    boardState = LegalMoveGenerator.makeTheoreticalMove(move, boardState, CheckersMove.Turn.Black);
-                }
-
-                List<CheckersMove.Move> moves = LegalMoveGenerator.GetLegalMoves(boardState, tempTurnVar);
-
-
-                Tuple eval = findOptimalMove(boardState, depth-1, moves, false, curColour);
-                maxEval = Math.Max(int.MaxValue, eval.numeric);
+                boardState = (CheckersState.State[,])LegalMoveGenerator.makeTheoreticalMove(move, boardState, CheckersMove.Turn.White).Clone();
+                Tuple eval = findOptimalMove(boardState, depth-1, forceCapture, false);
+                
+                Debug.Log("A");
+                Debug.Log("maxEval b4 = " + maxEval.ToString());
+                Debug.Log("eval.numeric b4 = " + eval.numeric.ToString());
+                maxEval = Math.Max(maxEval, eval.numeric);
+                Debug.Log("maxEval After = " + maxEval.ToString());
 
                 if (eval.numeric == maxEval)
                 {
-                    bestMove = eval.move;
+
+                    bestMove = (CheckersState.State[,]) (eval.move).Clone();
                 }
             }
 
@@ -178,37 +153,27 @@ public class JARVIS : AIPlayer
         } 
         else    //Use Human colour
         {
-            Debug.Log("Human checking for move");
-            CheckersState.State[,] bestMove = null;
-            int minEval = 0;
+            CheckersState.State[,] bestMove = (CheckersState.State[,]) boardState.Clone();;
+            int minEval = int.MaxValue;
 
-            foreach (CheckersMove.Move move in legalMoveList)
+            foreach (CheckersMove.Move move in LegalMoveGenerator.GetLegalMoves(boardState, CheckersMove.Turn.Black, forceCapture))
             {
-                CheckersMove.Turn tempTurnVar;
-                
-                if (curColour == CurrentColour.White)
-                {
-                    tempTurnVar = CheckersMove.Turn.Black;
-                    boardState = LegalMoveGenerator.makeTheoreticalMove(move, boardState, CheckersMove.Turn.Black);
-                }
-                else 
-                {
-                    tempTurnVar = CheckersMove.Turn.White;
-                    boardState = LegalMoveGenerator.makeTheoreticalMove(move, boardState, CheckersMove.Turn.White);
-                }
+                boardState = (CheckersState.State[,])LegalMoveGenerator.makeTheoreticalMove(move, boardState, CheckersMove.Turn.White).Clone();
+                Tuple eval = findOptimalMove(boardState, depth-1, forceCapture, true);
+                minEval = Math.Min(minEval, eval.numeric);
 
-                List<CheckersMove.Move> moves = LegalMoveGenerator.GetLegalMoves(boardState, moveController.GetCurrentTurn());
 
-                Tuple eval = findOptimalMove(boardState, depth-1, moves, true, curColour);
-                minEval = Math.Max(int.MaxValue, eval.numeric);
+                Debug.Log("B");
+                Debug.Log("minEval b4 = " + minEval.ToString());
+                Debug.Log("eval.numeric b4 = " + eval.numeric.ToString());
+                minEval = Math.Min(minEval, eval.numeric);
+                Debug.Log("minEval After = " + minEval.ToString());
 
                 if (eval.numeric == minEval)
                 {
-                    bestMove = eval.move;
+                    bestMove = (CheckersState.State[,])eval.move.Clone();
                 }
             }
-
-            Debug.Log("b2");
             returnTuple.numeric = minEval;
             returnTuple.move = bestMove;
         }

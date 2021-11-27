@@ -281,7 +281,6 @@ public static class LegalMoveGenerator
                 break;
 
             default:
-                Debug.Log("I got a really bad feeling about this");
                 return CheckersState.State.Empty;
         }
         
@@ -293,18 +292,19 @@ public static class LegalMoveGenerator
     /// Method
     /// Runs a theoretical move on a board and updates the boardstate and returns it. Used in Ians JARVIS AI
     /// </summary>
-    public static CheckersState.State[,] makeTheoreticalMove(CheckersMove.Move move, CheckersState.State[,] boardstate, CheckersMove.Turn currentTurn)
+    public static CheckersState.State[,] makeTheoreticalMove(CheckersMove.Move move, CheckersState.State[,] board, CheckersMove.Turn currentTurn)
     {
-        boardstate[move.dest.x, move.dest.y] = GetDestinationPiece(move, boardstate, currentTurn);
-        boardstate[move.src.x, move.src.y] = CheckersState.State.Empty;
-
+        board[move.dest.x, move.dest.y] = GetDestinationPiece(move, board, currentTurn);
+        board[move.src.x, move.src.y] = CheckersState.State.Empty;
+        
         if(IsMoveACapture(move))
         {
             CheckersMove.Square capturedSquare = GetCaptureSquare(move);
-            boardstate[capturedSquare.x, capturedSquare.y] = CheckersState.State.Empty;
-            //multicaptures = GenerateLegalCaptures(move.dest, boardstate, currentTurn);
+            board[capturedSquare.x, capturedSquare.y] = CheckersState.State.Empty;
+            //multicaptures = GenerateLegalCaptures(move.dest, board, currentTurn);
         }
+        
 
-        return boardstate;
+        return board;
     }
 }
